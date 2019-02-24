@@ -4,31 +4,27 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view /> -->
+    <router-view />-->
+    <navigationBar></navigationBar>
     <tabBar></tabBar>
   </div>
 </template>
 
 <script>
-import tabBar from './components/tabBar/TabBar'
+import tabBar from "./components/tabBar/TabBar";
+import navigationBar from "./components/navigationBar/NavigationBar";
 export default {
-    name : 'app',
-    data() {
-      return {
-        
-      }
-    },
-    components:{
-        tabBar
-    }
-}
+  name: "app",
+  data() {
+    return {};
+  },
+  components: {
+    tabBar,
+    navigationBar
+  }
+};
 </script>
-
-
 <style lang="scss">
-
-
-
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -45,5 +41,10 @@ export default {
       color: #42b983;
     }
   }
+}
+// 去掉 谷歌 touch 报警告
+// https://www.jianshu.com/p/04bf173826aa
+* {
+  touch-action: none;
 }
 </style>
