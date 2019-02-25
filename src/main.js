@@ -12,6 +12,9 @@ import "./assets/vendor/mui/css/mui.min.css";
 // 导入扩展图标样式
 import "./assets/vendor/mui/css/icons-extra.css";
 
+// 全局app常量css
+import './assets/css/common.css';
+
 new Vue({
   router,
   store,

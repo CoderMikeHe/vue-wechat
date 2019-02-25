@@ -4,15 +4,27 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view />-->
-    <navigationBar></navigationBar>
-    <tabBar></tabBar>
+    <router-view /> -->
+    <header>
+      <navigationBar title="微信"></navigationBar>
+    </header>
+    <section class="app-content">
+      <router-view></router-view>
+    </section>
+    
+
+    <footer >
+      <tabBar></tabBar>
+    </footer>
   </div>
 </template>
 
 <script>
 import tabBar from "./components/tabBar/TabBar";
 import navigationBar from "./components/navigationBar/NavigationBar";
+
+
+
 export default {
   name: "app",
   data() {
@@ -25,6 +37,9 @@ export default {
 };
 </script>
 <style lang="scss">
+
+
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -47,4 +62,6 @@ export default {
 * {
   touch-action: none;
 }
+
+
 </style>

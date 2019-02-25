@@ -1,0 +1,18 @@
+/* app全局常量css */
+
+/* 去掉 谷歌 touch 报警告 */
+/*  https://www.jianshu.com/p/04bf173826aa */
+* {
+  touch-action: none;
+}
+
+.app-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1;
+    /*position: absolute;*/
+    /*left: 0;*/
+    padding-bottom: 49px;
+    padding-top: 44px;
+    width: 100%;
+}

@@ -2,7 +2,7 @@
 
 <template>
   <header id="header" class="mui-bar mui-bar-nav">
-    <h1 class="mui-title">导航栏</h1>
+    <h1 class="mui-title">{{ title }}</h1>
     <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">
       <span class="mui-icon mui-icon-left-nav"></span>首页
     </button>
@@ -13,9 +13,15 @@
 
 <script>
 export default {
-  props: {}
+  props: {
+    /// 导航栏标题，必须字符串
+    title : String
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+
+
+
 </style>
