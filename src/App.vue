@@ -57,11 +57,7 @@ export default {
     }
   }
 }
-// 去掉 谷歌 touch 报警告
-// https://www.jianshu.com/p/04bf173826aa
-* {
-  touch-action: none;
-}
+
 
 
 </style>
