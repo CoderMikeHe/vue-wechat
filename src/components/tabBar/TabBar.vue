@@ -1,23 +1,24 @@
 <template>
   <div>
     <nav class="mh-tab-bar">
-      <router-link class="mh-tab-item" to="/" exact>
-        <img class="mh-tab-icon" src="../../assets/images/tabBar/tabbar_mainframe_25x23.png" alt>
+      <router-link class="mh-tab-item" to="/mainframe" @click.native.prevent="itemDidClicked(0)">
+        <span class="mh-tab-icon-box">
+          <img class="mh-tab-icon" :src="getMainFrameImage" alt>
+          <span class="mh-tab-badge">9</span>
+        </span>
         <span class="mh-tab-label">微信</span>
       </router-link>
-      <router-link class="mh-tab-item" to="/contacts">
-        <!-- <span class="mh-tab-icon mui-icon-email">
-          <span class="mui-badge">9</span>
-        </span>-->
-        <img class="mh-tab-icon" src="../../assets/images/tabBar/tabbar_contacts_27x23.png" alt>
+      <router-link class="mh-tab-item" to="/contacts" @click.native.prevent="itemDidClicked(1)">
+        <img class="mh-tab-icon" :src="getContactsImage" alt>
+        
         <span class="mh-tab-label">通讯录</span>
       </router-link>
-      <router-link class="mh-tab-item" to="/discover">
-        <img class="mh-tab-icon" src="../../assets/images/tabBar/tabbar_discover_23x23.png" alt>
+      <router-link class="mh-tab-item" to="/discover" @click.native.prevent="itemDidClicked(2)">
+        <img class="mh-tab-icon" :src="getDiscoverImage" alt>
         <span class="mh-tab-label">发现</span>
       </router-link>
-      <router-link class="mh-tab-item" to="/profile">
-        <img class="mh-tab-icon" src="../../assets/images/tabBar/tabbar_me_23x23.png" alt>
+      <router-link class="mh-tab-item" to="/profile" @click.native.prevent="itemDidClicked(3)">
+        <img class="mh-tab-icon" :src="getProfileImage" alt>
         <span class="mh-tab-label">我</span>
       </router-link>
     </nav>
@@ -30,15 +31,51 @@ import "weui";
 export default {
   data() {
     return {
-      selectedMainFrame: 1,
+      // 初始化数据
+      selectedMainFrame: 0,
       selectedContacts: 0,
       selectedDiscover: 0,
       selectedProfile: 0
     };
   },
+  created() {
+    // vm 刚创建好，赋值初始值
+    const name = this.$route.name;
+    this.selectedMainFrame = name === "mainframe" ? 1 : 0;
+    this.selectedContacts = name === "contacts" ? 1 : 0;
+    this.selectedDiscover = name === "discover" ? 1 : 0;
+    this.selectedProfile = name === "profile" ? 1 : 0;
+  },
+
   methods: {
-    itemClick(e) {
-      console.log(e);
+    // 按钮点击
+    itemDidClicked(index) {
+      this.selectedMainFrame = index === 0 ? 1 : 0;
+      this.selectedContacts = index === 1 ? 1 : 0;
+      this.selectedDiscover = index === 2 ? 1 : 0;
+      this.selectedProfile = index === 3 ? 1 : 0;
+    }
+  },
+  computed: {
+    getMainFrameImage() {
+      let sel = require("../../assets/images/tabBar/tabbar_mainframeHL_25x23.png");
+      let nor = require("../../assets/images/tabBar/tabbar_mainframe_25x23.png");
+      return this.selectedMainFrame ? sel : nor;
+    },
+    getContactsImage() {
+      let sel = require("../../assets/images/tabBar/tabbar_contactsHL_27x23.png");
+      let nor = require("../../assets/images/tabBar/tabbar_contacts_27x23.png");
+      return this.selectedContacts ? sel : nor;
+    },
+    getDiscoverImage() {
+      let sel = require("../../assets/images/tabBar/tabbar_discoverHL_23x23.png");
+      let nor = require("../../assets/images/tabBar/tabbar_discover_23x23.png");
+      return this.selectedDiscover ? sel : nor;
+    },
+    getProfileImage() {
+      let sel = require("../../assets/images/tabBar/tabbar_meHL_23x23.png");
+      let nor = require("../../assets/images/tabBar/tabbar_me_23x23.png");
+      return this.selectedProfile ? sel : nor;
     }
   },
   watch: {
@@ -76,6 +113,7 @@ export default {
   text-overflow: ellipsis;
   color: #929292;
 }
+// 选中高亮
 .mh-tab-bar .mh-tab-item.router-link-active {
   color: #0f0;
 }
@@ -87,10 +125,33 @@ export default {
   padding-top: 0;
   padding-bottom: 0;
 }
-.mh-tab-bar .mh-tab-item .mh-tab-icon ~ .mh-tab-label {
-  font-size: 11px;
+.mh-tab-bar .mh-tab-item .mh-tab-label {
+  font-size: 12px;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.mh-tab-bar .mh-tab-item .mh-tab-icon-box {
+  top: 2px;
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+
+.mh-tab-bar .mh-tab-item .mh-tab-icon-box .mh-tab-badge {
+  position: absolute;
+  top: -2px;
+  left: 100%;
+  margin-left: -10px;
+
+  font-size: 10px;
+  line-height: 1;
+  display: inline-block;
+  border-radius: 12px;
+  padding: 3px 5px;
+  color: #fff;
+  background-color: red;
 }
 </style>

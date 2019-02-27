@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 // 四个大模块
-import Mainfarme from "./views/mainframe/Mainframe";
+import MainFarme from "./views/mainframe/MainFrame";
 import Contacts from "./views/contacts/Contacts";
 import Discover from "./views/discover/Discover";
 import Profile from "./views/profile/Profile";
@@ -10,13 +10,16 @@ import Profile from "./views/profile/Profile";
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
+  // mode: "history",
   base: process.env.BASE_URL,
-  routes: [
-    {
+  routes: [{
       path: "/",
+      redirect: "/mainframe"
+    },
+    {
+      path: "/mainframe",
       name: "mainframe",
-      component: Mainfarme
+      component: MainFarme
     },
     {
       path: "/contacts",
