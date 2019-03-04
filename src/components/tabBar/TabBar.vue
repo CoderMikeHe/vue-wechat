@@ -111,11 +111,11 @@ export default {
   vertical-align: middle;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: #929292;
+  color: #181818;
 }
 // 选中高亮
 .mh-tab-bar .mh-tab-item.router-link-active {
-  color: #0f0;
+  color: #57be6a;
 }
 .mh-tab-bar .mh-tab-item .mh-tab-icon {
   position: relative;
