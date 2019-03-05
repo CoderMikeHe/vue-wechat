@@ -12,6 +12,13 @@ import "./assets/vendor/mui/css/mui.min.css";
 // 导入扩展图标样式
 import "./assets/vendor/mui/css/icons-extra.css";
 
+
+// 导入mint-ui
+import Mint from "mint-ui";
+import 'mint-ui/lib/style.css';
+
+Vue.use(Mint);
+
 // 全局app常量css
 import './assets/css/common.css';
 

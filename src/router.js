@@ -2,10 +2,10 @@ import Vue from "vue";
 import Router from "vue-router";
 
 // 四个大模块
-import MainFarme from "./views/mainframe/MainFrame";
-import Contacts from "./views/contacts/Contacts";
-import Discover from "./views/discover/Discover";
-import Profile from "./views/profile/Profile";
+import MainFrame from "./views/mainframe/Mainframe.vue";
+import Contacts from "./views/contacts/Contacts.vue";
+import Discover from "./views/discover/Discover.vue";
+import Profile from "./views/profile/Profile.vue";
 
 Vue.use(Router);
 
@@ -19,7 +19,7 @@ export default new Router({
     {
       path: "/mainframe",
       name: "mainframe",
-      component: MainFarme
+      component: MainFrame
     },
     {
       path: "/contacts",

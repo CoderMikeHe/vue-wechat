@@ -1,8 +1,17 @@
 // 全局导航条
 <template>
   <header id="header" class="mh-nav-bar">
+    <!-- 标题 -->
     <h1 class="mh-title">{{ title }}</h1>
-    <div class="mh-left-panel"></div>
+    <!-- 左面板 -->
+    <div class="mh-left-panel">
+      <!-- 面板元素 -->
+      <div class="mh-panel-item">
+        <button v-if="leftItem.type === 0">{{ leftItem.title }}</button>
+        <img v-else src="../../assets/images/navBar/nav_bar_back_arrow.png" alt="">
+      </div>
+    </div>
+    <!-- 右面版 -->
     <div class="mh-right-panel"></div>
 
     <!-- <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">
@@ -14,15 +23,44 @@
 </template>
 
 <script>
+import MHBarButtonItem from '../../assets/js/MHBarButtonItem.js'
 export default {
   props: {
     /// 导航栏标题，必须字符串
-    title: String
+    title: String,
+    /// 左
+    leftItem: {
+      type: MHBarButtonItem
+    }
+    // leftBarButtonItems: Array,
+    
+    // /// 右
+    // rightBarButtonItem: MHBarButtonItem,
+    // rightBarButtonItems: Array
+  },
+
+  data() {
+    return {
+      
+    }
+  },
+  computed:{
+    getLeftBarButtonItems(){
+      let items = [];
+      // if (this.leftBarButtonItems && this.leftBarButtonItems.length !== 0) {
+      //   items.concat(this.leftBarButtonItems);
+      // } else if(this.leftBarButtonItem){
+      //   items.push(this.leftBarButtonItem);
+      // }
+      return items;
+    }
   }
+
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
 .mh-nav-bar {
   position: fixed;
   top: 0;
@@ -53,6 +91,10 @@ export default {
   right: 50%;
   top: 0;
   bottom: 0;
+  text-align: left;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 
 .mh-nav-bar .mh-right-panel {

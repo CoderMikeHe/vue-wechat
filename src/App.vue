@@ -5,8 +5,15 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />-->
-    <header>
-      <navigationBar title="微信"></navigationBar>
+    <header class="ssss">
+      <!-- <navigationBar title="微信" :left-item="backItem"></navigationBar> -->
+      <!-- <mt-button type="danger">退出登录</mt-button> -->
+      <mt-header fixed title="固定在顶部">
+        <router-link to="/" slot="left">
+          <mt-button icon="back">返回</mt-button>
+          <mt-button @click="handleClose">关闭</mt-button>
+        </router-link>
+      </mt-header>
     </header>
     <section class="app-content">
       <router-view></router-view>
@@ -21,11 +28,13 @@
 <script>
 import tabBar from "./components/tabBar/TabBar";
 import navigationBar from "./components/navigationBar/NavigationBar";
-
+import MHBarButtonItem from './assets/js/MHBarButtonItem.js'
 export default {
   name: "app",
   data() {
-    return {};
+    return {
+      backItem:new MHBarButtonItem('返回','./assets/images/navBar/nav_bar_back_arrow.png',1)
+    };
   },
   components: {
     tabBar,
@@ -33,22 +42,12 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+
+
+<style scoped>
+/* https://blog.csdn.net/weixin_41000111/article/details/80450397 */
+  .ssss /deep/ .mint-header{
+    background-color: #000;
   }
-}
 </style>
+
