@@ -1,15 +1,18 @@
 <template>
-    <div>
-        <h3>通讯录</h3>
-    </div>
+  <div>
+    <NavigationBar title="通讯录"></NavigationBar>
+  </div>
 </template>
 
 <script>
+import NavigationBar from "../../components/navigationBar/NavigationBar";
+import MHBarButtonItem from "../../assets/js/MHBarButtonItem.js";
 export default {
-    
-}
+  components: {
+    NavigationBar
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>

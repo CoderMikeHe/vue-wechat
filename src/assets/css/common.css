@@ -85,10 +85,13 @@ video {
     font: inherit;
     vertical-align: baseline;
     -webkit-user-select: none;
-            user-select: none;
+    user-select: none;
     -webkit-tap-highlight-color: transparent;
 }
-a[href^="javascript"]{-webkit-touch-callout: none;}
+
+a[href^="javascript"] {
+    -webkit-touch-callout: none;
+}
 
 article,
 aside,
@@ -206,10 +209,11 @@ a {
 * {
     box-sizing: border-box;
 }
+
 /* 去掉 谷歌 touch 报警告 */
 /*  https://www.jianshu.com/p/04bf173826aa */
 * {
-  touch-action: none;
+    touch-action: none;
 }
 
 .app-content {
@@ -221,4 +225,9 @@ a {
     padding-bottom: 49px;
     padding-top: 44px;
     width: 100%;
+}
+
+body,
+html {
+    background-color: #ededed;
 }
