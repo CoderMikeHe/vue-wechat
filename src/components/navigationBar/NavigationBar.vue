@@ -1,24 +1,25 @@
 // 全局导航条
 <template>
-  <header id="header" class="mh-nav-bar">
+  <header class="mh-nav-bar">
     <!-- 标题 -->
     <h1 class="mh-title">{{ title }}</h1>
+    
     <!-- 左面板 -->
     <div class="mh-left-panel">
-      <!-- 面板元素 -->
-      <div class="mh-panel-item">
-        <button v-if="leftItem.type === 0">{{ leftItem.title }}</button>
-        <img v-else src="../../assets/images/navBar/nav_bar_back_arrow.png" alt="">
+      <!-- 面板内部元素 -->
+      <div class="mh-button-item is-left" v-for="(item,index) in getLeftItems" @click="leftItemDidClicked(index)" :key="index">
+        <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
+        <img :src="imageSrc[item.imageSrc]" alt="" class="mh-image-item">
       </div>
     </div>
     <!-- 右面版 -->
-    <div class="mh-right-panel"></div>
-
-    <!-- <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">
-      <span class="mui-icon mui-icon-left-nav"></span>首页
-    </button>
-    <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">编辑</button>
-    <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">考虑</button>-->
+    <div class="mh-right-panel">
+      <!-- 面板内部元素 -->
+      <div class="mh-button-item is-right" v-for="(item,index) in getRightItems" @click="rightItemDidClicked(index)" :key="index">
+        <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
+        <img class="mh-image-item" v-else :src="imageSrc[item.imageSrc]" alt="">
+      </div>
+    </div>
   </header>
 </template>
 
@@ -28,30 +29,57 @@ export default {
   props: {
     /// 导航栏标题，必须字符串
     title: String,
-    /// 左
-    leftItem: {
-      type: MHBarButtonItem
-    }
-    // leftBarButtonItems: Array,
+
+    /// 左边按钮
+    leftItem: MHBarButtonItem,
+    leftItems: Array,
     
-    // /// 右
-    // rightBarButtonItem: MHBarButtonItem,
-    // rightBarButtonItems: Array
+    // 右边按钮
+    rightItem: MHBarButtonItem,
+    rightItems: Array,
   },
 
   data() {
     return {
-      
+      // 项目中需要用在导航栏的的所有图片资源
+      imageSrc: {
+        'nav_bar_back_arrow':require('../../assets/images/navBar/nav_bar_back_arrow.png'),
+        'nav_bar_add':require('../../assets/images/navBar/nav_bar_add.png')
+      }
     }
   },
-  computed:{
-    getLeftBarButtonItems(){
+  created() {
+    console.log(this.leftItems.length);
+  },
+  methods: {
+    // 左边按钮被点击 从左到右 0，1，2...
+    leftItemDidClicked(index){
+      this.$emit('left-click',index);
+    },
+
+    // 右边按钮被点击 从右到左 0，1，2...
+    rightItemDidClicked(index){
+      this.$emit('right-click',index);
+    },
+  },
+  computed: {
+    getLeftItems(){
       let items = [];
-      // if (this.leftBarButtonItems && this.leftBarButtonItems.length !== 0) {
-      //   items.concat(this.leftBarButtonItems);
-      // } else if(this.leftBarButtonItem){
-      //   items.push(this.leftBarButtonItem);
-      // }
+      if (this.leftItems && this.leftItems.length !== 0) {
+        items = items.concat(this.leftItems);
+      } else if(this.leftItem){
+        items.push(this.leftItem);
+      }
+      return items;
+    },
+
+    getRightItems(){
+      let items = [];
+      if (this.rightItems && this.rightItems.length !== 0) {
+        items = items.concat(this.rightItems);
+      } else if(this.rightItem){
+        items.push(this.rightItem);
+      }
       return items;
     }
   }
@@ -60,7 +88,6 @@ export default {
 </script>
 
 <style scoped>
-
 .mh-nav-bar {
   position: fixed;
   top: 0;
@@ -68,7 +95,6 @@ export default {
   right: 0;
   height: 44px;
   background-color: #ededed;
-  display: block;
 }
 
 .mh-nav-bar .mh-title {
@@ -81,28 +107,62 @@ export default {
   font-weight: 500;
   line-height: 44px;
   width: auto;
-  z-index: 1;
 }
 
 .mh-nav-bar .mh-left-panel {
-  background-color: red;
   position: absolute;
   left: 0;
   right: 50%;
   top: 0;
   bottom: 0;
-  text-align: left;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+ .mh-button-item{
+  height: 40px;
+  min-width: 20px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+}
+
+.mh-button-item.is-left{
+  text-align: left;
+  margin-right: 2px;
+}
+
+.mh-button-item .mh-text-item{
+  /* 垂直居中 */
+  line-height: 40px;
+  color: #000;
+  font-size: 14px;
+
+  /* 设置文字不要换行 */
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical; 
+  -webkit-line-clamp: 1; 
 }
 
 .mh-nav-bar .mh-right-panel {
-  background-color: green;
   position: absolute;
   left: 50%;
-  right: 0;
+  right: 0; 
   top: 0;
   bottom: 0;
+  display: flex;
+  flex-flow: row-reverse nowrap;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
 }
+
+.mh-button-item.is-right{
+  text-align: right;
+  margin-left: 2px;
+}
+
 </style>

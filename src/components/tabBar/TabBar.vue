@@ -99,7 +99,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: white;
+  background-color: #ededed;
 }
 
 // 该类名，解决 tabbar 点击无法切换的问题

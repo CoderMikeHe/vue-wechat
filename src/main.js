@@ -13,10 +13,9 @@ import "./assets/vendor/mui/css/mui.min.css";
 import "./assets/vendor/mui/css/icons-extra.css";
 
 
-// 导入mint-ui
+// 导入全部mint-ui
 import Mint from "mint-ui";
 import 'mint-ui/lib/style.css';
-
 Vue.use(Mint);
 
 // 全局app常量css
