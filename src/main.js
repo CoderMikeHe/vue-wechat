@@ -5,13 +5,13 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
-
+// 导入animate.css
+import "animate.css"
 // 导入mui
 // 导入 MUI 的样式
 import "./assets/vendor/mui/css/mui.min.css";
 // 导入扩展图标样式
 import "./assets/vendor/mui/css/icons-extra.css";
-
 
 // 导入全部mint-ui
 import Mint from "mint-ui";

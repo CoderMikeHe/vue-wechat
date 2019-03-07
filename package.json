@@ -10,6 +10,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "animate.css": "^3.7.0",
     "mint-ui": "^2.2.13",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",

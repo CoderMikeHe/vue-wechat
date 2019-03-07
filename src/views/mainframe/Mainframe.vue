@@ -25,6 +25,8 @@ export default {
     },
     rightItemDidClicked(index){
       console.log(index);
+      this.$router.push("/mainframe/add-friend");
+
     },
   },
 }

@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import "weui";
-// import mui from "../../assets/vendor/mui/js/mui.min.js";
 export default {
   data() {
     return {
@@ -41,6 +39,9 @@ export default {
   created() {
     // vm 刚创建好，赋值初始值
     const name = this.$route.name;
+
+    console.log('name === ' + name);
+
     this.selectedMainFrame = name === "mainframe" ? 1 : 0;
     this.selectedContacts = name === "contacts" ? 1 : 0;
     this.selectedDiscover = name === "discover" ? 1 : 0;
@@ -77,11 +78,6 @@ export default {
       let nor = require("../../assets/images/tabBar/tabbar_me_23x23.png");
       return this.selectedProfile ? sel : nor;
     }
-  },
-  watch: {
-    $route(to, from) {
-      console.log(to, from);
-    }
   }
 };
 </script>
@@ -99,7 +95,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #ededed;
+  background-color: #f6f6f6;
 }
 
 // 该类名，解决 tabbar 点击无法切换的问题
