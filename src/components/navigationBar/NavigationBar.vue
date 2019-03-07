@@ -14,7 +14,7 @@
         :key="index"
       >
         <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
-        <img :src="imageSrc[item.imageSrc]" alt class="mh-image-item">
+        <img class="mh-image-item" :src="imageSrc[item.imageSrc]" alt>
       </div>
     </div>
     <!-- 右面版 -->
@@ -56,13 +56,12 @@ export default {
       // 项目中需要用在导航栏的的所有图片资源
       imageSrc: {
         nav_bar_back_arrow: require("../../assets/images/navBar/nav_bar_back_arrow.png"),
-        nav_bar_add: require("../../assets/images/navBar/nav_bar_add.png")
+        nav_bar_add: require("../../assets/images/navBar/nav_bar_add.png"),
+        nav_bar_addfriends: require("../../assets/images/navBar/nav_bar_addfriends.png")
       }
     };
   },
-  created() {
-    console.log(this.leftItems.length);
-  },
+  created() {},
   methods: {
     // 左边按钮被点击 从左到右 0，1，2...
     leftItemDidClicked(index) {
@@ -84,7 +83,6 @@ export default {
       }
       return items;
     },
-
     getRightItems() {
       let items = [];
       if (this.rightItems && this.rightItems.length !== 0) {
@@ -142,7 +140,7 @@ export default {
 
 .mh-button-item.is-left {
   text-align: left;
-  margin-right: 2px;
+  margin-right: 5px;
 }
 
 .mh-button-item .mh-text-item {
@@ -156,6 +154,14 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+}
+
+.mh-button-item .mh-image-item {
+  /* 图片等比例显示 */
+  max-width: 25px;
+  max-height: 25px;
+  width: auto;
+  height: auto;
 }
 
 .mh-nav-bar .mh-right-panel {
@@ -173,7 +179,7 @@ export default {
 
 .mh-button-item.is-right {
   text-align: right;
-  margin-left: 2px;
+  margin-left: 5px;
 }
 
 .mh-nav-bar .mh-bottom-line {
