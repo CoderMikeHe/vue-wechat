@@ -5,7 +5,7 @@
  * @export
  * @class
  */
-export default class {
+class MHBarButtonItem {
     //
     constructor(title , imageSrc , type) {
         this.title = title;
@@ -13,3 +13,7 @@ export default class {
         this.type = type;
     }
 }
+export default MHBarButtonItem;
+
+// 返回按钮
+export const backItem = new MHBarButtonItem('','nav_bar_back_arrow',1);

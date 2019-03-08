@@ -23,17 +23,15 @@ export default {
       console.log(index);
     },
     rightItemDidClicked(index) {
-      console.log(index);
-      this.$router.push("/mainframe/add-friend");
+      console.log('傻逼');
+      
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.bbb {
-  display: flex;
-}
+
 .mh-button-item {
   background-color: #000;
   width: 40px;

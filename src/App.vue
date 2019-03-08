@@ -1,12 +1,9 @@
 <template>
   <div id="app">
-    <transition
-        name="custom-classes-transition"
-        :enter-active-class="enterAnimate"
-        :leave-active-class="leaveAnimate"
-      >
+    <transition>
         <router-view></router-view>
     </transition>
+    <!-- tabBar -->
     <tabBar></tabBar>
   </div>
 </template>
@@ -32,28 +29,7 @@ export default {
     tabBar,
     navigationBar
   },
-  watch: {
-    // 监听路由变化 设置页面的过度效果
-    $route(to, from) {
-      console.log(to, from);
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-
-      console.log(toDepth);
-      console.log(fromDepth);
-
-      //同一级页面无需设置过渡效果
-      if (toDepth === fromDepth) {
-        return;
-      }
-
-      
-      this.enterAnimate =
-        toDepth > fromDepth ? "animated fadeInRight" : "animated fadeInLeft";
-      this.leaveAnimate =
-        toDepth > fromDepth ? "animated fadeOutLeft" : "animated fadeOutRight";
-    }
-  }
+  
 };
 </script>
 

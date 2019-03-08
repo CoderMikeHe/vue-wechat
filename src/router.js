@@ -6,12 +6,12 @@ import MainFrame from "./views/mainframe/Mainframe.vue";
 import Contacts from "./views/contacts/Contacts.vue";
 import Discover from "./views/discover/Discover.vue";
 import Profile from "./views/profile/Profile.vue";
-import AddFriend from "./views/contacts/AddFriend.vue"
+import AddFriends from "./views/contacts/AddFriends.vue";
 
 Vue.use(Router);
 
 export default new Router({
-  // mode: "history",
+  mode: "history",
   base: process.env.BASE_URL,
   routes: [{
       path: "/",
@@ -28,9 +28,9 @@ export default new Router({
       component: Contacts
     },
     {
-      path: "/mainframe/add-friend",
-      name: "add-friend",
-      component: AddFriend
+      path: "/contacts/add-friends",
+      name: "add-friends",
+      component: AddFriends
     },
     {
       path: "/discover",

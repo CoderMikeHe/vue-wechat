@@ -216,17 +216,6 @@ a {
     touch-action: none;
 }
 
-.app-content {
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 1;
-    /*position: absolute;*/
-    /*left: 0;*/
-    padding-bottom: 49px;
-    padding-top: 44px;
-    width: 100%;
-}
-
 body,
 html {
     background-color: #ededed;

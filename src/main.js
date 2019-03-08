@@ -18,8 +18,10 @@ import Mint from "mint-ui";
 import 'mint-ui/lib/style.css';
 Vue.use(Mint);
 
+
 // 全局app常量css
 import './assets/css/common.css';
+import './assets/css/wechat.css';
 
 new Vue({
   router,

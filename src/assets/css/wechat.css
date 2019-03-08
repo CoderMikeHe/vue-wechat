@@ -1,0 +1,33 @@
+
+/* 全屏路由页面，一般用于页面切换 */
+._full-container{
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  /* 必须设置颜色，否则透明灰看到底部 */
+  background-color: #ededed;
+}
+
+/* 内容满足‘子绝父相’关系 */
+._full-content{
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: red;
+}
+/* 正文顶部偏移 */
+._full-content._content-margin-top44{
+  margin-top: 44px;
+}
+/* 正文底部偏移 */
+._full-content._content-margin-bottom49{
+  margin-bottom: 49px;
+}
+

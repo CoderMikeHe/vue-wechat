@@ -90,12 +90,13 @@ export default {
   display: -webkit-flex;
   display: flex;
   position: fixed;
-  z-index: 10;
   right: 0;
   left: 0;
   bottom: 0;
   width: 100%;
   background-color: #f6f6f6;
+  /* 适当增加z-index，因为fixed总是相对窗口的层级 */
+  z-index: 1;
 }
 
 // 该类名，解决 tabbar 点击无法切换的问题
