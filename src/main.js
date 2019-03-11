@@ -23,6 +23,14 @@ Vue.use(Mint);
 import './assets/css/common.css';
 import './assets/css/wechat.css';
 
+// 全局导航栏
+import NavigationBar from "components/navigationBar";
+Vue.use(NavigationBar);
+
+import utils from "assets/utils/utils";
+Vue.use(utils);
+
+
 new Vue({
   router,
   store,

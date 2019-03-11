@@ -1,0 +1,177 @@
+<template>
+  <div class="_full-container" >
+    <NavigationBar title="设置" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
+    <div class="_full-content _content-margin-top44">
+      <!-- <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
+        <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+      </div> -->
+      <!-- 切换账号 -->
+      <div class="mh-common-group">
+        <a class="mh-cells mh-access" @click="abc">
+          <p>切换账号</p>
+        </a>
+      </div>
+      <!-- 退出登录 -->
+      <!-- <div class="mh-common-group">
+        <a class="mh-cells _mh-cell_access">
+          <p>退出登录</p>
+        </a>
+      </div> -->
+
+    </div>
+  </div>
+</template>
+
+<script>
+import common from "components/common/Common";
+import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
+export default {
+  name: "setting",
+  data() {
+    return {
+      dataSource:[]
+    }
+  },
+  created() {
+    this.configData();
+  },
+  methods: {
+    // 配置数据 
+    configData() {
+      // group0
+      const group0 = new MHCommonGroup();
+      // 账号与安全
+      const accountSecurity = new MHCommonItem({
+        title: "账号与安全"
+      });
+      group0.items = [accountSecurity];
+
+      // group1
+      const group1 = new MHCommonGroup();
+      // 新消息通知
+      const messageNote = new MHCommonItem({
+        title: "新消息通知"
+      });
+      // 隐私
+      const privates = new MHCommonItem({
+        title: "隐私"
+      });
+      // 通用
+      const general = new MHCommonItem({
+        title: "通用"
+      });
+      group1.items = [messageNote, privates, general];
+
+      // group2
+      const group2 = new MHCommonGroup();
+      // 帮助与反馈
+      const help = new MHCommonItem({
+        title: "帮助与反馈",
+        name: "setting",
+      });
+      // 关于微信
+      const aboutUs = new MHCommonItem({
+        title: "关于微信",
+        subtitle: "微信7.0.3",
+      });
+      group2.items = [help,aboutUs];
+
+      // group3
+      const group3 = new MHCommonGroup();
+      // 插件
+      const plugin = new MHCommonItem({
+        title: "插件"
+      });
+      group3.items = [plugin];
+
+      this.dataSource = [group0, group1, group2, group3];
+    },
+    
+    
+    // item点击事件
+    didSelectRow(section,row){
+      const item = this.dataSource[section].items[row];
+      console.log(item.name);
+      this.$router.push({name:item.name});
+    },
+    abc(){
+      console.log('object');
+    }
+  },
+  components: {
+    common
+  },
+}
+
+</script>
+
+<style scoped>
+
+/* 点击高亮 */
+.mh-access{
+  /* CMH TODO: 这个css是什意思？ */
+  -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+  color:inherit;
+}
+.mh-access:active{
+  background-color:#ECECEC;
+}
+
+
+.mh-common-group{
+  margin-top: 10px;
+}
+
+.mh-common-group:first-child{
+  margin-top: 0;
+}
+
+/* cell 组 */
+.mh-cells {
+  line-height: 1.47058824;
+  font-size: 17px;
+  overflow: hidden;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.mh-cells p{
+  text-align: center;
+  padding: 10px 15px;
+  background-color: #ffffff;
+}
+
+/* top分割线 */
+.mh-cells:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px solid #d8d8d8;
+  color: #d8d8d8;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  z-index: 2;
+}
+/* bottom分割线 */
+.mh-cells:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  border-bottom: 1px solid #d8d8d8;
+  color: #d8d8d8;
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  z-index: 2;
+}
+</style>

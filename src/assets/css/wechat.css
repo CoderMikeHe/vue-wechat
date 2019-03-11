@@ -20,7 +20,6 @@
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: red;
 }
 /* 正文顶部偏移 */
 ._full-content._content-margin-top44{
@@ -31,3 +30,13 @@
   margin-bottom: 49px;
 }
 
+
+/* 点击高亮 */
+._mh-cell_access{
+  /* CMH TODO: 这个css是什意思？ */
+  -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+  color:inherit;
+}
+._mh-cell_access:active{
+  background-color:#ECECEC;
+}

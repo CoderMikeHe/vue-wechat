@@ -7,6 +7,7 @@ import Contacts from "./views/contacts/Contacts.vue";
 import Discover from "./views/discover/Discover.vue";
 import Profile from "./views/profile/Profile.vue";
 import AddFriends from "./views/contacts/AddFriends.vue";
+import Setting from './views/profile/Setting.vue'
 
 Vue.use(Router);
 
@@ -41,6 +42,11 @@ export default new Router({
       path: "/profile",
       name: "profile",
       component: Profile
+    },
+    {
+      path: "/discover/setting",
+      name: "setting",
+      component: Setting
     }
   ]
 });

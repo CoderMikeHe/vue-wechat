@@ -1,6 +1,9 @@
 <template>
   <div>
-    <common></common>
+    <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
+      <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,13 +12,18 @@ import common from "../../components/common/Common";
 import { MHCommonGroup, MHCommonItem } from "../../assets/js/MHCommonGroup.js";
 export default {
   name: "profile",
+  
   data() {
     return {
       dataSource: []
     };
   },
-  methods: {
+  created(){
     // 配置数据
+    this.configData();
+  },
+  methods: {
+    // 配置数据 
     configData() {
       // group0
       const group0 = new MHCommonGroup();
@@ -49,12 +57,19 @@ export default {
       const group2 = new MHCommonGroup();
       // 设置
       const setting = new MHCommonItem({
-        title: "设置"
+        title: "设置",
+        name: "setting",
       });
       group2.items = [setting];
 
       this.dataSource = [group0, group1, group2];
-    }
+    },
+    // 点击事件
+    didSelectRow(section,row){
+      const item = this.dataSource[section].items[row];
+      console.log(item.name);
+      this.$router.push({name:item.name});
+    },
   },
   components: {
     common

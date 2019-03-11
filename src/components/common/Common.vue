@@ -2,30 +2,45 @@
 <template>
   <div class="mh-cells-group">
     <div class="mh-header-title"></div>
-    <div class="mh-cell">
+    <a class="mh-cell _mh-cell_access" v-for="(item,row) in group.items" :key="row" @click="didSelectRow(section,row)">
       <div class="mh-cell-header"></div>
-      <div class="mh-cell-body"></div>
-    </div>
+      <div class="mh-cell-body">
+        <div class="mh-body">
+          <p class="mh-title">{{ item.title }}</p>
+        </div>
+        <div class="mh-footer">
+          <p class="mh-subtitle">{{ item.subtitle }}</p>
+          <img class="mh-right-arrow" src="@/assets/images/common/tableview_arrow_8x13.png" alt="">
+        </div>
+      </div>
+    </a>
     <div class="mh-footer-title"></div>
   </div>
 </template>
 
 <script>
-import { MHCommonGroup, MHCommonItem } from "../../assets/js/MHCommonGroup.js";
+import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
 export default {
+  name: "common",
   props: {
-    group: MHCommonGroup
+    group: MHCommonGroup,  // Group Object
+    section: Number        // Group Index
   },
   data() {
     return {};
-  }
+  },
+  methods: {
+    didSelectRow(section,row){
+      this.$emit("did-select-row",section,row);
+    }
+  },
+  
 };
 </script>
 
 <style scoped>
 /* cell 组 */
 .mh-cells-group {
-  margin-top: 1.17647059em;
   background-color: #ffffff;
   line-height: 1.47058824;
   font-size: 17px;
@@ -95,5 +110,40 @@ export default {
 .mh-cell:first-child:before {
   display: none;
 }
+
+.mh-cell-body{
+  /* 占据整个剩余空间 */
+  -webkit-box-flex:1;
+  -webkit-flex:1;
+  flex:1;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between; /* Safari 6.1+ */
+  justify-content: space-between;
+}
+
+.mh-cell-body .mh-footer{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.mh-footer .mh-right-arrow{
+  display: inline-block;
+  width: 8px;
+  height: 13px;
+  margin-left: 10px;
+}
+
+.mh-footer .mh-subtitle{
+  font-size: 17px;
+  
+}
+
 </style>
 

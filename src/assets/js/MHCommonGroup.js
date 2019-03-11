@@ -18,11 +18,14 @@ class MHCommonItem {
   // icon
   icon = "";
   title = "";
-  subTitle = "";
-  constructor({ icon = "", title = "", subTitle = "" } = {}) {
+  subtitle = "";
+  name = "";   // 跳转路由对象(命名路由) 跟path一样，但优先级较高
+  path = "";   // 跳转路由地址
+  constructor({ icon = "", title = "", subtitle = "" ,name = ""} = {}) {
     this.icon = icon;
     this.title = title;
-    this.subTitle = subTitle;
+    this.subtitle = subtitle;
+    this.name = name;
   }
 }
 
