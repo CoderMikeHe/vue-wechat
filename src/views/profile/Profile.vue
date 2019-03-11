@@ -12,18 +12,18 @@ import common from "../../components/common/Common";
 import { MHCommonGroup, MHCommonItem } from "../../assets/js/MHCommonGroup.js";
 export default {
   name: "profile",
-  
+
   data() {
     return {
       dataSource: []
     };
   },
-  created(){
+  created() {
     // 配置数据
     this.configData();
   },
   methods: {
-    // 配置数据 
+    // 配置数据
     configData() {
       // group0
       const group0 = new MHCommonGroup();
@@ -58,18 +58,18 @@ export default {
       // 设置
       const setting = new MHCommonItem({
         title: "设置",
-        name: "setting",
+        name: "setting"
       });
       group2.items = [setting];
 
       this.dataSource = [group0, group1, group2];
     },
     // 点击事件
-    didSelectRow(section,row){
+    didSelectRow(section, row) {
       const item = this.dataSource[section].items[row];
       console.log(item.name);
-      this.$router.push({name:item.name});
-    },
+      this.$router.push({ name: item.name });
+    }
   },
   components: {
     common
@@ -78,4 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mh-common-group {
+  margin-top: 8px;
+}
 </style>

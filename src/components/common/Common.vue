@@ -2,7 +2,12 @@
 <template>
   <div class="mh-cells-group">
     <div class="mh-header-title"></div>
-    <a class="mh-cell _mh-cell_access" v-for="(item,row) in group.items" :key="row" @click="didSelectRow(section,row)">
+    <a
+      class="mh-cell _mh-cell_access"
+      v-for="(item,row) in group.items"
+      :key="row"
+      @click="didSelectRow(section,row)"
+    >
       <div class="mh-cell-header"></div>
       <div class="mh-cell-body">
         <div class="mh-body">
@@ -10,7 +15,7 @@
         </div>
         <div class="mh-footer">
           <p class="mh-subtitle">{{ item.subtitle }}</p>
-          <img class="mh-right-arrow" src="@/assets/images/common/tableview_arrow_8x13.png" alt="">
+          <img class="mh-right-arrow" src="@/assets/images/common/tableview_arrow_8x13.png" alt>
         </div>
       </div>
     </a>
@@ -23,18 +28,17 @@ import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
 export default {
   name: "common",
   props: {
-    group: MHCommonGroup,  // Group Object
-    section: Number        // Group Index
+    group: MHCommonGroup, // Group Object
+    section: Number // Group Index
   },
   data() {
     return {};
   },
   methods: {
-    didSelectRow(section,row){
-      this.$emit("did-select-row",section,row);
+    didSelectRow(section, row) {
+      this.$emit("did-select-row", section, row);
     }
-  },
-  
+  }
 };
 </script>
 
@@ -42,7 +46,7 @@ export default {
 /* cell 组 */
 .mh-cells-group {
   background-color: #ffffff;
-  line-height: 1.47058824;
+  line-height: 56px;
   font-size: 17px;
   overflow: hidden;
   position: relative;
@@ -82,7 +86,7 @@ export default {
 }
 
 .mh-cell {
-  padding: 10px 15px;
+  padding: 0px 14px;
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -91,7 +95,7 @@ export default {
   -webkit-align-items: center;
   align-items: center;
 }
-.mh-cell:before {
+.mh-cell-body:before {
   content: " ";
   position: absolute;
   left: 0;
@@ -104,18 +108,18 @@ export default {
   transform-origin: 0 0;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  left: 15px;
+  left: 14px;
   z-index: 2;
 }
-.mh-cell:first-child:before {
+.mh-cell-body:first-child:before {
   display: none;
 }
 
-.mh-cell-body{
+.mh-cell-body {
   /* 占据整个剩余空间 */
-  -webkit-box-flex:1;
-  -webkit-flex:1;
-  flex:1;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
 
   display: -webkit-box;
   display: -webkit-flex;
@@ -124,7 +128,7 @@ export default {
   justify-content: space-between;
 }
 
-.mh-cell-body .mh-footer{
+.mh-cell-body .mh-footer {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -133,17 +137,19 @@ export default {
   align-items: center;
 }
 
-.mh-footer .mh-right-arrow{
+.mh-footer .mh-right-arrow {
   display: inline-block;
   width: 8px;
   height: 13px;
   margin-left: 10px;
 }
 
-.mh-footer .mh-subtitle{
-  font-size: 17px;
-  
+.mh-body .mh-title {
+  color: #191919;
 }
 
+.mh-footer .mh-subtitle {
+  color: #7f7f7f;
+}
 </style>
 

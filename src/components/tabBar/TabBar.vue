@@ -40,7 +40,7 @@ export default {
     // vm 刚创建好，赋值初始值
     const name = this.$route.name;
 
-    console.log('name === ' + name);
+    console.log("name === " + name);
 
     this.selectedMainFrame = name === "mainframe" ? 1 : 0;
     this.selectedContacts = name === "contacts" ? 1 : 0;
@@ -108,7 +108,7 @@ export default {
   vertical-align: middle;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: #181818;
+  color: #191919;
 }
 // 选中高亮
 .mh-tab-bar .mh-tab-item.router-link-active {

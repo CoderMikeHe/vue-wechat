@@ -1,6 +1,6 @@
 <template>
   <div class="_full-container">
-    <NavigationBar title="设置" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
+    <NavigationBar title="通用" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
     <div class="_full-content _content-margin-top44">
       <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
         <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
@@ -8,13 +8,7 @@
       <!-- 切换账号 -->
       <div class="mh-common-group">
         <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell_access" @click="abc">切换账号</a>
-        </div>
-      </div>
-      <!-- 退出登录 -->
-      <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell_access" @click="abc">退出登录</a>
+          <a class="mh-center-content _mh-cell_access" @click="abc">清空聊天记录</a>
         </div>
       </div>
     </div>
@@ -25,7 +19,7 @@
 import common from "components/common/Common";
 import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
 export default {
-  name: "setting",
+  name: "general",
   data() {
     return {
       dataSource: []
@@ -39,52 +33,65 @@ export default {
     configData() {
       // group0
       const group0 = new MHCommonGroup();
-      // 账号与安全
-      const accountSecurity = new MHCommonItem({
-        title: "账号与安全"
+      // 多语言
+      const language = new MHCommonItem({
+        title: "多语言"
       });
-      group0.items = [accountSecurity];
+      group0.items = [language];
 
       // group1
       const group1 = new MHCommonGroup();
-      // 新消息通知
-      const messageNote = new MHCommonItem({
-        title: "新消息通知"
+      // 字体大小
+      const fontSize = new MHCommonItem({
+        title: "字体大小"
       });
-      // 隐私
-      const privates = new MHCommonItem({
-        title: "隐私"
+      // 聊天背景
+      const chatBg = new MHCommonItem({
+        title: "聊天背景"
       });
-      // 通用
-      const general = new MHCommonItem({
-        title: "通用",
-        name: "general"
+      // 我的表情
+      const myEmotion = new MHCommonItem({
+        title: "我的表情"
       });
-      group1.items = [messageNote, privates, general];
+      // 照片、视频和文件
+      const resource = new MHCommonItem({
+        title: "照片、视频和文件"
+      });
+      group1.items = [fontSize, chatBg, myEmotion, resource];
 
       // group2
       const group2 = new MHCommonGroup();
-      // 帮助与反馈
-      const help = new MHCommonItem({
-        title: "帮助与反馈",
-        name: "setting"
+      // 听筒模式
+      const receiverMode = new MHCommonItem({
+        title: "听筒模式"
       });
-      // 关于微信
-      const aboutUs = new MHCommonItem({
-        title: "关于微信",
-        subtitle: "微信7.0.3"
-      });
-      group2.items = [help, aboutUs];
+      group2.items = [receiverMode];
 
       // group3
       const group3 = new MHCommonGroup();
-      // 插件
-      const plugin = new MHCommonItem({
-        title: "插件"
+      // 发现页管理
+      const discoverManager = new MHCommonItem({
+        title: "发现页管理"
       });
-      group3.items = [plugin];
+      // 辅助功能
+      const additionalFunction = new MHCommonItem({
+        title: "辅助功能"
+      });
+      group3.items = [discoverManager, additionalFunction];
 
-      this.dataSource = [group0, group1, group2, group3];
+      // group4
+      const group4 = new MHCommonGroup();
+      // 聊天记录备份与迁移
+      const chatRecord = new MHCommonItem({
+        title: "聊天记录备份与迁移"
+      });
+      // 存储空间
+      const storageSpace = new MHCommonItem({
+        title: "存储空间"
+      });
+      group4.items = [chatRecord, storageSpace];
+
+      this.dataSource = [group0, group1, group2, group3, group4];
     },
 
     // item点击事件
@@ -117,15 +124,13 @@ export default {
   overflow: hidden;
   position: relative;
   font-size: 17px;
-  color: #191919;
+  color: black;
   text-align: center;
 }
 
 .mh-center-content {
   display: block;
   line-height: 56px;
-  text-decoration: none;
-  color: #191919;
 }
 
 /* top分割线 */

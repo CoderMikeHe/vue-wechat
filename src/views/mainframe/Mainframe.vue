@@ -23,15 +23,13 @@ export default {
       console.log(index);
     },
     rightItemDidClicked(index) {
-      console.log('傻逼');
-      
+      console.log("傻逼");
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .mh-button-item {
   background-color: #000;
   width: 40px;

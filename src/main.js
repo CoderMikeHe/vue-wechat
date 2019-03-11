@@ -36,3 +36,23 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+
+// {
+//   "workbench.iconTheme": "vscode-icons",
+//   "editor.fontSize": 18,
+//   "workbench.editor.enablePreview": false,
+//   "explorer.confirmDelete": false,
+//   "beautify.language": {
+//     "js": {
+//       "type": ["javascript", "json"],
+//       "filename": [".jshintrc", ".jsbeautifyrc"]
+//     },
+//     "css": ["css", "scss"],
+//     "html": ["htm", "html"]
+//   },
+//   "editor.formatOnSave": true,
+//   "git.autofetch": true,
+//   "editor.tabSize": 2,
+//   "window.restoreWindows": "all"
+// }

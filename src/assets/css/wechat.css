@@ -1,6 +1,5 @@
-
 /* 全屏路由页面，一般用于页面切换 */
-._full-container{
+._full-container {
   position: absolute;
   z-index: 10;
   top: 0;
@@ -12,7 +11,7 @@
 }
 
 /* 内容满足‘子绝父相’关系 */
-._full-content{
+._full-content {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -21,22 +20,25 @@
   height: 100%;
   width: 100%;
 }
+
 /* 正文顶部偏移 */
-._full-content._content-margin-top44{
+._full-content._content-margin-top44 {
   margin-top: 44px;
 }
+
 /* 正文底部偏移 */
-._full-content._content-margin-bottom49{
+._full-content._content-margin-bottom49 {
   margin-bottom: 49px;
 }
 
 
 /* 点击高亮 */
-._mh-cell_access{
+._mh-cell_access {
   /* CMH TODO: 这个css是什意思？ */
-  -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
-  color:inherit;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  color: inherit;
 }
-._mh-cell_access:active{
-  background-color:#ECECEC;
+
+._mh-cell_access:active {
+  background-color: #E5E5E5;
 }
