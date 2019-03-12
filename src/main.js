@@ -7,6 +7,7 @@ Vue.config.productionTip = false;
 
 // 导入animate.css
 import "animate.css"
+
 // 导入mui
 // 导入 MUI 的样式
 import "./assets/vendor/mui/css/mui.min.css";
@@ -17,6 +18,10 @@ import "./assets/vendor/mui/css/icons-extra.css";
 import Mint from "mint-ui";
 import 'mint-ui/lib/style.css';
 Vue.use(Mint);
+
+// 导入weui
+import "weui";
+
 
 
 // 全局app常量css

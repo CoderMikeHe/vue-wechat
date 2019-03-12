@@ -9,7 +9,7 @@ import Profile from "./views/profile/Profile.vue";
 import AddFriends from "./views/contacts/AddFriends.vue";
 import Setting from './views/profile/Setting.vue';
 import General from './views/profile/General.vue';
-
+import DiscoverManager from './views/profile/DiscoverManager.vue';
 Vue.use(Router);
 
 export default new Router({
@@ -53,6 +53,11 @@ export default new Router({
       path: "/profile/setting/general",
       name: "general",
       component: General
+    },
+    {
+      path: "/profile/setting/general/discover-manager",
+      name: "discover-manager",
+      component: DiscoverManager
     }
   ]
 });

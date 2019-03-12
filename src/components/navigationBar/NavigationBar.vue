@@ -105,7 +105,7 @@ export default {
   height: 44px;
   background-color: #ededed;
   /* 适当增加z-index，因为fixed总是相对窗口的层级 */
-  z-index: 1;
+  z-index: 3;
 }
 
 .mh-nav-bar .mh-title {

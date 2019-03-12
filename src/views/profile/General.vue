@@ -17,8 +17,12 @@
 
 <script>
 import common from "components/common/Common";
-import { MHCommonGroup, MHCommonItem, MHCommonItemSwitch} from "assets/js/MHCommonGroup.js";
-import MHPreferenceSettingHelper from 'assets/js/MHPreferenceSettingHelper.js'
+import {
+  MHCommonGroup,
+  MHCommonItem,
+  MHCommonItemSwitch
+} from "assets/js/MHCommonGroup.js";
+import MHPreferenceSettingHelper from "assets/js/MHPreferenceSettingHelper.js";
 export default {
   name: "general",
   data() {
@@ -65,10 +69,10 @@ export default {
       // 听筒模式
       const receiverMode = new MHCommonItemSwitch({
         title: "听筒模式",
-        key: MHPreferenceSettingHelper.MHPreferenceSettingReceiverMode,
+        key: MHPreferenceSettingHelper.MHPreferenceSettingReceiverMode
       });
 
-      console.log('wx--'+receiverMode.key+'off--'+receiverMode.off);
+      console.log("wx--" + receiverMode.key + "off--" + receiverMode.off);
 
       group2.items = [receiverMode];
 
@@ -76,7 +80,8 @@ export default {
       const group3 = new MHCommonGroup();
       // 发现页管理
       const discoverManager = new MHCommonItem({
-        title: "发现页管理"
+        title: "发现页管理",
+        name: "discover-manager"
       });
       // 辅助功能
       const additionalFunction = new MHCommonItem({
@@ -170,7 +175,4 @@ export default {
   transform: scaleY(0.5);
   z-index: 2;
 }
-
-
-
 </style>

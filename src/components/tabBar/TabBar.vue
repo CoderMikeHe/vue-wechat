@@ -94,7 +94,7 @@ export default {
   width: 100%;
   background-color: #f6f6f6;
   /* 适当增加z-index，因为fixed总是相对窗口的层级 */
-  z-index: 2;
+  z-index: 3;
 }
 
 // 该类名，解决 tabbar 点击无法切换的问题

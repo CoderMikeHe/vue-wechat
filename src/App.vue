@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <transition>
-        <router-view></router-view>
+      <router-view></router-view>
     </transition>
+
     <!-- tabBar -->
     <tabBar></tabBar>
   </div>
@@ -28,8 +29,7 @@ export default {
   components: {
     tabBar,
     navigationBar
-  },
-  
+  }
 };
 </script>
 
