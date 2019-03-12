@@ -13,12 +13,12 @@
 /* 内容满足‘子绝父相’关系 */
 ._full-content {
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
+  background-color: #ededed;
 }
 
 /* 正文顶部偏移 */
@@ -33,12 +33,12 @@
 
 
 /* 点击高亮 */
-._mh-cell_access {
-  /* CMH TODO: 这个css是什意思？ */
+._mh-cell-access {
+  /* CMH TODO: 学习-webkit-tap-highlight-color属性 */
+  /* A：[CSS3 鲜为人知的属性-webkit-tap-highlight-color的理解](https://www.cnblogs.com/libin-1/p/5903350.html) */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   color: inherit;
 }
-
-._mh-cell_access:active {
+._mh-cell-access:active {
   background-color: #E5E5E5;
 }

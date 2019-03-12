@@ -8,13 +8,13 @@
       <!-- 切换账号 -->
       <div class="mh-common-group">
         <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell_access" @click="abc">切换账号</a>
+          <a class="mh-center-content _mh-cell-access" @click="abc">切换账号</a>
         </div>
       </div>
       <!-- 退出登录 -->
       <div class="mh-common-group">
         <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell_access" @click="abc">退出登录</a>
+          <a class="mh-center-content _mh-cell-access" @click="abc">退出登录</a>
         </div>
       </div>
     </div>

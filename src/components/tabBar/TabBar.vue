@@ -39,9 +39,7 @@ export default {
   created() {
     // vm 刚创建好，赋值初始值
     const name = this.$route.name;
-
     console.log("name === " + name);
-
     this.selectedMainFrame = name === "mainframe" ? 1 : 0;
     this.selectedContacts = name === "contacts" ? 1 : 0;
     this.selectedDiscover = name === "discover" ? 1 : 0;
@@ -96,7 +94,7 @@ export default {
   width: 100%;
   background-color: #f6f6f6;
   /* 适当增加z-index，因为fixed总是相对窗口的层级 */
-  z-index: 1;
+  z-index: 2;
 }
 
 // 该类名，解决 tabbar 点击无法切换的问题

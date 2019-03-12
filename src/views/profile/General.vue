@@ -8,7 +8,7 @@
       <!-- 切换账号 -->
       <div class="mh-common-group">
         <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell_access" @click="abc">清空聊天记录</a>
+          <a class="mh-center-content _mh-cell-access" @click="abc">清空聊天记录</a>
         </div>
       </div>
     </div>
@@ -17,7 +17,8 @@
 
 <script>
 import common from "components/common/Common";
-import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
+import { MHCommonGroup, MHCommonItem, MHCommonItemSwitch} from "assets/js/MHCommonGroup.js";
+import MHPreferenceSettingHelper from 'assets/js/MHPreferenceSettingHelper.js'
 export default {
   name: "general",
   data() {
@@ -62,9 +63,13 @@ export default {
       // group2
       const group2 = new MHCommonGroup();
       // 听筒模式
-      const receiverMode = new MHCommonItem({
-        title: "听筒模式"
+      const receiverMode = new MHCommonItemSwitch({
+        title: "听筒模式",
+        key: MHPreferenceSettingHelper.MHPreferenceSettingReceiverMode,
       });
+
+      console.log('wx--'+receiverMode.key+'off--'+receiverMode.off);
+
       group2.items = [receiverMode];
 
       // group3
@@ -165,4 +170,7 @@ export default {
   transform: scaleY(0.5);
   z-index: 2;
 }
+
+
+
 </style>
