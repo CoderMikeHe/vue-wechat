@@ -48,8 +48,9 @@ export default {
       // group1
       const group1 = new MHCommonGroup();
       // 新消息通知
-      const messageNote = new MHCommonItem({
-        title: "新消息通知"
+      const messageNotify = new MHCommonItem({
+        title: "新消息通知",
+        name: "message-notify"
       });
       // 隐私
       const privates = new MHCommonItem({
@@ -60,7 +61,7 @@ export default {
         title: "通用",
         name: "general"
       });
-      group1.items = [messageNote, privates, general];
+      group1.items = [messageNotify, privates, general];
 
       // group2
       const group2 = new MHCommonGroup();

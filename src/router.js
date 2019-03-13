@@ -7,9 +7,10 @@ import Contacts from "./views/contacts/Contacts.vue";
 import Discover from "./views/discover/Discover.vue";
 import Profile from "./views/profile/Profile.vue";
 import AddFriends from "./views/contacts/AddFriends.vue";
-import Setting from './views/profile/Setting.vue';
-import General from './views/profile/General.vue';
-import DiscoverManager from './views/profile/DiscoverManager.vue';
+import Setting from "./views/profile/Setting.vue";
+import General from "./views/profile/General.vue";
+import DiscoverManager from "./views/profile/DiscoverManager.vue";
+import MessageNotify from "./views/profile/MessageNotify.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -51,8 +52,13 @@ export default new Router({
     },
     {
       path: "/profile/setting/general",
-      name: "general",
+      name: "general", // 通用
       component: General
+    },
+    {
+      path: "/profile/setting/message-notify",
+      name: "message-notify", // 新消息通知
+      component: MessageNotify
     },
     {
       path: "/profile/setting/general/discover-manager",

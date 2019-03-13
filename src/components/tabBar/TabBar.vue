@@ -137,16 +137,20 @@ export default {
 
 .mh-tab-bar .mh-tab-item .mh-tab-icon-box .mh-tab-badge {
   position: absolute;
+  display: inline-block;
   top: -2px;
   left: 100%;
-  margin-left: -10px;
-
-  font-size: 10px;
+  margin-left: -5px;
+  min-width: 8px;
+  font-size: 12px; // 谷歌最小字体 12px
   line-height: 1;
-  display: inline-block;
   border-radius: 12px;
   padding: 3px 5px;
   color: #fff;
   background-color: red;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.8);
 }
 </style>
