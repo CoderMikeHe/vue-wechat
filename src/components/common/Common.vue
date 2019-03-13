@@ -6,9 +6,10 @@
     <!-- group 身体 -->
     <div class="mh-group-body">
       <a
-        class="mh-cell _mh-cell-access"
+        class="mh-cell" 
         v-for="(item,row) in group.items"
         :key="row"
+        :class="{'_mh-cell-access':item.tapHighlight}"
         @click="didSelectRow(section,row)"
       >
         <div class="mh-cell-header">
@@ -36,7 +37,7 @@
 </template>
 
 <script>
-import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
+import { MHCommonGroup } from "assets/js/MHCommonGroup.js";
 export default {
   name: "common",
   props: {
@@ -46,7 +47,7 @@ export default {
   data() {
     return {
       imageSrc: {
-        // 发现
+        // 发现|通用
         ff_IconShowAlbum_25x25: require("../../assets/images/common/ff_IconShowAlbum_25x25.png"),
         ff_IconQRCode_25x25: require("../../assets/images/common/ff_IconQRCode_25x25.png"),
         ff_IconShake_25x25: require("../../assets/images/common/ff_IconShake_25x25.png"),
@@ -56,7 +57,15 @@ export default {
         ff_IconBottle_25x25: require("../../assets/images/common/ff_IconBottle_25x25.png"),
         CreditCard_ShoppingBag_25x25: require("../../assets/images/common/CreditCard_ShoppingBag_25x25.png"),
         MoreGame_25x25: require("../../assets/images/common/MoreGame_25x25.png"),
-        MoreWeApp_25x25: require("../../assets/images/common/MoreWeApp_25x25.png")
+        MoreWeApp_25x25: require("../../assets/images/common/MoreWeApp_25x25.png"),
+
+        // 我
+        WeChatPay_25x25: require("../../assets/images/common/WeChatPay_25x25.png"),
+        MoreMyFavorites_25x25: require("../../assets/images/common/MoreMyFavorites_25x25.png"),
+        MoreMyAlbum_25x25: require("../../assets/images/common/MoreMyAlbum_25x25.png"),
+        MyCardPackageIcon_25x25: require("../../assets/images/common/MyCardPackageIcon_25x25.png"),
+        MoreExpressionShops_25x25: require("../../assets/images/common/MoreExpressionShops_25x25.png"),
+        MoreSetting_25x25: require("../../assets/images/common/MoreSetting_25x25.png")
       }
     };
   },

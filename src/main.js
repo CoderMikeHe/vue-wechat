@@ -23,7 +23,6 @@ Vue.use(Mint);
 import "weui";
 
 
-
 // 全局app常量css
 import './assets/css/common.css';
 import './assets/css/wechat.css';
@@ -35,6 +34,9 @@ Vue.use(NavigationBar);
 import utils from "assets/utils/utils";
 Vue.use(utils);
 
+// 配置偏好设置
+import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
+MHPreferenceSettingHelper.initialize();
 
 new Vue({
   router,
@@ -61,3 +63,7 @@ new Vue({
 //   "editor.tabSize": 2,
 //   "window.restoreWindows": "all"
 // }
+
+// CMH TODO [vue-cli3.0配置详解](http://www.php.cn/js-tutorial-394518.html)
+// [vue-cli3.0之vue.config.js的配置项（注解）](https://blog.csdn.net/Allen_Fei_/article/details/82691420)
+// [vue-cli3.0-vueadmin](https://github.com/loveRandy/vue-cli3.0-vueadmin)

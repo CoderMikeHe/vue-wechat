@@ -69,10 +69,8 @@ export default {
       // 听筒模式
       const receiverMode = new MHCommonItemSwitch({
         title: "听筒模式",
-        key: MHPreferenceSettingHelper.MHPreferenceSettingReceiverMode
+        key: MHPreferenceSettingHelper.MHReceiverModeKey
       });
-
-      console.log("wx--" + receiverMode.key + "off--" + receiverMode.off);
 
       group2.items = [receiverMode];
 
@@ -141,6 +139,8 @@ export default {
 .mh-center-content {
   display: block;
   line-height: 56px;
+  text-decoration: none;
+  color: #191919;
 }
 
 /* top分割线 */

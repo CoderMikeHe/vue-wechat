@@ -29,7 +29,8 @@ export default {
       const group0 = new MHCommonGroup();
       // 支付
       const pay = new MHCommonItem({
-        title: "支付"
+        title: "支付",
+        icon: "WeChatPay_25x25"
       });
       group0.items = [pay];
 
@@ -37,19 +38,23 @@ export default {
       const group1 = new MHCommonGroup();
       // 收藏
       const collect = new MHCommonItem({
-        title: "收藏"
+        title: "收藏",
+        icon: "MoreMyFavorites_25x25"
       });
       // 相册
       const album = new MHCommonItem({
-        title: "相册"
+        title: "相册",
+        icon: "MoreMyAlbum_25x25"
       });
       // 卡包
       const card = new MHCommonItem({
-        title: "卡包"
+        title: "卡包",
+        icon: "MyCardPackageIcon_25x25"
       });
       // 表情
       const expression = new MHCommonItem({
-        title: "表情"
+        title: "表情",
+        icon:"MoreExpressionShops_25x25",
       });
       group1.items = [collect, album, card, expression];
 
@@ -58,6 +63,7 @@ export default {
       // 设置
       const setting = new MHCommonItem({
         title: "设置",
+        icon: "MoreSetting_25x25",
         name: "setting"
       });
       group2.items = [setting];

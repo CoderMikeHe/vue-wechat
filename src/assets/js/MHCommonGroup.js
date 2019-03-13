@@ -10,9 +10,10 @@ class MHCommonGroup {
   // items
   items = [];
   // 配置
-  constructor({ header = "", footer = "" } = {}) {
+  constructor({ header = "", footer = "", items = []} = {}) {
     this.header = header;
     this.footer = footer;
+    this.items = items;
   }
 }
 
@@ -23,17 +24,19 @@ class MHCommonItem {
   title = "";
   subtitle = "";
   name = "";   // 跳转路由对象(命名路由) 跟path一样，但优先级较高
-  path = "";   // 跳转路由地址
   // type 0 ： 默认是 icon+title+subtitle+>
   // type 1 ： 默认是 icon+title+subtitle
   // type 2 ： 默认是 icon+title+switch
   type = 0;
-  constructor({ icon = "", title = "", subtitle = "" , type = 0,  name = ""} = {}) {
+  tapHighlight = true;  // 是否点击高亮
+
+  constructor({ icon = "", title = "", subtitle = "" , type = 0, tapHighlight = true,  name = ""} = {}) {
     this.icon = icon;
     this.title = title;
     this.subtitle = subtitle;
     this.name = name;
     this.type = type;
+    this.tapHighlight = tapHighlight;
   }
 }
 
@@ -44,9 +47,9 @@ class MHCommonItemSwitch extends MHCommonItem{
   _key = "";  // 存储的key 
   _off = false;
 
-  constructor({icon = "", title = "", type = 2, name = "", key = ""} = {}){
+  constructor({icon = "", title = "", type = 2, tapHighlight = false, name = "", key = ""} = {}){
     // must调用父类
-    super({icon :icon, title: title , type: type, name: name});
+    super({icon :icon, title: title , type: type, name: name, tapHighlight: tapHighlight});
     // CMH TODO ：setter or getter 针对的是实例来确定的，否则this指向不明
     this._key = "";
     this._off = false;

@@ -30,13 +30,61 @@ class MHPreferenceSettingHelper {
     return parseInt(localStorage.getItem(key))>0;
   }
 
+  
+  // --- 应用相关
+  //  初始化配置
+  static initialize(){
+    if(!MHPreferenceSettingHelper.getBooleanItem(MHPreferenceSettingHelper.MHInitializedKey)){
+      // 第一次使用
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHInitializedKey,true);
+
+      // 配置发现页的默认参数
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHMomentsKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHQrCodeKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHShakeKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHLookKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHSearchKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHLocationServiceKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHBottleKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHShoppingKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHGameKey,true);
+      MHPreferenceSettingHelper.setBooleanItem(MHPreferenceSettingHelper.MHMoreAppsKey,true);
+
+      console.log("++++ Configure Complete ++++");
+    }
+  }
 }
 
 // 设置静态属性 本项目规定：大写的属性认为是静态属性且只读
+/// ---- 应用
+/// 第一次使用
+MHPreferenceSettingHelper.MHInitializedKey = "MHInitializedKey";
+
 /// ---- 通用
 // 听筒模式
-MHPreferenceSettingHelper.MHPreferenceSettingReceiverMode = "MHPreferenceSettingReceiverMode";
+MHPreferenceSettingHelper.MHReceiverModeKey = "MHReceiverModeKey";
 
+/// ---- 发现页key
+// 朋友圈
+MHPreferenceSettingHelper.MHMomentsKey = "MHMomentsKey";
+// 扫一扫
+MHPreferenceSettingHelper.MHQrCodeKey = "MHQrCodeKey";
+// 摇一摇
+MHPreferenceSettingHelper.MHShakeKey = "MHShakeKey";
+// 看一看
+MHPreferenceSettingHelper.MHLookKey = "MHLookKey";
+// 搜一搜
+MHPreferenceSettingHelper.MHSearchKey = "MHSearchKey";
+// 附近的人
+MHPreferenceSettingHelper.MHLocationServiceKey = "MHLocationServiceKey";
+// 漂流瓶
+MHPreferenceSettingHelper.MHBottleKey = "MHBottleKey";
+// 购物
+MHPreferenceSettingHelper.MHShoppingKey = "MHShoppingKey";
+// 游戏
+MHPreferenceSettingHelper.MHGameKey = "MHGameKey";
+// 小程序
+MHPreferenceSettingHelper.MHMoreAppsKey = "MHMoreAppsKey";
 
 export default MHPreferenceSettingHelper;
 
