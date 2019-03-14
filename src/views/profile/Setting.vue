@@ -8,27 +8,31 @@
       <!-- 切换账号 -->
       <div class="mh-common-group">
         <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="abc">切换账号</a>
+          <a class="mh-center-content _mh-cell-access" @click="switchAccount">切换账号</a>
         </div>
       </div>
       <!-- 退出登录 -->
       <div class="mh-common-group">
         <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="abc">退出登录</a>
+          <a class="mh-center-content _mh-cell-access" @click="logout">退出登录</a>
         </div>
       </div>
+      <!-- ActionSheet -->
+      <actionSheet v-model="showActionSheet" @did-click-item="didClickItem"></actionSheet>
     </div>
   </div>
 </template>
 
 <script>
 import common from "components/common/Common";
+import actionSheet from "components/actionSheet/ActionSheet";
 import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
 export default {
   name: "setting",
   data() {
     return {
-      dataSource: []
+      dataSource: [],
+      showActionSheet: true
     };
   },
   created() {
@@ -94,12 +98,22 @@ export default {
       console.log(item.name);
       this.$router.push({ name: item.name });
     },
-    abc() {
-      console.log("object");
+    // 切换账号
+    switchAccount() {},
+
+    // 登出
+    logout() {
+      this.showActionSheet = true;
+    },
+
+    // actionSheet事件点击
+    didClickItem(index) {
+      console.log(index);
     }
   },
   components: {
-    common
+    common,
+    actionSheet
   }
 };
 </script>

@@ -54,7 +54,7 @@ export default {
       // 表情
       const expression = new MHCommonItem({
         title: "表情",
-        icon:"MoreExpressionShops_25x25",
+        icon: "MoreExpressionShops_25x25"
       });
       group1.items = [collect, album, card, expression];
 
