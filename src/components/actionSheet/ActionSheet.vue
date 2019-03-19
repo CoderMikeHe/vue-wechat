@@ -1,21 +1,23 @@
 <template>
-  <div v-show="currentValue" class="mh-mask" @click.stop="didClickItem(0)">
-    <!-- 禁止掉事件冒泡 -->
-    <div class="mh-actionsheet" @click.stop>
-      <div class="mh-actionsheet__title">
-        <p class="mh-actionsheet__title-text">这是一个标题，可以为一行或者两行。</p>
-      </div>
-      <div class="mh-actionsheet__menu">
-        <div class="mh-actionsheet__cell" @click="didClickItem(1)">示例菜单</div>
-        <div class="mh-actionsheet__cell">示例菜单</div>
-        <div class="mh-actionsheet__cell">示例菜单</div>
-        <div class="mh-actionsheet__cell">示例菜单</div>
-      </div>
-      <div class="mh-actionsheet__action">
-        <div class="mh-actionsheet__cell" @click="didClickItem(0)">取消</div>
+  <transition name="mh-actionsheet-float">
+    <div v-show="currentValue" class="mh-mask" @click.stop="didClickItem(0)">
+      <!-- 禁止掉事件冒泡 -->
+      <div class="mh-actionsheet" @click.stop>
+        <div class="mh-actionsheet__title">
+          <p class="mh-actionsheet__title-text">这是一个标题，可以为一行或者两行。</p>
+        </div>
+        <div class="mh-actionsheet__menu">
+          <div class="mh-actionsheet__cell" @click="didClickItem(1)">示例菜单</div>
+          <div class="mh-actionsheet__cell">示例菜单</div>
+          <div class="mh-actionsheet__cell">示例菜单</div>
+          <div class="mh-actionsheet__cell">示例菜单</div>
+        </div>
+        <div class="mh-actionsheet__action">
+          <div class="mh-actionsheet__cell" @click="didClickItem(0)">取消</div>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -61,6 +63,19 @@ export default {
 </script>
 
 <style scoped>
+/* 初始or结束 */
+.mh-actionsheet-float-enter,
+.mh-actionsheet-float-leave-to {
+  background: rgba(0, 0, 0, 0);
+  -webkit-transform: translate(0, 100%);
+  transform: translate(0, 100%);
+}
+
+.mh-actionsheet-float-enter-active,
+.mh-actionsheet-float-leave-active {
+  transition: all 0.3s ease;
+}
+
 .mh-mask {
   position: fixed;
   z-index: 1000;
@@ -68,7 +83,8 @@ export default {
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
 }
 .mh-mask_transparent {
   position: fixed;
@@ -82,8 +98,6 @@ export default {
   position: fixed;
   left: 0;
   bottom: 0;
-  /* -webkit-transform: translate(0, 100%);
-  transform: translate(0, 100%); */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   z-index: 5000;
