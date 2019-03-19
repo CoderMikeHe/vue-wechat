@@ -11,6 +11,9 @@ import Setting from "./views/profile/Setting.vue";
 import General from "./views/profile/General.vue";
 import DiscoverManager from "./views/profile/DiscoverManager.vue";
 import MessageNotify from "./views/profile/MessageNotify.vue";
+import ContactInfo from './views/contacts/ContactInfo.vue'
+
+
 Vue.use(Router);
 
 export default new Router({
@@ -34,6 +37,11 @@ export default new Router({
       path: "/contacts/add-friends",
       name: "add-friends",
       component: AddFriends
+    },
+    {
+      path: "/contacts/contact-info",
+      name: "contact-info",
+      component: ContactInfo
     },
     {
       path: "/discover",

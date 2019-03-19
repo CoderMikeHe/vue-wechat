@@ -2,11 +2,11 @@
   <div>
     <NavigationBar title="通讯录" :right-item="addFriendsItem" @right-click="rightItemDidClicked"></NavigationBar>
     <transition
-        name="custom-classes-transition"
-        :enter-active-class="enterAnimate"
-        :leave-active-class="leaveAnimate"
-      >
-        <router-view></router-view>
+      name="custom-classes-transition"
+      :enter-active-class="enterAnimate"
+      :leave-active-class="leaveAnimate"
+    >
+      <router-view></router-view>
     </transition>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
   methods: {
     rightItemDidClicked(index) {
       console.log(index);
-      this.$router.push("/contacts/add-friends");
+      this.$router.push("/contacts/contact-info");
     }
   },
   watch: {
@@ -49,7 +49,9 @@ export default {
       this.enterAnimate =
         toDepth > fromDepth ? "animated slideInRight" : "animated slideInLeft";
       this.leaveAnimate =
-        toDepth > fromDepth ? "animated slideOutLeft" : "animated slideOutRight";
+        toDepth > fromDepth
+          ? "animated slideOutLeft"
+          : "animated slideOutRight";
     }
   }
 };
