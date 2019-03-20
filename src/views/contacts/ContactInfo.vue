@@ -1,8 +1,13 @@
 // 联系人信息
 <template>
   <div class="_full-container">
-    <NavigationBar title="哈哈" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
-    <div class="_full-content _content-margin-top44">
+    <NavigationBar
+      :left-item="backItem"
+      :right-item="moreItem"
+      @left-click="$router.back()"
+      @right-click="rightItemClick"
+    ></NavigationBar>
+    <div class="_full-content _content-padding-top44">
       <section class="mh-contact-info">
         <div class="mh-contact-info__info">
           <div class="mh-contact-info__info-icon">
@@ -14,14 +19,14 @@
             >
           </div>
           <div class="mh-contact-info__info-detail">
-            <h1>吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡吴亦凡</h1>
-            <p>昵称：Kris_Wu</p>
-            <p>微信号：kris_wu</p>
-            <p>地区：加拿大</p>
+            <h1 style="font-weight:bold;font-size:20px">吴亦凡</h1>
+            <p style="color:#7f7f7f">昵称：Kris_Wu</p>
+            <p style="color:#7f7f7f">微信号：kris_wu</p>
+            <p style="color:#7f7f7f">地区：加拿大</p>
           </div>
         </div>
         <div class="mh-contact-info__cell _mh-tap-highlight">
-          <p>设置备注和标签</p>
+          <p class="mh-contact-info__cell-title">设置备注和标签</p>
           <img
             class="mh-right-arrow"
             src="@/assets/images/common/tableview_arrow_8x13.png"
@@ -32,26 +37,33 @@
       </section>
 
       <section class="mh-contact-info">
-        <div class="mh-contact-info__cell _mh-tap-highlight">
-          <p>朋友圈</p>
+        <div class="mh-contact-info__cell _mh-tap-highlight mh-contact-info__cell-moments">
+          <p class="mh-contact-info__cell-title">朋友圈</p>
           <div class="mh-contact-info__cell-pics">
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
-              width="64px"
-              height="64px"
+              class="mh-contact-info__cell-pic"
             >
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
-              width="64px"
-              height="64px"
+              class="mh-contact-info__cell-pic"
             >
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
-              width="64px"
-              height="64px"
+              class="mh-contact-info__cell-pic"
+            >
+            <img
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
+              alt
+              class="mh-contact-info__cell-pic"
+            >
+            <img
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
+              alt
+              class="mh-contact-info__cell-pic"
             >
           </div>
           <img
@@ -62,7 +74,7 @@
           >
         </div>
         <div class="mh-contact-info__cell _mh-tap-highlight">
-          <p>更多信息</p>
+          <p class="mh-contact-info__cell-title">更多信息</p>
           <img
             class="mh-right-arrow"
             src="@/assets/images/common/tableview_arrow_8x13.png"
@@ -73,23 +85,15 @@
       </section>
 
       <section class="mh-contact-info">
-        <div class="mh-contact-info__cell _mh-tap-highlight">
-          <p>设置备注和标签</p>
-          <img
-            class="mh-right-arrow"
-            src="@/assets/images/common/tableview_arrow_8x13.png"
-            width="8px"
-            height="13px"
-          >
+        <div class="mh-contact-info__cell">
+          <p class="mh-contact-info__cell-center-title">
+            <span class="iconfont icon-contact-info-message">&nbsp;</span>发消息
+          </p>
         </div>
-        <div class="mh-contact-info__cell _mh-tap-highlight">
-          <p>设置备注和标签</p>
-          <img
-            class="mh-right-arrow"
-            src="@/assets/images/common/tableview_arrow_8x13.png"
-            width="8px"
-            height="13px"
-          >
+        <div class="mh-contact-info__cell">
+          <p class="mh-contact-info__cell-center-title">
+            <span class="iconfont icon-contact-info-video"></span>&nbsp;音视频通话
+          </p>
         </div>
       </section>
     </div>
@@ -97,7 +101,20 @@
 </template>
 
 <script>
-export default {};
+import MHBarButtonItem, { moreItem } from "../../assets/js/MHBarButtonItem.js";
+export default {
+  name: "contact-info",
+  data() {
+    return {
+      moreItem: moreItem
+    };
+  },
+  methods: {
+    rightItemClick(index) {
+      this.$router.push("/contacts/contact-info/data-setting");
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -126,7 +143,7 @@ export default {};
 }
 
 .mh-contact-info__info {
-  padding: 16px 16px 32px;
+  padding: 16px 16px 20px;
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -150,6 +167,8 @@ export default {};
   /* Safari 6.1+ */
   justify-content: space-between;
   line-height: 56px;
+  font-size: 17px;
+  background-color: #fff;
 }
 
 .mh-contact-info__cell:before {
@@ -178,10 +197,31 @@ export default {};
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  flex: 1;
+  margin: 0 16px;
+  -webkit-justify-content: center;
+  /* Safari 6.1+ */
+  justify-content: center;
+}
+
+.mh-contact-info__cell-pic {
+  height: 50px;
+  width: 50px;
+  margin-left: 5px;
+}
+
+.mh-contact-info__cell-title {
+  color: #191919;
+}
+
+.mh-contact-info__cell-moments {
+  line-height: 60px;
+}
+
+.mh-contact-info__cell-center-title {
+  color: #5b6a91;
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
 }
 </style>
-
-// 5b6a91
-// 7f7f7f
-// 5px
-// 191919

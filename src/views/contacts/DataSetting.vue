@@ -1,15 +1,14 @@
+// 资料设置
 <template>
   <div class="_full-container">
-    <NavigationBar title="通用" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
+    <NavigationBar title="资料设置" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
     <div class="_full-content _content-padding-top44">
       <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
         <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
       </div>
-      <!-- 切换账号 -->
+      <!-- 删除 CMH TODO 增加ActionSheet-->
       <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="abc">清空聊天记录</a>
-        </div>
+        <div class="mh-center-cell _mh-tap-highlight">删除</div>
       </div>
     </div>
   </div>
@@ -24,7 +23,7 @@ import {
 } from "assets/js/MHCommonGroup.js";
 import MHPreferenceSettingHelper from "assets/js/MHPreferenceSettingHelper.js";
 export default {
-  name: "general",
+  name: "data-setting",
   data() {
     return {
       dataSource: []
@@ -38,66 +37,51 @@ export default {
     configData() {
       // group0
       const group0 = new MHCommonGroup();
-      // 多语言
-      const language = new MHCommonItem({
-        title: "多语言"
+      // 设置备注和标签
+      const remarkSetting = new MHCommonItem({
+        title: "设置备注和标签"
       });
-      group0.items = [language];
+      group0.items = [remarkSetting];
 
       // group1
       const group1 = new MHCommonGroup();
-      // 字体大小
-      const fontSize = new MHCommonItem({
-        title: "字体大小"
+      // 把他推荐给朋友
+      const recommend = new MHCommonItem({
+        title: "把他推荐给朋友"
       });
-      // 聊天背景
-      const chatBg = new MHCommonItem({
-        title: "聊天背景"
-      });
-      // 我的表情
-      const myEmotion = new MHCommonItem({
-        title: "我的表情"
-      });
-      // 照片、视频和文件
-      const resource = new MHCommonItem({
-        title: "照片、视频和文件"
-      });
-      group1.items = [fontSize, chatBg, myEmotion, resource];
+      group1.items = [recommend];
 
       // group2
       const group2 = new MHCommonGroup();
-      // 听筒模式
-      const receiverMode = new MHCommonItemSwitch({
-        title: "听筒模式",
-        key: MHPreferenceSettingHelper.MHReceiverModeKey
+      // 设为星标朋友
+      const starTarget = new MHCommonItemSwitch({
+        title: "设为星标朋友"
       });
-
-      group2.items = [receiverMode];
+      group2.items = [starTarget];
 
       // group3
-      const group3 = new MHCommonGroup();
-      // 发现页管理
-      const discoverManager = new MHCommonItem({
-        title: "发现页管理",
-        name: "discover-manager"
+      const group3 = new MHCommonGroup({ header: "朋友圈和视频动态" });
+      // 不让他看
+      const heCanNotSeeMe = new MHCommonItemSwitch({
+        title: "不让他看"
       });
-      // 辅助功能
-      const additionalFunction = new MHCommonItem({
-        title: "辅助功能"
+      // 不看他
+      const iCanNotSeeHe = new MHCommonItemSwitch({
+        title: "不看他"
       });
-      group3.items = [discoverManager, additionalFunction];
+      group3.items = [heCanNotSeeMe, iCanNotSeeHe];
 
       // group4
       const group4 = new MHCommonGroup();
-      // 聊天记录备份与迁移
-      const chatRecord = new MHCommonItem({
-        title: "聊天记录备份与迁移"
+      // 加入黑名单
+      const blacklist = new MHCommonItemSwitch({
+        title: "加入黑名单"
       });
-      // 存储空间
-      const storageSpace = new MHCommonItem({
-        title: "存储空间"
+      // 投诉
+      const complain = new MHCommonItem({
+        title: "投诉"
       });
-      group4.items = [chatRecord, storageSpace];
+      group4.items = [blacklist, complain];
 
       this.dataSource = [group0, group1, group2, group3, group4];
     },
@@ -122,25 +106,20 @@ export default {
 .mh-common-group {
   margin-top: 8px;
 }
+
 .mh-common-group:first-child {
   margin-top: 0;
 }
 
 /* cell 组 */
 .mh-center-cell {
-  background-color: white;
+  background-color: #fff;
   overflow: hidden;
   position: relative;
   font-size: 17px;
-  color: black;
+  color: red;
   text-align: center;
-}
-
-.mh-center-content {
-  display: block;
   line-height: 56px;
-  text-decoration: none;
-  color: #191919;
 }
 
 /* top分割线 */

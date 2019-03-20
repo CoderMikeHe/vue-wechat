@@ -26,6 +26,7 @@ import "weui";
 // 全局app常量css
 import './assets/css/common.css';
 import './assets/css/wechat.css';
+import "./assets/css/iconfont.css";
 
 // 全局导航栏
 import NavigationBar from "components/navigationBar";

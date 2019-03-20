@@ -1,21 +1,21 @@
 <template>
-  <transition name="mh-actionsheet-float">
-    <div v-show="currentValue" class="mh-mask" @click.stop="didClickItem(0)">
-      <!-- 禁止掉事件冒泡 -->
-      <div class="mh-actionsheet" @click.stop>
-        <div class="mh-actionsheet__title">
-          <p class="mh-actionsheet__title-text">这是一个标题，可以为一行或者两行。</p>
+    <div :class="{'mh-mask:'}" @click.stop="didClickItem(0)">
+      <transition name="mh-actionsheet-float">
+        <!-- 禁止掉事件冒泡 -->
+        <div class="mh-actionsheet" @click.stop v-show="currentValue">
+          <div class="mh-actionsheet__title">
+            <p class="mh-actionsheet__title-text">这是一个标题，可以为一行或者两行。</p>
+          </div>
+          <div class="mh-actionsheet__menu">
+            <div class="mh-actionsheet__cell" @click="didClickItem(1)">示例菜单</div>
+            <div class="mh-actionsheet__cell">示例菜单</div>
+            <div class="mh-actionsheet__cell">示例菜单</div>
+            <div class="mh-actionsheet__cell">示例菜单</div>
+          </div>
+          <div class="mh-actionsheet__action">
+            <div class="mh-actionsheet__cell" @click="didClickItem(0)">取消</div>
+          </div>
         </div>
-        <div class="mh-actionsheet__menu">
-          <div class="mh-actionsheet__cell" @click="didClickItem(1)">示例菜单</div>
-          <div class="mh-actionsheet__cell">示例菜单</div>
-          <div class="mh-actionsheet__cell">示例菜单</div>
-          <div class="mh-actionsheet__cell">示例菜单</div>
-        </div>
-        <div class="mh-actionsheet__action">
-          <div class="mh-actionsheet__cell" @click="didClickItem(0)">取消</div>
-        </div>
-      </div>
     </div>
   </transition>
 </template>
@@ -103,10 +103,6 @@ export default {
   z-index: 5000;
   width: 100%;
   background-color: #efeff4;
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
 }
 .mh-actionsheet__title {
   position: relative;

@@ -57,7 +57,8 @@ export default {
       imageSrc: {
         nav_bar_back_arrow: require("../../assets/images/navBar/nav_bar_back_arrow.png"),
         nav_bar_add: require("../../assets/images/navBar/nav_bar_add.png"),
-        nav_bar_addfriends: require("../../assets/images/navBar/nav_bar_addfriends.png")
+        nav_bar_addfriends: require("../../assets/images/navBar/nav_bar_addfriends.png"),
+        nav_bar_more: require("../../assets/images/navBar/nav_bar_more.png")
       }
     };
   },
@@ -115,7 +116,7 @@ export default {
   color: #000;
   text-align: center;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 44px;
   width: auto;
 }

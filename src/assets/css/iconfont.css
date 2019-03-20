@@ -1,0 +1,27 @@
+/* 🔥[iconfont字体使用](https://www.cnblogs.com/fashandian/p/6880892.html) */
+@font-face {
+  font-family: "iconfont";
+  /* iOS 4.1- */
+  src: url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.eot');
+  src: url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.eot#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 联系人信息 */
+.icon-contact-info-message:before {
+  content: "\e6f0";
+}
+
+.icon-contact-info-video:before {
+  content: "\e64e";
+}

@@ -22,13 +22,13 @@
 }
 
 /* 正文顶部偏移 */
-._full-content._content-margin-top44 {
-  margin-top: 44px;
+._full-content._content-padding-top44 {
+  padding-top: 44px;
 }
 
 /* 正文底部偏移 */
-._full-content._content-margin-bottom49 {
-  margin-bottom: 49px;
+._full-content._content-padding-bottom49 {
+  padding-bottom: 49px;
 }
 
 

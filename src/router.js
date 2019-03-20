@@ -11,7 +11,10 @@ import Setting from "./views/profile/Setting.vue";
 import General from "./views/profile/General.vue";
 import DiscoverManager from "./views/profile/DiscoverManager.vue";
 import MessageNotify from "./views/profile/MessageNotify.vue";
+// 联系人信息
 import ContactInfo from './views/contacts/ContactInfo.vue'
+// 资料设置
+import DataSetting from './views/contacts/DataSetting.vue'
 
 
 Vue.use(Router);
@@ -42,6 +45,11 @@ export default new Router({
       path: "/contacts/contact-info",
       name: "contact-info",
       component: ContactInfo
+    },
+    {
+      path: "/contacts/contact-info/data-setting",
+      name: "data-setting",
+      component: DataSetting
     },
     {
       path: "/discover",

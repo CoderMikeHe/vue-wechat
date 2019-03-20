@@ -2,7 +2,7 @@
 <template>
   <div class="_full-container">
     <NavigationBar title="发现页管理" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
-    <div class="_full-content _content-margin-top44">
+    <div class="_full-content _content-padding-top44">
       <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
         <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
       </div>
@@ -63,7 +63,7 @@ export default {
       const search = new MHCommonItemSwitch({
         title: "搜一搜",
         icon: "ff_IconSearch1_25x25",
-        key: MHPreferenceSettingHelper.MHSearchKey,
+        key: MHPreferenceSettingHelper.MHSearchKey
       });
 
       // 附近的人
