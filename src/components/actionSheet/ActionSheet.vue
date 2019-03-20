@@ -1,7 +1,8 @@
 <template>
-    <div :class="{'mh-mask:'}" @click.stop="didClickItem(0)">
+  <transition name="mh-actionsheet-fade">
+    <div class="mh-mask" @click.stop="didClickItem(0)" v-show="currentValue">
+      <!-- 禁止掉事件冒泡 -->
       <transition name="mh-actionsheet-float">
-        <!-- 禁止掉事件冒泡 -->
         <div class="mh-actionsheet" @click.stop v-show="currentValue">
           <div class="mh-actionsheet__title">
             <p class="mh-actionsheet__title-text">这是一个标题，可以为一行或者两行。</p>
@@ -16,6 +17,7 @@
             <div class="mh-actionsheet__cell" @click="didClickItem(0)">取消</div>
           </div>
         </div>
+      </transition>
     </div>
   </transition>
 </template>
@@ -40,7 +42,8 @@ export default {
   },
   data() {
     return {
-      currentValue: this.value
+      currentValue: this.value,
+      show: true
     };
   },
   watch: {
@@ -55,8 +58,8 @@ export default {
   methods: {
     // 事件点击
     didClickItem(index) {
-      this.currentValue = false;
-      this.$emit("did-click-item", index);
+      this.currentValue = !this.currentValue;
+      // this.$emit("did-click-item", index);
     }
   }
 };
@@ -64,16 +67,26 @@ export default {
 
 <style scoped>
 /* 初始or结束 */
+.mh-actionsheet-fade-enter,
+.mh-actionsheet-fade-leave-to {
+  opacity: 0;
+}
+
+.mh-actionsheet-fade-enter-active,
+.mh-actionsheet-fade-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* 初始or结束 */
 .mh-actionsheet-float-enter,
 .mh-actionsheet-float-leave-to {
-  background: rgba(0, 0, 0, 0);
   -webkit-transform: translate(0, 100%);
   transform: translate(0, 100%);
 }
 
 .mh-actionsheet-float-enter-active,
 .mh-actionsheet-float-leave-active {
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
 }
 
 .mh-mask {
@@ -83,16 +96,12 @@ export default {
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   overflow-y: auto;
+  opacity: 1;
 }
-.mh-mask_transparent {
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
+.mh-mask_display {
+  opacity: 1;
 }
 .mh-actionsheet {
   position: fixed;
@@ -104,6 +113,7 @@ export default {
   width: 100%;
   background-color: #efeff4;
 }
+
 .mh-actionsheet__title {
   position: relative;
   height: 65px;
