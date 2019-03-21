@@ -1,12 +1,13 @@
 /* 🔥[iconfont字体使用](https://www.cnblogs.com/fashandian/p/6880892.html) */
 @font-face {
-  font-family: "iconfont";
-  /* iOS 4.1- */
-  src: url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.eot');
-  src: url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.eot#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1077850_n9gmjohwcfl.svg#iconfont') format('svg');
+  font-family: 'iconfont';
+  /* project id 1077850 */
+  src: url('//at.alicdn.com/t/font_1077850_a2kddntie8k.eot');
+  src: url('//at.alicdn.com/t/font_1077850_a2kddntie8k.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -24,4 +25,12 @@
 
 .icon-contact-info-video:before {
   content: "\e64e";
+}
+
+.icon-contact-info-phone-call:before {
+  content: "\e83f";
+}
+
+.icon-contact-info-video-call:before {
+  content: "\eb57";
 }

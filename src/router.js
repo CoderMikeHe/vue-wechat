@@ -1,10 +1,15 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-// 四个大模块
+
 import MainFrame from "./views/mainframe/Mainframe.vue";
 import Contacts from "./views/contacts/Contacts.vue";
+// 发现
 import Discover from "./views/discover/Discover.vue";
+// 朋友圈
+import Moments from "./views/discover/Moments.vue";
+
+
 import Profile from "./views/profile/Profile.vue";
 import AddFriends from "./views/contacts/AddFriends.vue";
 import Setting from "./views/profile/Setting.vue";
@@ -57,13 +62,18 @@ export default new Router({
       component: Discover
     },
     {
+      path: "/discover/moments",
+      name: "moments", // 朋友圈
+      component: Moments
+    },
+    {
       path: "/profile",
       name: "profile",
       component: Profile
     },
     {
       path: "/profile/setting",
-      name: "setting",
+      name: "setting", // 设置
       component: Setting
     },
     {

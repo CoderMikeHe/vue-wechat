@@ -18,7 +18,12 @@
         </div>
       </div>
       <!-- ActionSheet -->
-      <actionSheet v-model="showActionSheet" @did-click-item="didClickItem"></actionSheet>
+      <actionSheet
+        v-model="showActionSheet"
+        @did-click-item="didClickItem"
+        :items="items"
+        title="退出后不会删除任何历史数据，下次登录依然可以使用本账号"
+      ></actionSheet>
     </div>
   </div>
 </template>
@@ -26,17 +31,21 @@
 <script>
 import common from "components/common/Common";
 import actionSheet from "components/actionSheet/ActionSheet";
+import ActionSheetItem from "components/actionSheet/ActionSheetItem.js";
 import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
+
 export default {
   name: "setting",
   data() {
     return {
       dataSource: [],
-      showActionSheet: true
+      showActionSheet: false, // 显示ActionSheet
+      items: []
     };
   },
   created() {
     this.configData();
+    this.configItems();
   },
   methods: {
     // 配置数据
@@ -106,6 +115,14 @@ export default {
       this.showActionSheet = true;
     },
 
+    // 配置actionsheet items
+    configItems() {
+      const logoutItem = new ActionSheetItem({
+        title: "退出登录",
+        destructive: true
+      });
+      this.items = [logoutItem];
+    },
     // actionSheet事件点击
     didClickItem(index) {
       console.log(index);

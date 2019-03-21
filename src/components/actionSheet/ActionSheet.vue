@@ -4,17 +4,27 @@
       <!-- 禁止掉事件冒泡 -->
       <transition name="mh-actionsheet-float">
         <div class="mh-actionsheet" @click.stop v-show="currentValue">
-          <div class="mh-actionsheet__title">
-            <p class="mh-actionsheet__title-text">这是一个标题，可以为一行或者两行。</p>
+          <div class="mh-actionsheet__title" v-if="title">
+            <p class="mh-actionsheet__title-text">{{ title }}</p>
           </div>
           <div class="mh-actionsheet__menu">
-            <div class="mh-actionsheet__cell" @click="didClickItem(1)">示例菜单</div>
-            <div class="mh-actionsheet__cell">示例菜单</div>
-            <div class="mh-actionsheet__cell">示例菜单</div>
-            <div class="mh-actionsheet__cell">示例菜单</div>
+            <div
+              class="mh-actionsheet__cell"
+              v-for="(item, index) in items"
+              :key="index"
+              :style="{color:item.destructive?'red':'#191919'}"
+              @click="didClickItem(index+1)"
+            >
+              <span v-if="item.iconfont" :class="item.iconfont">&nbsp;</span>
+              {{ item.title }}
+            </div>
           </div>
-          <div class="mh-actionsheet__action">
-            <div class="mh-actionsheet__cell" @click="didClickItem(0)">取消</div>
+          <div
+            class="mh-actionsheet__action"
+            v-if="cancelText"
+            :style="{ 'margin-top': cancelText ? '6px' : '0' }"
+          >
+            <div class="mh-actionsheet__cell" @click="didClickItem(0)">{{ cancelText }}</div>
           </div>
         </div>
       </transition>
@@ -35,15 +45,30 @@
 export default {
   name: "actionsheet",
   props: {
+    // 是否显示
     value: {
       type: Boolean,
       default: false
+    },
+    // menuItems
+    items: {
+      type: Array,
+      default: []
+    },
+    // title
+    title: {
+      type: String,
+      default: ""
+    },
+    // cancel-text
+    cancelText: {
+      type: String,
+      default: "取消"
     }
   },
   data() {
     return {
-      currentValue: this.value,
-      show: true
+      currentValue: this.value
     };
   },
   watch: {
@@ -58,14 +83,15 @@ export default {
   methods: {
     // 事件点击
     didClickItem(index) {
-      this.currentValue = !this.currentValue;
-      // this.$emit("did-click-item", index);
+      this.currentValue = false;
+      this.$emit("did-click-item", index);
     }
   }
 };
 </script>
 
 <style scoped>
+/* ------ 动画CSS ------ */
 /* 初始or结束 */
 .mh-actionsheet-fade-enter,
 .mh-actionsheet-fade-leave-to {
@@ -89,6 +115,7 @@ export default {
   transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
 }
 
+/* ------ 元素CSS ------ */
 .mh-mask {
   position: fixed;
   z-index: 1000;
@@ -100,9 +127,7 @@ export default {
   overflow-y: auto;
   opacity: 1;
 }
-.mh-mask_display {
-  opacity: 1;
-}
+
 .mh-actionsheet {
   position: fixed;
   left: 0;
@@ -117,7 +142,7 @@ export default {
 .mh-actionsheet__title {
   position: relative;
   height: 65px;
-  padding: 0 20px;
+  padding: 0 16px;
   line-height: 1.4;
   display: -webkit-box;
   display: -webkit-flex;
@@ -130,11 +155,11 @@ export default {
   -webkit-flex-direction: column;
   flex-direction: column;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: #888;
   background: #fcfcfd;
 }
-.mh-actionsheet__title:before {
+.mh-actionsheet__title:after {
   content: " ";
   position: absolute;
   left: 0;
@@ -164,9 +189,10 @@ export default {
 }
 .mh-actionsheet__cell {
   position: relative;
-  padding: 10px 0;
+  padding: 10px 16px;
   text-align: center;
-  font-size: 18px;
+  font-size: 17px;
+  color: #191919;
 }
 .mh-actionsheet__cell:before {
   content: " ";
@@ -183,7 +209,7 @@ export default {
   transform: scaleY(0.5);
 }
 .mh-actionsheet__cell:active {
-  background-color: #ececec;
+  background-color: #e5e5e5;
 }
 .mh-actionsheet__cell:first-child:before {
   display: none;

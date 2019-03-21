@@ -90,29 +90,61 @@
             <span class="iconfont icon-contact-info-message">&nbsp;</span>发消息
           </p>
         </div>
-        <div class="mh-contact-info__cell">
+        <div class="mh-contact-info__cell" @click="chat">
           <p class="mh-contact-info__cell-center-title">
-            <span class="iconfont icon-contact-info-video"></span>&nbsp;音视频通话
+            <span class="iconfont icon-contact-info-video">&nbsp;</span>音视频通话
           </p>
         </div>
       </section>
+
+      <!-- ActionSheet -->
+      <actionSheet v-model="showActionSheet" @did-click-item="didClickItem" :items="items"></actionSheet>
     </div>
   </div>
 </template>
 
 <script>
 import MHBarButtonItem, { moreItem } from "../../assets/js/MHBarButtonItem.js";
+import actionSheet from "components/actionSheet/ActionSheet";
+import ActionSheetItem from "components/actionSheet/ActionSheetItem.js";
 export default {
   name: "contact-info",
+  created() {
+    this.configItems();
+  },
   data() {
     return {
-      moreItem: moreItem
+      moreItem: moreItem,
+      showActionSheet: false // 显示ActionSheet
     };
   },
   methods: {
     rightItemClick(index) {
       this.$router.push("/contacts/contact-info/data-setting");
+    },
+    // 聊天
+    chat() {
+      this.showActionSheet = true;
+    },
+    // actionSheet 事件
+    didClickItem(index) {
+      console.log(index);
+    },
+    // 配置actionsheet items
+    configItems() {
+      const videoCallItem = new ActionSheetItem({
+        title: "视频通话",
+        iconfont: "iconfont icon-contact-info-video-call"
+      });
+      const voiceCallItem = new ActionSheetItem({
+        title: "语音通话",
+        iconfont: "iconfont icon-contact-info-phone-call"
+      });
+      this.items = [videoCallItem, voiceCallItem];
     }
+  },
+  components: {
+    actionSheet
   }
 };
 </script>

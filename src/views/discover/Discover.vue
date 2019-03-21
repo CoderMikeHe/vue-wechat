@@ -37,7 +37,8 @@ export default {
         // 朋友圈
         const moments = new MHCommonItem({
           title: "朋友圈",
-          icon: "ff_IconShowAlbum_25x25"
+          icon: "ff_IconShowAlbum_25x25",
+          name: "moments"
         });
         group0.items.push(moments);
       }
