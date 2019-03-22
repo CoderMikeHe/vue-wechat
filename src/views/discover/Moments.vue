@@ -8,22 +8,49 @@
       @left-click="$router.back()"
       @right-click="rightItemClick"
     ></NavigationBar>
+    <!-- ActionSheet -->
+    <actionSheet v-model="showActionSheet" @did-click-item="didClickItem" :items="items"></actionSheet>
   </div>
 </template>
 
 <script>
 import MHBarButtonItem, { moreItem } from "assets/js/MHBarButtonItem.js";
-import actionSheet from "components/actionSheet/ActionSheet";
-import ActionSheetItem from "components/actionSheet/ActionSheetItem.js";
+import actionSheet, {
+  ActionSheetItem
+} from "components/actionSheet/ActionSheet";
 export default {
   name: "moments",
   data() {
     return {
-      moreItem: moreItem
+      moreItem: moreItem,
+      items: [],
+      showActionSheet: false // 显示ActionSheet
     };
   },
+  created() {
+    this.configItems();
+  },
   methods: {
-    rightItemClick() {}
+    rightItemClick() {
+      this.showActionSheet = true;
+    },
+    // 配置actionsheet items
+    configItems() {
+      const takePhoto = new ActionSheetItem({
+        title: "拍摄",
+        subtitle: "照片或视频"
+      });
+      const album = new ActionSheetItem({
+        title: "从手机相册选取"
+      });
+      this.items = [takePhoto, album];
+    },
+    didClickItem(index) {
+      console.log(index);
+    }
+  },
+  components: {
+    actionSheet
   }
 };
 </script>

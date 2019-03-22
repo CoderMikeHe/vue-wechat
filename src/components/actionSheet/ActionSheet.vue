@@ -17,6 +17,9 @@
             >
               <span v-if="item.iconfont" :class="item.iconfont">&nbsp;</span>
               {{ item.title }}
+              <span
+                style="display:block;font-size:12px;color:#888"
+              >{{ item.subtitle }}</span>
             </div>
           </div>
           <div
@@ -41,7 +44,6 @@
  * - [Vue 2.0的学习笔记：Vue的Methods和事件处理](https://www.w3cplus.com/vue/vue-methods-and-event-handling.html)
  *
  */
-
 export default {
   name: "actionsheet",
   props: {
@@ -53,6 +55,7 @@ export default {
     // menuItems
     items: {
       type: Array,
+      // [ActionSheetItem]
       default: []
     },
     // title
@@ -88,6 +91,24 @@ export default {
     }
   }
 };
+
+// ⚠️Tips: 这个类就是专门服务于ActionSheet这个组件
+class ActionSheetItem {
+  // 构造函数
+  constructor({
+    title = "",
+    subtitle = "",
+    iconfont = "",
+    destructive = false
+  } = {}) {
+    this.title = title; // title
+    this.subtitle = subtitle; // subtitle
+    this.iconfont = iconfont; // 字体图标
+    this.destructive = destructive; // 是否颜色加重 警告色
+  }
+}
+// defalult 构造器
+export { ActionSheetItem };
 </script>
 
 <style scoped>
@@ -123,7 +144,7 @@ export default {
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   opacity: 1;
 }

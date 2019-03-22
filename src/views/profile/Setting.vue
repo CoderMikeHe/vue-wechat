@@ -30,8 +30,9 @@
 
 <script>
 import common from "components/common/Common";
-import actionSheet from "components/actionSheet/ActionSheet";
-import ActionSheetItem from "components/actionSheet/ActionSheetItem.js";
+import actionSheet, {
+  ActionSheetItem
+} from "components/actionSheet/ActionSheet";
 import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
 
 export default {

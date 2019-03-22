@@ -49,10 +49,10 @@
       <h1>你好</h1>
       <h1>你好</h1>
       <h1>你好</h1>
-      <h1>你好</h1>
-      <h1>你好</h1>
-      <h1>你好</h1>
-      <h1>我不好</h1>
+      <h1 class>你好</h1>
+      <h1 class>你好</h1>
+      <h1 class="kkkk">你好</h1>
+      <h1 class="hhhh">我不好</h1>
     </div>
   </div>
 </template>
@@ -78,4 +78,15 @@ export default {
 </script>
 
 <style scoped>
+.hhhh {
+  color: aliceblue;
+}
+
+.kkkk {
+  color: yellow;
+}
+
+.llll {
+  color: antiquewhite;
+}
 </style>

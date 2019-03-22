@@ -1,9 +1,8 @@
 <template>
-  <div>
+  <div class="_full-content _content-padding-bottom49">
     <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
       <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
     </div>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -83,8 +82,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .mh-common-group {
   margin-top: 8px;
+}
+
+.mh-common-group:first-child {
+  margin-top: 0;
 }
 </style>

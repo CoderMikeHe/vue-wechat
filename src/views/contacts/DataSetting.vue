@@ -8,8 +8,15 @@
       </div>
       <!-- 删除 CMH TODO 增加ActionSheet-->
       <div class="mh-common-group">
-        <div class="mh-center-cell _mh-tap-highlight">删除</div>
+        <div class="mh-center-cell _mh-tap-highlight" @click="deleteContact">删除</div>
       </div>
+      <!-- ActionSheet -->
+      <actionSheet
+        v-model="showActionSheet"
+        :items="items"
+        :title="'将联系人“'+username+'”删除，同时删除与该联系人的聊天记录'"
+        @did-click-item="didClickItem"
+      ></actionSheet>
     </div>
   </div>
 </template>
@@ -22,15 +29,22 @@ import {
   MHCommonItemSwitch
 } from "assets/js/MHCommonGroup.js";
 import MHPreferenceSettingHelper from "assets/js/MHPreferenceSettingHelper.js";
+import actionSheet, {
+  ActionSheetItem
+} from "components/actionSheet/ActionSheet";
 export default {
   name: "data-setting",
   data() {
     return {
-      dataSource: []
+      dataSource: [],
+      showActionSheet: false, // 显示ActionSheet,
+      items: [],
+      username: "吴亦凡"
     };
   },
   created() {
     this.configData();
+    this.configItems();
   },
   methods: {
     // 配置数据
@@ -92,12 +106,27 @@ export default {
       console.log(item.name);
       this.$router.push({ name: item.name });
     },
-    abc() {
-      console.log("object");
+    deleteContact() {
+      this.showActionSheet = true;
+    },
+    // 配置actionsheet items
+    configItems() {
+      const deleteItem = new ActionSheetItem({
+        title: "删除联系人",
+        destructive: true
+      });
+      this.items = [deleteItem];
+    },
+    didClickItem(index) {
+      if (index === 0) {
+        // 0是取消按钮 默认
+        return;
+      }
     }
   },
   components: {
-    common
+    common,
+    actionSheet
   }
 };
 </script>

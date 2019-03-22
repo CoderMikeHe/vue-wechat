@@ -12,3 +12,5 @@ export default MHBarButtonItem;
 export const backItem = new MHBarButtonItem('', 'nav_bar_back_arrow', 1);
 // 更多按钮
 export const moreItem = new MHBarButtonItem('', 'nav_bar_more', 1);
+// 添加按钮
+export const addItem = new MHBarButtonItem("", "nav_bar_add", 1);

@@ -1,9 +1,8 @@
 <template>
-  <div id="app">
+  <div class="app-container">
     <transition>
       <router-view></router-view>
     </transition>
-
     <!-- tabBar -->
     <tabBar></tabBar>
   </div>
@@ -35,9 +34,10 @@ export default {
 
 
 <style scoped>
-/* https://blog.csdn.net/weixin_41000111/article/details/80450397 */
-/* .ssss /deep/ .mint-header{
-    background-color: #000;
-  } */
+.app-container {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
 </style>
 

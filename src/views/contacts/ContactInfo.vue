@@ -105,8 +105,9 @@
 
 <script>
 import MHBarButtonItem, { moreItem } from "../../assets/js/MHBarButtonItem.js";
-import actionSheet from "components/actionSheet/ActionSheet";
-import ActionSheetItem from "components/actionSheet/ActionSheetItem.js";
+import actionSheet, {
+  ActionSheetItem
+} from "components/actionSheet/ActionSheet";
 export default {
   name: "contact-info",
   created() {
@@ -115,7 +116,8 @@ export default {
   data() {
     return {
       moreItem: moreItem,
-      showActionSheet: false // 显示ActionSheet
+      showActionSheet: false, // 显示ActionSheet,
+      items: []
     };
   },
   methods: {

@@ -2,12 +2,12 @@
 @font-face {
   font-family: 'iconfont';
   /* project id 1077850 */
-  src: url('//at.alicdn.com/t/font_1077850_a2kddntie8k.eot');
-  src: url('//at.alicdn.com/t/font_1077850_a2kddntie8k.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1077850_a2kddntie8k.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.eot');
+  src: url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -33,4 +33,21 @@
 
 .icon-contact-info-video-call:before {
   content: "\eb57";
+}
+
+/* 微信主页 */
+.icon-mainframe-message:before {
+  content: "\e600";
+}
+
+.icon-mainframe-add-friend:before {
+  content: "\e61d";
+}
+
+.icon-mainframe-scan:before {
+  content: "\e601";
+}
+
+.icon-mainframe-pay:before {
+  content: "\e62a";
 }

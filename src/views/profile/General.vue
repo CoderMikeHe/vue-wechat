@@ -7,10 +7,17 @@
       </div>
       <!-- 切换账号 -->
       <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="abc">清空聊天记录</a>
+        <div class="mh-center-cell" @click="clearChatHistory">
+          <a class="mh-center-content _mh-cell-access">清空聊天记录</a>
         </div>
       </div>
+      <!-- ActionSheet -->
+      <actionSheet
+        v-model="showActionSheet"
+        :items="items"
+        title="将删除所有个人和群的聊天记录"
+        @did-click-item="didClickItem"
+      ></actionSheet>
     </div>
   </div>
 </template>
@@ -23,15 +30,21 @@ import {
   MHCommonItemSwitch
 } from "assets/js/MHCommonGroup.js";
 import MHPreferenceSettingHelper from "assets/js/MHPreferenceSettingHelper.js";
+import actionSheet, {
+  ActionSheetItem
+} from "components/actionSheet/ActionSheet";
 export default {
   name: "general",
   data() {
     return {
-      dataSource: []
+      dataSource: [],
+      showActionSheet: false, // 显示ActionSheet,
+      items: []
     };
   },
   created() {
     this.configData();
+    this.configItems();
   },
   methods: {
     // 配置数据
@@ -101,19 +114,33 @@ export default {
 
       this.dataSource = [group0, group1, group2, group3, group4];
     },
-
     // item点击事件
     didSelectRow(section, row) {
       const item = this.dataSource[section].items[row];
-      console.log(item.name);
       this.$router.push({ name: item.name });
     },
-    abc() {
-      console.log("object");
+    // 清除历史记录
+    clearChatHistory() {
+      this.showActionSheet = true;
+    },
+    // 配置actionsheet items
+    configItems() {
+      const deleteItem = new ActionSheetItem({
+        title: "删除联系人",
+        destructive: true
+      });
+      this.items = [deleteItem];
+    },
+    didClickItem(index) {
+      if (index === 0) {
+        // 0是取消按钮 默认
+        return;
+      }
     }
   },
   components: {
-    common
+    common,
+    actionSheet
   }
 };
 </script>
