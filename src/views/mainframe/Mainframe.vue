@@ -29,7 +29,6 @@
         </div>
       </li>
     </ul>
-    <router-view></router-view>
   </div>
 </template>
 

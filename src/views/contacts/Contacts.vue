@@ -1,11 +1,21 @@
 <template>
-  <div>
+  <div class="_full-content _content-padding-top44 _content-padding-bottom49">
     <NavigationBar title="通讯录" :right-item="addFriendsItem" @right-click="rightItemDidClicked"></NavigationBar>
+
+    <!-- <transition
+      name="custom-classes-transition"
+      enter-active-class="animated tada"
+      leave-active-class="animated bounceOutRight"
+    >
+      
+    </transition>-->
+    <router-link to="/contacts/contact-info">Toggle render</router-link>
     <transition
       name="custom-classes-transition"
-      :enter-active-class="enterAnimate"
-      :leave-active-class="leaveAnimate"
+      enter-active-class="animated fadeInLeft"
+      leave-active-class="animated fadeInRight"
     >
+      <p v-if="show">hello</p>
       <router-view></router-view>
     </transition>
   </div>
@@ -17,6 +27,7 @@ import MHBarButtonItem from "../../assets/js/MHBarButtonItem.js";
 export default {
   data() {
     return {
+      show: true,
       addFriendsItem: new MHBarButtonItem("", "nav_bar_addfriends", 1),
       enterAnimate: "", // 页面进入动效
       leaveAnimate: "" // 页面离开动效
@@ -29,29 +40,6 @@ export default {
     rightItemDidClicked(index) {
       console.log(index);
       this.$router.push("/contacts/contact-info");
-    }
-  },
-  watch: {
-    // 监听路由变化 设置页面的过度效果
-    $route(to, from) {
-      console.log(to, from);
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-
-      console.log(toDepth);
-      console.log(fromDepth);
-
-      //同一级页面无需设置过渡效果
-      if (toDepth === fromDepth) {
-        return;
-      }
-
-      this.enterAnimate =
-        toDepth > fromDepth ? "animated slideInRight" : "animated slideInLeft";
-      this.leaveAnimate =
-        toDepth > fromDepth
-          ? "animated slideOutLeft"
-          : "animated slideOutRight";
     }
   }
 };
