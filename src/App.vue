@@ -50,6 +50,7 @@ export default {
         return;
       }
 
+      // 动画
       this.enterAnimate =
         toDepth > fromDepth
           ? "animated slideInRight faster"

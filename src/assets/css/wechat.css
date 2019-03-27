@@ -31,7 +31,6 @@
   padding-bottom: 49px;
 }
 
-
 /* 点击高亮 */
 ._mh-cell-access {
   /* CMH TODO: 学习-webkit-tap-highlight-color属性 */
@@ -55,8 +54,4 @@
 /* 点击高亮 */
 ._mh-tap-highlight:active {
   background-color: #E5E5E5;
-}
-
-._mh_test {
-  background-color: #fff;
 }

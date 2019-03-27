@@ -12,7 +12,12 @@ import Moments from "./views/discover/Moments.vue";
 
 import Profile from "./views/profile/Profile.vue";
 import AddFriends from "./views/contacts/AddFriends.vue";
+// 我-设置
 import Setting from "./views/profile/Setting.vue";
+// 我-设置-切换账号
+import SwitchAccount from "./views/profile/SwitchAccount.vue";
+
+
 import General from "./views/profile/General.vue";
 import DiscoverManager from "./views/profile/DiscoverManager.vue";
 import MessageNotify from "./views/profile/MessageNotify.vue";
@@ -20,7 +25,6 @@ import MessageNotify from "./views/profile/MessageNotify.vue";
 import ContactInfo from './views/contacts/ContactInfo.vue'
 // 资料设置
 import DataSetting from './views/contacts/DataSetting.vue'
-
 
 Vue.use(Router);
 
@@ -74,7 +78,12 @@ export default new Router({
     {
       path: "/profile/setting",
       name: "setting", // 设置
-      component: Setting
+      component: Setting,
+      children: [{
+        path: 'switch-account',
+        name: "switch-account",
+        component: SwitchAccount
+      }, ]
     },
     {
       path: "/profile/setting/general",

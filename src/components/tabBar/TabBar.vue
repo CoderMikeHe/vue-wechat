@@ -1,23 +1,43 @@
 <template>
   <div>
     <nav class="mh-tab-bar">
-      <router-link class="mh-tab-item" to="/mainframe" @click.native.prevent="itemDidClicked(0)">
+      <router-link
+        class="mh-tab-item"
+        to="/mainframe"
+        replace
+        @click.native.prevent="itemDidClicked(0)"
+      >
         <span class="mh-tab-icon-box">
           <img class="mh-tab-icon" :src="getMainFrameImage" alt>
           <span class="mh-tab-badge">9</span>
         </span>
         <span class="mh-tab-label">微信</span>
       </router-link>
-      <router-link class="mh-tab-item" to="/contacts" @click.native.prevent="itemDidClicked(1)">
+      <router-link
+        class="mh-tab-item"
+        to="/contacts"
+        replace
+        @click.native.prevent="itemDidClicked(1)"
+      >
         <img class="mh-tab-icon" :src="getContactsImage" alt>
         
         <span class="mh-tab-label">通讯录</span>
       </router-link>
-      <router-link class="mh-tab-item" to="/discover" @click.native.prevent="itemDidClicked(2)">
+      <router-link
+        class="mh-tab-item"
+        to="/discover"
+        replace
+        @click.native.prevent="itemDidClicked(2)"
+      >
         <img class="mh-tab-icon" :src="getDiscoverImage" alt>
         <span class="mh-tab-label">发现</span>
       </router-link>
-      <router-link class="mh-tab-item" to="/profile" @click.native.prevent="itemDidClicked(3)">
+      <router-link
+        class="mh-tab-item"
+        to="/profile"
+        replace
+        @click.native.prevent="itemDidClicked(3)"
+      >
         <img class="mh-tab-icon" :src="getProfileImage" alt>
         <span class="mh-tab-label">我</span>
       </router-link>
@@ -39,7 +59,6 @@ export default {
   created() {
     // vm 刚创建好，赋值初始值
     const name = this.$route.name;
-    console.log("name === " + name);
     this.selectedMainFrame = name === "mainframe" ? 1 : 0;
     this.selectedContacts = name === "contacts" ? 1 : 0;
     this.selectedDiscover = name === "discover" ? 1 : 0;

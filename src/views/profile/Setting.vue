@@ -24,6 +24,14 @@
         :items="items"
         title="退出后不会删除任何历史数据，下次登录依然可以使用本账号"
       ></actionSheet>
+
+      <!-- SwitchAccount -->
+      <transition
+        enter-active-class="animated slideInUp faster"
+        leave-active-class="animated slideOutDown faster"
+      >
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -33,7 +41,9 @@ import common from "components/common/Common";
 import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
+
 import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
+// import SwitchAccount from "components/switchAccount/SwitchAccount";
 
 export default {
   name: "setting",
@@ -41,10 +51,12 @@ export default {
     return {
       dataSource: [],
       showActionSheet: false, // 显示ActionSheet
-      items: []
+      items: [],
+      show: false
     };
   },
   created() {
+    console.log("---+++---");
     this.configData();
     this.configItems();
   },
@@ -109,7 +121,14 @@ export default {
       this.$router.push({ name: item.name });
     },
     // 切换账号
-    switchAccount() {},
+    switchAccount() {
+      this.$router.push("/profile/setting/switch-account");
+    },
+
+    abcd() {
+      console.log("OOOOOOO");
+      this.show = false;
+    },
 
     // 登出
     logout() {

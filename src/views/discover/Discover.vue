@@ -21,7 +21,6 @@ export default {
     };
   },
   created() {
-    console.log("Discover-------");
     this.configData();
   },
   methods: {
