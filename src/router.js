@@ -26,6 +26,9 @@ import ContactInfo from './views/contacts/ContactInfo.vue'
 // 资料设置
 import DataSetting from './views/contacts/DataSetting.vue'
 
+// 登陆
+import CurrentLogin from './views/login/CurrentLogin.vue';
+
 Vue.use(Router);
 
 export default new Router({
@@ -33,7 +36,12 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [{
       path: "/",
-      redirect: "/mainframe"
+      redirect: "/current-login"
+    },
+    {
+      path: "/current-login",
+      name: "current-login",
+      component: CurrentLogin
     },
     {
       path: "/mainframe",

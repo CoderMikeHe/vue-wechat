@@ -135,14 +135,6 @@ export default {
       this.showActionSheet = true;
     },
 
-    // 配置actionsheet items
-    configItems() {
-      const logoutItem = new ActionSheetItem({
-        title: "退出登录",
-        destructive: true
-      });
-      this.items = [logoutItem];
-    },
     // actionSheet事件点击
     didClickItem(index) {
       console.log(index);

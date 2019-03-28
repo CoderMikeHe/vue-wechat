@@ -28,7 +28,11 @@
       <!-- account -->
       <div class="mh-switch-account__account">
         <div class="mh-switch-account__account-item"></div>
-        <div class="mh-switch-account__account-item"></div>
+        <div
+          class="mh-switch-account__account-item"
+          :class="{'item-float-ani':ani}"
+          @click="itemDidClick"
+        ></div>
       </div>
 
       <transition name="fade" mode="out-in">
@@ -54,7 +58,8 @@ export default {
   name: "SwitchAccount",
   data() {
     return {
-      clearLogin: true
+      clearLogin: true,
+      ani: false
     };
   },
   methods: {
@@ -63,6 +68,9 @@ export default {
       // this.$router.back();
       this.$router.go(-1);
       // this.$router.replace("/mainframe");
+    },
+    itemDidClick() {
+      this.ani = true;
     }
   }
 };
@@ -76,6 +84,23 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+@keyframes mymove {
+  from {
+    /* top: 208px;
+    left: 0; */
+  }
+  to {
+    top: -44px;
+    left: 0;
+  }
+}
+
+.item-float-ani {
+  position: absolute;
+  animation: mymove 5s infinite;
+  -webkit-animation: mymove 5s infinite; /* Safari 和 Chrome */
 }
 
 /* 元素样式 */
