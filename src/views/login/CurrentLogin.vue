@@ -21,13 +21,18 @@
           <div
             class="mh-current-login__cell mh-current-login__password"
             key="password"
-            v-if="changed"
+            v-if="showPasswordWay"
           >
             <div class="mh-current-login__cell-hd">
               <label class="mh-current-login__label">密码</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input class="mh-current-login__input" type="search" placeholder="请填写QQ密码">
+              <input
+                class="mh-current-login__input"
+                type="search"
+                placeholder="请填写QQ密码"
+                v-model="password"
+              >
             </div>
           </div>
           <div class="mh-current-login__cell mh-current-login__captcha" key="captcha" v-else>
@@ -35,7 +40,12 @@
               <label class="mh-current-login__label">验证码</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input class="mh-current-login__input" type="text" placeholder="请输入验证码">
+              <input
+                class="mh-current-login__input"
+                type="text"
+                placeholder="请输入验证码"
+                v-model="captcha"
+              >
             </div>
             <div class="mh-current-login__cell-ft">
               <button class="mh-current-login__btn">获取验证码</button>
@@ -47,6 +57,15 @@
       <div class="mh-current-login__change-btn">
         <span @click="changeBtnDidClick">{{ changeLogin }}</span>
       </div>
+
+      <div class="mh-current-login__login">
+        <a
+          class="mh-btn mh-btn_primary"
+          :class="{'mh-btn_disabled':loginBtnDisabled}"
+          @click="login"
+        >登录</a>
+      </div>
+
       <!-- 底部更多 -->
       <div class="mh-current-login__more">
         <span class="mh-current-login__more-item" @click="itemDidClick(0)">找回密码</span>
@@ -70,7 +89,12 @@ export default {
     return {
       showActionSheet: false, // 显示ActionSheet
       items: [],
-      changed: true
+      // 默认是登录密码
+      showPasswordWay: true,
+      // 密码
+      password: "",
+      // 验证码
+      captcha: ""
     };
   },
   created() {
@@ -103,7 +127,7 @@ export default {
     },
     didClickItem(index) {},
     changeBtnDidClick() {
-      this.changed = !this.changed;
+      this.showPasswordWay = !this.showPasswordWay;
     },
     // 进入中
     // --------
@@ -139,11 +163,23 @@ export default {
     },
     afterLeave: function(el) {
       // ...
+    },
+    // 登录事件
+    login() {
+      if (this.loginBtnDisabled) return;
+      console.log("password   " + this.password);
     }
   },
   computed: {
+    // 切换名称
     changeLogin() {
-      return this.changed ? "用微信密码" : "用短信验证码登陆";
+      return this.showPasswordWay ? "用微信密码登录" : "用短信验证码登陆";
+    },
+    // 登录按钮是否无效
+    loginBtnDisabled() {
+      return this.showPasswordWay
+        ? this.password.length <= 0
+        : this.captcha.length <= 0;
     }
   },
   components: {
@@ -161,7 +197,6 @@ export default {
   -webkit-transform: translate(-100%, 0);
   transform: translate(-100%, 0);
 }
-
 .left-enter-active,
 .left-leave-active {
   transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
@@ -213,8 +248,8 @@ export default {
   height: 1px;
   border-bottom: 1px solid #d8d8d8;
   color: #d8d8d8;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   left: 16px;
@@ -274,6 +309,65 @@ export default {
 }
 .mh-current-login__change-btn span {
   background-color: aqua;
+}
+.mh-current-login__login {
+  margin-top: 60px;
+  padding: 0 16px;
+}
+
+.mh-btn {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 14px;
+  padding-right: 14px;
+  box-sizing: border-box;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  line-height: 2.55555556;
+  border-radius: 5px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  overflow: hidden;
+}
+.mh-btn:after {
+  content: " ";
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.mh-btn_primary {
+  background-color: #1aad19;
+}
+.mh-btn_primary:not(.mh-btn_disabled):visited {
+  color: #ffffff;
+}
+.mh-btn_primary:not(.mh-btn_disabled):active {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #179b16;
+}
+
+.mh-btn_disabled {
+  color: rgba(255, 255, 255, 0.6);
+}
+.mh-btn_disabled.mh-btn_default {
+  color: rgba(0, 0, 0, 0.3);
+  background-color: #f7f7f7;
+}
+.mh-btn_disabled.mh-btn_primary {
+  background-color: #9ed99d;
 }
 
 /* 底部更多列表 */
