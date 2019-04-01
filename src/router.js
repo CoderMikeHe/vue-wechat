@@ -26,8 +26,10 @@ import ContactInfo from './views/contacts/ContactInfo.vue'
 // 资料设置
 import DataSetting from './views/contacts/DataSetting.vue'
 
-// 登陆
+// 当前账号登陆
 import CurrentLogin from './views/login/CurrentLogin.vue';
+// 其他账号登陆
+import OtherLogin from './views/login/OtherLogin.vue';
 
 Vue.use(Router);
 
@@ -42,6 +44,11 @@ export default new Router({
       path: "/current-login",
       name: "current-login",
       component: CurrentLogin
+    },
+    {
+      path: "/current-login/other-login",
+      name: "other-login",
+      component: OtherLogin
     },
     {
       path: "/mainframe",

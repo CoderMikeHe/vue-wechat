@@ -125,7 +125,19 @@ export default {
       });
       this.items = [loginOther, securityCenter, register];
     },
-    didClickItem(index) {},
+    // ActionSheet 事件处理
+    didClickItem(idx) {
+      if (idx === 0) return;
+      switch (idx) {
+        case 1:
+          this.$router.push("/current-login/other-login");
+          break;
+        case 2:
+          break;
+        default:
+          break;
+      }
+    },
     changeBtnDidClick() {
       this.showPasswordWay = !this.showPasswordWay;
     },

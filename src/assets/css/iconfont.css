@@ -2,12 +2,12 @@
 @font-face {
   font-family: 'iconfont';
   /* project id 1077850 */
-  src: url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.eot');
-  src: url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1077850_ckq3oyh3fm4.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1077850_mh4w19028oo.eot');
+  src: url('//at.alicdn.com/t/font_1077850_mh4w19028oo.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1077850_mh4w19028oo.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1077850_mh4w19028oo.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1077850_mh4w19028oo.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1077850_mh4w19028oo.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -50,4 +50,9 @@
 
 .icon-mainframe-pay:before {
   content: "\e62a";
+}
+
+/* 导航栏相关 */
+.icon-navbar-close::before {
+  content: "\e602";
 }
