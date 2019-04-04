@@ -7,14 +7,6 @@
         <img src="../../assets/images/other/AppIcon120x120.png" alt>
         <p>491273090</p>
       </div>
-
-      <!-- v-on:before-enter="beforeEnter"
-          v-on:enter="enter"
-          v-on:after-enter="afterEnter"
-          v-on:before-leave="beforeLeave"
-          v-on:leave="leave"
-          v-on:after-leave="afterLeave"
-      v-on:leave-cancelled="leaveCancelled"-->
       <!-- PasswordView -->
       <div class="mh-current-login__container">
         <transition name="left">
@@ -29,7 +21,7 @@
             <div class="mh-current-login__cell-bd">
               <input
                 class="mh-current-login__input"
-                type="search"
+                type="password"
                 placeholder="请填写QQ密码"
                 v-model="password"
               >
@@ -53,11 +45,11 @@
           </div>
         </transition>
       </div>
-      <!-- 切换按钮 -->
+      <!-- 切换登陆方式按钮 -->
       <div class="mh-current-login__change-btn">
         <span @click="changeBtnDidClick">{{ changeLogin }}</span>
       </div>
-
+      <!-- 登录按钮 -->
       <div class="mh-current-login__login">
         <a
           class="mh-btn mh-btn_primary"
@@ -65,14 +57,12 @@
           @click="login"
         >登录</a>
       </div>
-
-      <!-- 底部更多 -->
+      <!-- 底部更多面板 -->
       <div class="mh-current-login__more">
         <span class="mh-current-login__more-item" @click="itemDidClick(0)">找回密码</span>
         <span class="mh-current-login__more-item" @click="itemDidClick(1)">紧急冻结</span>
         <span class="mh-current-login__more-item" @click="itemDidClick(2)">更多选项</span>
       </div>
-
       <!-- ActionSheet -->
       <ActionSheet v-model="showActionSheet" @did-click-item="didClickItem" :items="items"></ActionSheet>
     </div>
@@ -83,11 +73,16 @@
 import ActionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
+// 偏好设置
+import MHPreferenceSettingHelper from "../../assets/js/MHPreferenceSettingHelper.js";
+
 export default {
   name: "CurrentLogin",
   data() {
     return {
-      showActionSheet: false, // 显示ActionSheet
+      // 显示ActionSheet
+      showActionSheet: false,
+      // actionSheet items
       items: [],
       // 默认是登录密码
       showPasswordWay: true,
@@ -99,6 +94,9 @@ export default {
   },
   created() {
     this.configItems();
+  },
+  mounted() {
+    console.log(this.$route.name + "  👉  " + window.history.length);
   },
   methods: {
     itemDidClick(idx) {
@@ -130,7 +128,11 @@ export default {
       if (idx === 0) return;
       switch (idx) {
         case 1:
+          console.log("history 2 " + window.history.length);
+          console.log(window.history);
           this.$router.push("/current-login/other-login");
+          console.log("history 3 " + window.history.length);
+          console.log(window.history);
           break;
         case 2:
           break;
@@ -141,45 +143,46 @@ export default {
     changeBtnDidClick() {
       this.showPasswordWay = !this.showPasswordWay;
     },
-    // 进入中
-    // --------
-
-    beforeEnter: function(el) {
-      // ...
-    },
-    // 当与 CSS 结合使用时
-    // 回调函数 done 是可选的
-    enter: function(el, done) {
-      // ...
-      done();
-    },
-    afterEnter: function(el) {
-      // ...
-    },
-    enterCancelled: function(el) {
-      // ...
-    },
-
-    // --------
-    // 离开时
-    // --------
-
-    beforeLeave: function(el) {
-      // ...
-    },
-    // 当与 CSS 结合使用时
-    // 回调函数 done 是可选的
-    leave: function(el, done) {
-      // ...
-      done();
-    },
-    afterLeave: function(el) {
-      // ...
-    },
     // 登录事件
     login() {
+      // 按钮不可点击，则过滤
       if (this.loginBtnDisabled) return;
+
       console.log("password   " + this.password);
+
+      // 模拟网络加载
+      setTimeout(() => {
+        console.log(this);
+        const user = {
+          /// PS: 假设请求到数据模型是  User模型
+          screenName: "Mike-乱港三千-Mr_元先森",
+          idstr: "61856069",
+          profileImageUrl:
+            "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
+          /// 用户的封面
+          coverImageUrl:
+            "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
+          coverImage: "Kris.jpeg",
+
+          /// 假设是这里统一都是qq号码登录
+          qq: "491273090",
+          email: "491273090@qq.com", // PS：机智，拼接成QQ邮箱
+          wechatId: "codermikehe", // PS：瞎写的
+          phone: "13874385438", // PS：瞎写的
+          channel: 0, // 手机号登录
+          // -- 0 Boy -- 1 Girl
+          gender: 0,
+          // 个新签名
+          featureSign: "生死看淡，不服就干"
+        };
+        // 归档登陆账号
+        this.$store.commit("loginUser", user);
+
+        // 跳转登陆
+        this.$router.replace("/mainframe", () => {
+          console.log("导航完成");
+        });
+      }, 3000);
     }
   },
   computed: {

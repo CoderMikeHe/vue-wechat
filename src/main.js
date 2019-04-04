@@ -38,6 +38,14 @@ Vue.use(utils);
 import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
 MHPreferenceSettingHelper.initialize();
 
+// 获取用户信息
+let user = MHPreferenceSettingHelper.getItem('491273090') || {};
+if (Object.keys(user).length === 0) {
+  router.replace('/current-login');
+} else {
+  router.replace('/mainframe');
+}
+
 new Vue({
   router,
   store,
@@ -92,7 +100,11 @@ new Vue({
 // 👉重学Web
 // - [重学Web](https://www.w3cplus.com/)
 
+// 👉input[type=search]
+// - [你不知道的input[type=search]](https://blog.csdn.net/xxxxxMiss/article/details/51534626)
 
+// 👉JS中如何判断一个对象是否为空对象
+// - [JS中如何判断一个对象是否为空对象](https://blog.csdn.net/qq_38627581/article/details/77353015)
 
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)

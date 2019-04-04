@@ -16,7 +16,10 @@ import AddFriends from "./views/contacts/AddFriends.vue";
 import Setting from "./views/profile/Setting.vue";
 // 我-设置-切换账号
 import SwitchAccount from "./views/profile/SwitchAccount.vue";
-
+// 我-个人信息
+import UserInfo from "./views/profile/UserInfo.vue"
+// 我-个人信息-更多
+import MoreInfo from "./views/profile/MoreInfo.vue"
 
 import General from "./views/profile/General.vue";
 import DiscoverManager from "./views/profile/DiscoverManager.vue";
@@ -33,6 +36,7 @@ import OtherLogin from './views/login/OtherLogin.vue';
 
 Vue.use(Router);
 
+// 路由只是匹配规则
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
@@ -89,6 +93,16 @@ export default new Router({
       path: "/profile",
       name: "profile",
       component: Profile
+    },
+    {
+      path: "/profile/userinfo",
+      name: "userinfo",
+      component: UserInfo
+    },
+    {
+      path: "/profile/userinfo/moreinfo",
+      name: "moreinfo",
+      component: MoreInfo
     },
     {
       path: "/profile/setting",

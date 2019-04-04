@@ -1,30 +1,11 @@
+// 个人信息
 <template>
   <div class="_full-container">
-    <NavigationBar title="设置" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
+    <NavigationBar title="个人信息" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
     <div class="_full-content _content-padding-top44">
       <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
         <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
       </div>
-      <!-- 切换账号 -->
-      <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="switchAccount">切换账号</a>
-        </div>
-      </div>
-      <!-- 退出登录 -->
-      <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="logout">退出登录</a>
-        </div>
-      </div>
-      <!-- ActionSheet -->
-      <actionSheet
-        v-model="showActionSheet"
-        @did-click-item="didClickItem"
-        :items="items"
-        title="退出后不会删除任何历史数据，下次登录依然可以使用本账号"
-      ></actionSheet>
-
       <!-- SwitchAccount -->
       <transition
         enter-active-class="animated slideInUp faster"
@@ -38,15 +19,14 @@
 
 <script>
 import common from "components/common/Common";
-import actionSheet, {
-  ActionSheetItem
-} from "components/actionSheet/ActionSheet";
-
-import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
-// import SwitchAccount from "components/switchAccount/SwitchAccount";
+import {
+  MHCommonGroup,
+  MHCommonItem,
+  MHCommonItemAvatar
+} from "assets/js/MHCommonGroup.js";
 
 export default {
-  name: "setting",
+  name: "userinfo",
   data() {
     return {
       dataSource: [],
@@ -58,7 +38,6 @@ export default {
   created() {
     console.log("---+++---");
     this.configData();
-    this.configItems();
   },
   mounted() {
     console.log(this.$route.name + "  👉  " + window.history.length);
@@ -69,52 +48,44 @@ export default {
       // group0
       const group0 = new MHCommonGroup();
       // 账号与安全
-      const accountSecurity = new MHCommonItem({
-        title: "账号与安全"
+      const avatar = new MHCommonItemAvatar({
+        title: "头像",
+        avatar: this.$store.state.user.profileImageUrl
       });
-      group0.items = [accountSecurity];
+      // 名字
+      const screenName = new MHCommonItem({
+        title: "名字",
+        subtitle: this.$store.state.user.screenName
+      });
+      // 微信号
+      const wechatId = new MHCommonItem({
+        title: "微信号",
+        subtitle: this.$store.state.user.wechatId,
+        tapHighlight: false,
+        type: 1
+      });
+      // 我的二维码
+      const qrCode = new MHCommonItem({
+        title: "我的二维码",
+        type: 4
+      });
+      // 更多
+      const moreInfo = new MHCommonItem({
+        title: "更多",
+        name: "moreinfo"
+      });
+
+      group0.items = [avatar, screenName, wechatId, qrCode, moreInfo];
 
       // group1
       const group1 = new MHCommonGroup();
       // 新消息通知
-      const messageNotify = new MHCommonItem({
-        title: "新消息通知",
-        name: "message-notify"
+      const myAddress = new MHCommonItem({
+        title: "我的地址"
       });
-      // 隐私
-      const privates = new MHCommonItem({
-        title: "隐私"
-      });
-      // 通用
-      const general = new MHCommonItem({
-        title: "通用",
-        name: "general"
-      });
-      group1.items = [messageNotify, privates, general];
+      group1.items = [myAddress];
 
-      // group2
-      const group2 = new MHCommonGroup();
-      // 帮助与反馈
-      const help = new MHCommonItem({
-        title: "帮助与反馈",
-        name: "setting"
-      });
-      // 关于微信
-      const aboutUs = new MHCommonItem({
-        title: "关于微信",
-        subtitle: "微信7.0.3"
-      });
-      group2.items = [help, aboutUs];
-
-      // group3
-      const group3 = new MHCommonGroup();
-      // 插件
-      const plugin = new MHCommonItem({
-        title: "插件"
-      });
-      group3.items = [plugin];
-
-      this.dataSource = [group0, group1, group2, group3];
+      this.dataSource = [group0, group1];
     },
 
     // item点击事件
@@ -136,24 +107,10 @@ export default {
     // 登出
     logout() {
       this.showActionSheet = true;
-    },
-    // 配置actionsheet items
-    configItems() {
-      const logoutItem = new ActionSheetItem({
-        title: "退出登录",
-        destructive: true
-      });
-      this.items = [logoutItem];
-    },
-    // actionSheet事件点击
-    didClickItem(index) {
-      if (index === 0) return;
-      this.$router.replace("/current-login");
     }
   },
   components: {
-    common,
-    actionSheet
+    common
   }
 };
 </script>

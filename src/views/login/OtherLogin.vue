@@ -10,38 +10,69 @@
       <!-- 中间内容 -->
       <div class="mh-current-login__container">
         <transition name="left">
-          <div></div>
+          <!-- 手机号登录 -->
           <div
-            class="mh-current-login__cell mh-current-login__password"
+            class="mh-current-login__panel mh-current-login__password"
             key="password"
             v-if="showPasswordWay"
           >
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">密码</label>
+            <h1>手机号登录</h1>
+            <div class="mh-current-login__cell">
+              <div class="mh-current-login__cell-hd">
+                <label class="mh-current-login__label">国家/地区</label>
+              </div>
+              <div class="mh-current-login__cell-bd">
+                <p class="mh-zone-title" @click="skipZoneList">中国</p>
+              </div>
+              <div class="mh-current-login__cell-ft">
+                <img class="mh-right-arrow" src="@/assets/images/common/tableview_arrow_8x13.png">
+              </div>
             </div>
-            <div class="mh-current-login__cell-bd">
-              <input
-                class="mh-current-login__input"
-                type="search"
-                placeholder="请填写QQ密码"
-                v-model="password"
-              >
+            <div class="mh-current-login__cell">
+              <div class="mh-current-login__cell-hd">
+                <div class="mh-zone-code-container">
+                  <label class="zone">+</label>
+                  <input class="mh-current-login__input mh-zone" type="text" v-model="zoneCode">
+                </div>
+              </div>
+              <div class="mh-current-login__cell-bd">
+                <input
+                  class="mh-current-login__input"
+                  type="text"
+                  placeholder="请填写手机号码"
+                  v-model="phone"
+                >
+              </div>
             </div>
           </div>
-          <div class="mh-current-login__cell mh-current-login__captcha" key="captcha" v-else>
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">验证码</label>
+          <!-- 微信号/QQ号/邮箱登录 -->
+          <div class="mh-current-login__panel mh-current-login__captcha" key="captcha" v-else>
+            <h1>微信号/QQ号/邮箱登录</h1>
+            <div class="mh-current-login__cell">
+              <div class="mh-current-login__cell-hd">
+                <label class="mh-current-login__label">账号</label>
+              </div>
+              <div class="mh-current-login__cell-bd">
+                <input
+                  class="mh-current-login__input"
+                  type="search"
+                  placeholder="微信号/QQ号/邮箱"
+                  v-model="account"
+                >
+              </div>
             </div>
-            <div class="mh-current-login__cell-bd">
-              <input
-                class="mh-current-login__input"
-                type="text"
-                placeholder="请输入验证码"
-                v-model="captcha"
-              >
-            </div>
-            <div class="mh-current-login__cell-ft">
-              <button class="mh-current-login__btn">获取验证码</button>
+            <div class="mh-current-login__cell">
+              <div class="mh-current-login__cell-hd">
+                <label class="mh-current-login__label">密码</label>
+              </div>
+              <div class="mh-current-login__cell-bd">
+                <input
+                  class="mh-current-login__input"
+                  type="password"
+                  placeholder="请填写QQ密码"
+                  v-model="password"
+                >
+              </div>
             </div>
           </div>
         </transition>
@@ -51,15 +82,16 @@
         <span @click="changeBtnDidClick">{{ changeLogin }}</span>
       </div>
 
+      <!-- 登陆按钮 -->
       <div class="mh-current-login__login">
         <a
           class="mh-btn mh-btn_primary"
           :class="{'mh-btn_disabled':loginBtnDisabled}"
           @click="login"
-        >登录</a>
+        >{{ loginBtnTitle }}</a>
       </div>
 
-      <!-- 底部更多 -->
+      <!-- 底部更多面板 -->
       <div class="mh-current-login__more">
         <span class="mh-current-login__more-item" @click="itemDidClick(0)">找回密码</span>
         <span class="mh-current-login__more-item" @click="itemDidClick(1)">更多选项</span>
@@ -79,18 +111,27 @@ export default {
   name: "OtherLogin",
   data() {
     return {
-      showActionSheet: false, // 显示ActionSheet
+      // 显示ActionSheet
+      showActionSheet: false,
       items: [],
       // 默认是登录密码
       showPasswordWay: true,
+      // 账号
+      account: "",
       // 密码
       password: "",
-      // 验证码
-      captcha: ""
+      // 地区编号
+      zoneCode: "86",
+      // 手机号
+      phone: ""
     };
   },
   created() {
     this.configItems();
+  },
+  mounted() {
+    console.log(this.$route.name + "  👉  " + window.history.length);
+    console.log(window.history);
   },
   methods: {
     changeBtnDidClick() {
@@ -121,7 +162,7 @@ export default {
       if (idx === 0) return;
       switch (idx) {
         case 1:
-          this.$router.push("/current-login/other-login");
+          this.$router.push({ name: "setting" });
           break;
         case 2:
           break;
@@ -129,18 +170,27 @@ export default {
           break;
       }
     },
-    login() {}
+    // 登陆事件
+    login() {},
+    // 跳转地区列表
+    skipZoneList() {}
   },
   computed: {
     // 切换名称
     changeLogin() {
       return this.showPasswordWay ? "用微信号/QQ号/邮箱登录" : "用手机号登录";
     },
+
+    // loginBtnTitle
+    loginBtnTitle() {
+      return this.showPasswordWay ? "下一步" : "登录";
+    },
+
     // 登录按钮是否无效
     loginBtnDisabled() {
       return this.showPasswordWay
-        ? this.password.length <= 0
-        : this.captcha.length <= 0;
+        ? this.phone.length <= 0
+        : this.account.length <= 0 || this.password.length <= 0;
     }
   },
   components: {
@@ -182,7 +232,18 @@ export default {
   font-size: 17px;
   overflow: hidden;
   position: relative;
-  height: 40px;
+  margin-top: 98px;
+  height: 158px;
+}
+
+.mh-current-login__panel {
+  height: 158px;
+}
+.mh-current-login__panel h1 {
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0 16px;
+  padding-bottom: 42px;
 }
 
 .mh-current-login__cell {
@@ -240,6 +301,50 @@ export default {
   word-break: break-all;
 }
 
+.mh-zone-code-container {
+  width: 80px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.mh-zone-code-container::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  color: #d8d8d8;
+  background-color: #d8d8d8;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleX(0.5);
+  transform: scaleX(0.5);
+  z-index: 2;
+}
+
+.zone {
+  width: initial;
+  display: block;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding-right: 5px;
+}
+.mh-zone.mh-current-login__input {
+  flex: 1;
+}
+
+.mh-zone-title {
+  height: 40px;
+  line-height: 40px;
+}
+
 .mh-current-login__input {
   width: 100%;
   border: 0;
@@ -254,6 +359,22 @@ export default {
   box-sizing: border-box;
 }
 
+.mh-current-login__cell-ft {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.mh-right-arrow {
+  display: inline-block;
+  width: 8px;
+  height: 13px;
+  margin-left: 10px;
+}
+
 .mh-current-login__input::-webkit-outer-spin-button,
 .mh-current-login__input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -261,7 +382,7 @@ export default {
 }
 
 .mh-current-login__change-btn {
-  margin: 5px 16px;
+  margin: 34px 16px 64px;
 }
 .mh-current-login__change-btn span {
   background-color: aqua;

@@ -6,10 +6,11 @@
     <!-- group 身体 -->
     <div class="mh-group-body">
       <a
-        class="mh-cell"
+        class="mh-common__cell"
         v-for="(item,row) in group.items"
         :key="row"
         :class="{'_mh-cell-access':item.tapHighlight}"
+        :style="{'line-height':item.rowHeight}"
         @click="didSelectRow(section,row)"
       >
         <div class="mh-cell-header">
@@ -21,10 +22,20 @@
           </div>
           <div class="mh-footer">
             <p class="mh-subtitle">{{ item.subtitle }}</p>
+            <!-- 二维码 -->
+            <img
+              src="@/assets/images/profile/setting_myQR_36x36.png"
+              width="20px"
+              height="20px"
+              alt
+              v-if="item.type===4"
+            >
+            <!-- 头像 -->
+            <img :src="item.avatar" alt v-if="item.type===3" height="66px" width="66px">
             <img
               class="mh-right-arrow"
               src="@/assets/images/common/tableview_arrow_8x13.png"
-              v-if="item.type===0"
+              v-if="item.type===0 || item.type === 3 || item.type === 4"
             >
             <mt-switch v-if="item.type===2" v-model="item.off"></mt-switch>
           </div>
@@ -37,6 +48,11 @@
 </template>
 
 <script>
+// type 0 ： 默认是 icon+title+subtitle+>
+// type 1 ： 默认是 icon+title+subtitle
+// type 2 ： 默认是 icon+title+switch
+// type 3 ： 默认是 icon+title+avatar
+// type 4 :  默认是 icon+title+qrcode
 import { MHCommonGroup } from "assets/js/MHCommonGroup.js";
 export default {
   name: "common",
@@ -95,6 +111,7 @@ export default {
 /* group body */
 .mh-group-body {
   background-color: #ffffff;
+  /* 如果是单行，设置了 line-height 就不用设置 height属性了 */
   line-height: 56px;
   font-size: 17px;
   overflow: hidden;
@@ -135,7 +152,7 @@ export default {
   z-index: 2;
 }
 
-.mh-cell {
+.mh-common__cell {
   padding: 0px 16px;
   position: relative;
   display: -webkit-box;
@@ -146,7 +163,7 @@ export default {
   align-items: center;
 }
 
-.mh-cell:before {
+.mh-common__cell:before {
   content: " ";
   position: absolute;
   left: 0;
@@ -163,7 +180,7 @@ export default {
   z-index: 2;
 }
 
-.mh-cell:first-child:before {
+.mh-common__cell:first-child:before {
   display: none;
 }
 

@@ -55,3 +55,46 @@
 ._mh-tap-highlight:active {
   background-color: #E5E5E5;
 }
+
+
+
+/* --------👇 mh-cell Start 👇--------*/
+.mh-cell {
+  padding: 0 16px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.mh-cell::before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  color: #d8d8d8;
+  background-color: #d8d8d8;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  left: 16px;
+  z-index: 2;
+}
+
+.mh-cell:first-child::before {
+  display: none;
+}
+
+.mh-cell__bd {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+/* --------👆 mh-cell End 👆--------*/
