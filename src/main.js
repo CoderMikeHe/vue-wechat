@@ -106,5 +106,11 @@ new Vue({
 // 👉JS中如何判断一个对象是否为空对象
 // - [JS中如何判断一个对象是否为空对象](https://blog.csdn.net/qq_38627581/article/details/77353015)
 
+// 👉CSS BEM规范
+// - [编写模块化CSS：BEM](https://www.w3cplus.com/css/css-architecture-1.html)
+// - [BEM入门+精通](https://www.w3cplus.com/blog/tags/325.html)
+// - [BEM quick-start](https://en.bem.info/methodology/quick-start/)
+
+
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
