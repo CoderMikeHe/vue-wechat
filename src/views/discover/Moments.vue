@@ -49,7 +49,12 @@
           </div>
 
           <!-- 评论 -->
-          <div class="mh-moment__comment-wrapper">哈哈哈哈撒哈哈哈啥会撒谎就撒娇的好时机打哈嘎嘎好的噶好大会感到had干哈</div>
+          <div class="moment__comment-wrapper">
+            <div class="comment-wrapper__attitudes">
+              <p v-html="moment.attitudesHtml" @click="xxoo($event)"></p>
+            </div>
+            <div class="comment-wrapper__comments"></div>
+          </div>
         </div>
       </div>
 
@@ -151,6 +156,34 @@ export default {
           element.picsWrapperStyle.width = 86 * 2 + 2 * 6 + "px";
         }
       }
+
+      // 点赞列表
+      element.attitudes_list = element.attitudes_list || [];
+      let len = element.attitudes_list.length;
+      // 用来添加 user
+      let attitudes = [];
+      for (let i = 0; i < len; i++) {
+        // 取出user
+        const user = element.attitudes_list[i];
+
+        Vue.extend({
+          template: template
+        });
+        // 拼接数据
+        let screenNameHtml =
+          "&nbsp;&nbsp;" +
+          "<span :onclick='action'>" +
+          user.screen_name +
+          "</span>";
+        // 添加数据
+        attitudes.push(screenNameHtml);
+      }
+      // 用,拼接 默认是,
+      let attitudesHtml = attitudes.join();
+      element.attitudesHtml = attitudesHtml;
+
+      // 评论列表
+
       // 压栈
       this.moments.push(element);
     });
@@ -179,7 +212,7 @@ export default {
         moment.unfold = true;
         moment.showUnfold = false;
       }
-      console.log("descHeight:" + descHeight);
+      // console.log("descHeight:" + descHeight);
     }
   },
   methods: {
@@ -223,6 +256,14 @@ export default {
     touchstartAction() {
       console.log("tarsss");
       this.tempMoment.showCmt = false;
+    },
+    xxoo(e) {
+      console.log(e);
+      console.log(e.target.nodeName);
+      console.log(e.target.getAttribute("key"));
+    },
+    action() {
+      console.log("----shhshshhs----");
     }
   },
   // 定义一个过滤器
@@ -279,6 +320,10 @@ export default {
     actionSheet,
     MomentOperationMore
   }
+
+  // https://blog.csdn.net/fangdengfu123/article/details/84992278
+  // https://blog.csdn.net/qq_25075279/article/details/84646782
+  // https://blog.csdn.net/qq_31393401/article/details/81017912
 };
 </script>
 
@@ -422,14 +467,14 @@ export default {
 }
 
 /* 评论盒子 */
-.mh-moment__comment-wrapper {
+.moment__comment-wrapper {
   position: relative;
   background-color: #f3f3f5;
   margin-top: 12px;
 }
 
 /* 向上三角形 */
-.mh-moment__comment-wrapper::before {
+.moment__comment-wrapper::before {
   width: 0;
   height: 0;
   position: absolute;
@@ -439,5 +484,18 @@ export default {
   border-width: 0 6px 6px;
   border-color: transparent transparent #f3f3f5 transparent;
   border-style: solid;
+}
+
+.comment-wrapper__attitudes {
+  font-size: 14px;
+  color: black;
+}
+/* https://cn.vuejs.org/v2/api/#v-html */
+.comment-wrapper__attitudes p >>> span {
+  color: #5b6a92;
+}
+
+.comment-wrapper__attitudes p >>> span:active {
+  background-color: #c7c7c7;
 }
 </style>
