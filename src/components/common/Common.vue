@@ -25,8 +25,8 @@
             <!-- 二维码 -->
             <img
               src="@/assets/images/profile/setting_myQR_36x36.png"
-              width="20px"
-              height="20px"
+              width="20"
+              height="20"
               alt
               v-if="item.type===4"
             >

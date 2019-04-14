@@ -20,14 +20,19 @@
         </div>
         <!-- 身体 -->
         <div class="mh-moment__bd">
-          <h3 class="mh-moment__name">{{ moment.user.screen_name }}</h3>
+          <div class="mh-moment__name">
+            <span class="mh-moment--tap-highlight">{{ moment.user.screen_name }}</span>
+          </div>
           <p
             class="mh-moment__content"
             :class="moment.unfold ? 'unfold' : 'fold'"
             ref="content"
           >{{ moment.text }}</p>
           <p class="mh-moment__expand" v-if="moment.showUnfold">
-            <span @click="moment.unfold = !moment.unfold">{{ moment.unfold ? '收起' : '全文' }}</span>
+            <span
+              class="mh-moment--tap-highlight"
+              @click="moment.unfold = !moment.unfold"
+            >{{ moment.unfold ? '收起' : '全文' }}</span>
           </p>
           <!-- 图片九宫格 -->
           <div class="mh-moment__pictures" :style="moment.picsWrapperStyle">
@@ -48,12 +53,24 @@
             <div class="mh-moment__more" @click.stop="moreAction(moment)" @touchstart.stop></div>
           </div>
 
-          <!-- 评论 -->
+          <!-- 点赞or评论 -->
           <div class="moment__comment-wrapper">
-            <div class="comment-wrapper__attitudes">
-              <p v-html="moment.attitudesHtml" @click="xxoo($event)"></p>
-            </div>
-            <div class="comment-wrapper__comments"></div>
+            <!-- 点赞列表 -->
+            <div
+              class="comment-wrapper__attitudes"
+              v-html="moment.attitudesHtml"
+              @click="xxoo($event)"
+            ></div>
+            <!-- 评论列表 -->
+            <div
+              class="comment-wrapper__comment"
+              v-for="(cmt, idx) in moment.comments_list"
+              :key="idx"
+              v-html="cmt.commentHtml"
+              @click="abcd"
+            ></div>
+            <!-- 分割线 -->
+            <div class="comment-wrapper__line"></div>
           </div>
         </div>
       </div>
@@ -159,30 +176,46 @@ export default {
 
       // 点赞列表
       element.attitudes_list = element.attitudes_list || [];
-      let len = element.attitudes_list.length;
+      let len1 = element.attitudes_list.length;
       // 用来添加 user
       let attitudes = [];
-      for (let i = 0; i < len; i++) {
+      for (let i = 0; i < len1; i++) {
         // 取出user
         const user = element.attitudes_list[i];
-
-        Vue.extend({
-          template: template
-        });
         // 拼接数据
         let screenNameHtml =
-          "&nbsp;&nbsp;" +
-          "<span :onclick='action'>" +
-          user.screen_name +
-          "</span>";
+          "&nbsp;&nbsp;" + "<span>" + user.screen_name + "</span>";
         // 添加数据
         attitudes.push(screenNameHtml);
       }
       // 用,拼接 默认是,
       let attitudesHtml = attitudes.join();
-      element.attitudesHtml = attitudesHtml;
+      element.attitudesHtml =
+        "<img src=" +
+        require("../../assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
+        " width='15' height='15'>" +
+        attitudesHtml;
 
       // 评论列表
+      element.comments_list = element.comments_list || [];
+      let len2 = element.comments_list.length;
+      for (let i = 0; i < len2; i++) {
+        // 取出comment
+        const comment = element.comments_list[i];
+        // 评论内容
+        let text = "：" + comment.text;
+        // 来源
+        let fromUser = "<span>" + comment.from_user.screen_name + "</span>";
+        // 是否有toUser
+        let toUser = "";
+        if (comment.to_user) {
+          toUser = "回复" + "<span>" + comment.to_user.screen_name + "</span>";
+        }
+        // 评论内容
+        let commentHtml = fromUser + toUser + text;
+        // 拓展属性
+        comment.commentHtml = commentHtml;
+      }
 
       // 压栈
       this.moments.push(element);
@@ -264,6 +297,14 @@ export default {
     },
     action() {
       console.log("----shhshshhs----");
+    },
+    abcd(e) {
+      console.log(e);
+      console.log(e.target.nodeName);
+      e.stopPropagation();
+      if (e.target.nodeName === "SPAN") {
+        console.log("commeee");
+      }
     }
   },
   // 定义一个过滤器
@@ -341,9 +382,18 @@ export default {
   height: 40px;
 }
 
+/* 点击高亮 */
+.mh-moment--tap-highlight {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  color: inherit;
+}
+.mh-moment--tap-highlight:active {
+  background-color: #c7c7c5;
+}
+
 /* 单条说说--Start */
 .mh-moment {
-  padding: 10px 20px;
+  padding: 10px 20px 0;
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -353,6 +403,7 @@ export default {
   align-items: flex-start;
 
   background-color: #fff;
+  font-size: 16px;
 }
 
 .mh-moment::after {
@@ -385,26 +436,33 @@ export default {
 }
 
 .mh-moment__name {
-  color: #5b6a92;
+  color: #5b6a91;
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 8px;
 }
 
-.mh-moment__expand {
-  color: #5b6a92;
-}
 .mh-moment__content {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 20px;
+  font-size: 16px;
 }
-
 .mh-moment__content.fold {
   -webkit-line-clamp: 5;
 }
 
 .mh-moment__content.unfold {
   -webkit-line-clamp: 100;
+}
+
+/* 全文/收齐 */
+.mh-moment__expand {
+  color: #5b6a91;
+  height: 40px;
+  line-height: 40px;
 }
 
 .mh-moment__pictures {
@@ -441,6 +499,8 @@ export default {
 
   justify-content: space-between;
   -webkit-justify-content: space-between;
+
+  height: 43px;
 }
 
 .more-wrapper__operation {
@@ -449,8 +509,8 @@ export default {
 }
 
 .mh-moment__time {
-  color: #737373;
-  font-size: 12px;
+  color: #b2b2b2;
+  font-size: 14px;
 }
 .mh-moment__more {
   background-image: url("../../assets/images/moments/wx_albumOperateMore_25x25.png");
@@ -470,7 +530,6 @@ export default {
 .moment__comment-wrapper {
   position: relative;
   background-color: #f3f3f5;
-  margin-top: 12px;
 }
 
 /* 向上三角形 */
@@ -484,18 +543,58 @@ export default {
   border-width: 0 6px 6px;
   border-color: transparent transparent #f3f3f5 transparent;
   border-style: solid;
+  z-index: 2;
 }
 
-.comment-wrapper__attitudes {
+/* 点赞 */
+.comment-wrapper__attitudes,
+.comment-wrapper__comment {
+  position: relative;
   font-size: 14px;
   color: black;
-}
-/* https://cn.vuejs.org/v2/api/#v-html */
-.comment-wrapper__attitudes p >>> span {
-  color: #5b6a92;
+  padding: 6px 10px;
+  line-height: 18px;
 }
 
-.comment-wrapper__attitudes p >>> span:active {
+.comment-wrapper__attitudes::after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  color: rgb(236, 236, 236);
+  background-color: rgb(236, 236, 236);
+  z-index: 2;
+}
+
+/* https://cn.vuejs.org/v2/api/#v-html */
+.comment-wrapper__attitudes >>> span {
+  color: #5b6a91;
+  font-weight: 500;
+}
+.comment-wrapper__attitudes >>> span:active {
+  background-color: #c7c7c5;
+}
+.comment-wrapper__attitudes >>> img {
+  vertical-align: text-top;
+}
+
+/* 问题： 父元素有 active ，子元素 也有active 会同时响应 */
+.comment-wrapper__comment:active {
+  background-color: #ced2de;
+}
+.comment-wrapper__comment >>> span {
+  color: #5b6a91;
+  font-weight: 500;
+}
+.comment-wrapper__comment >>> span:active {
   background-color: #c7c7c7;
 }
+.comment-wrapper__line {
+  background-color: #fff;
+  height: 16px;
+}
+
+/* 评论 */
 </style>
