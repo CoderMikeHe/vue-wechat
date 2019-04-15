@@ -111,6 +111,60 @@ new Vue({
 // - [BEM入门+精通](https://www.w3cplus.com/blog/tags/325.html)
 // - [BEM quick-start](https://en.bem.info/methodology/quick-start/)
 
+// 👉谷歌跨域问题
+// - [Mac上解决Chrome浏览器跨域问题](https://www.jianshu.com/p/2db73311fcbe)
 
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
+
+{
+  "explorer.confirmDragAndDrop": false,
+  "workbench.sideBar.location": "left",
+  "workbench.editor.showTabs": false,
+  "editor.fontSize": 18,
+  "explorer.confirmDelete": false,
+  "editor.tabSize": 2,
+  "window.restoreWindows": "all",
+  "editor.formatOnSave": true,
+  "css.fileExtensions": ["css", "scss"],
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "diffEditor.ignoreTrimWhitespace": true,
+  "files.autoSave": "off",
+  "workbench.iconTheme": "vscode-icons",
+
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ]
+}
