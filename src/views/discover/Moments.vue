@@ -16,23 +16,28 @@
         <!-- 头部 -->
         <div class="mh-moment__hd">
           <!-- 头像 -->
-          <img :src="moment.user.profile_image_url" alt>
+          <img :src="moment.user.profile_image_url" alt />
         </div>
         <!-- 身体 -->
         <div class="mh-moment__bd">
           <div class="mh-moment__name">
-            <span class="mh-moment--tap-highlight">{{ moment.user.screen_name }}</span>
+            <span class="mh-moment--tap-highlight">{{
+              moment.user.screen_name
+            }}</span>
           </div>
           <p
             class="mh-moment__content"
             :class="moment.unfold ? 'unfold' : 'fold'"
             ref="content"
-          >{{ moment.text }}</p>
+          >
+            {{ moment.text }}
+          </p>
           <p class="mh-moment__expand" v-if="moment.showUnfold">
             <span
               class="mh-moment--tap-highlight"
               @click="moment.unfold = !moment.unfold"
-            >{{ moment.unfold ? '收起' : '全文' }}</span>
+              >{{ moment.unfold ? "收起" : "全文" }}</span
+            >
           </p>
           <!-- 图片九宫格 -->
           <div class="mh-moment__pictures" :style="moment.picsWrapperStyle">
@@ -48,9 +53,16 @@
           <div class="mh-moment__more-wrapper">
             <p class="mh-moment__time">{{ moment.created_at | dateFormat }}</p>
             <transition name="fade">
-              <MomentOperationMore class="more-wrapper__operation" v-if="moment.showCmt"></MomentOperationMore>
+              <MomentOperationMore
+                class="more-wrapper__operation"
+                v-if="moment.showCmt"
+              ></MomentOperationMore>
             </transition>
-            <div class="mh-moment__more" @click.stop="moreAction(moment)" @touchstart.stop></div>
+            <div
+              class="mh-moment__more"
+              @click.stop="moreAction(moment)"
+              @touchstart.stop
+            ></div>
           </div>
 
           <!-- 点赞or评论 -->
@@ -76,7 +88,11 @@
       </div>
 
       <!-- ActionSheet -->
-      <actionSheet v-model="showActionSheet" @did-click-item="didClickItem" :items="items"></actionSheet>
+      <actionSheet
+        v-model="showActionSheet"
+        @did-click-item="didClickItem"
+        :items="items"
+      ></actionSheet>
     </div>
   </div>
 </template>
@@ -88,7 +104,6 @@ import actionSheet, {
 } from "components/actionSheet/ActionSheet";
 
 import MHMoments from "../../assets/js/MHMoments.js";
-
 import MomentOperationMore from "./MomentOperationMore";
 
 export default {
@@ -104,7 +119,8 @@ export default {
       expanded: false,
 
       // 当前显示的moment
-      tempMoment: {}
+      tempMoment: {},
+      ets: ""
     };
   },
   created() {
