@@ -104,7 +104,6 @@ import actionSheet, {
 } from "components/actionSheet/ActionSheet";
 
 import MHMoments from "../../assets/js/MHMoments.js";
-
 import MomentOperationMore from "./MomentOperationMore";
 
 export default {
@@ -120,7 +119,8 @@ export default {
       expanded: false,
 
       // 当前显示的moment
-      tempMoment: {}
+      tempMoment: {},
+      ets: ""
     };
   },
   created() {
