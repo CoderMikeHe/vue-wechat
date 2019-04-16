@@ -1,12 +1,12 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 // 导入animate.css
-import "animate.css"
+import 'animate.css'
 
 // 导入mui
 // 导入 MUI 的样式
@@ -15,43 +15,42 @@ import "animate.css"
 // import "./assets/vendor/mui/css/icons-extra.css";
 
 // 导入全部mint-ui
-import Mint from "mint-ui";
-import 'mint-ui/lib/style.css';
-Vue.use(Mint);
+import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(Mint)
 
 // 导入weui
-import "weui";
+import 'weui'
 
 // 全局app常量css
-import './assets/css/common.css';
-import './assets/css/wechat.css';
-import "./assets/css/iconfont.css";
+import './assets/css/common.css'
+import './assets/css/wechat.css'
+import './assets/css/iconfont.css'
 
 // 全局导航栏
-import NavigationBar from "components/navigationBar";
-Vue.use(NavigationBar);
+import NavigationBar from 'components/navigationBar'
+Vue.use(NavigationBar)
 
-import utils from "assets/utils/utils";
-Vue.use(utils);
+import utils from 'assets/utils/utils'
+Vue.use(utils)
 
 // 配置偏好设置
 import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
-MHPreferenceSettingHelper.initialize();
+MHPreferenceSettingHelper.initialize()
 
 // 获取用户信息
-let user = MHPreferenceSettingHelper.getItem('491273090') || {};
+let user = MHPreferenceSettingHelper.getItem('491273090') || {}
 if (Object.keys(user).length === 0) {
-  router.replace('/current-login');
+  router.replace('/current-login')
 } else {
-  router.replace('/mainframe');
+  router.replace('/mainframe')
 }
 
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount("#app");
-
+}).$mount('#app')
 
 // {
 //   "workbench.iconTheme": "vscode-icons",
@@ -116,3 +115,65 @@ new Vue({
 
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
+
+/** 
+ * 
+ * {
+  "explorer.confirmDragAndDrop": false,
+  "workbench.sideBar.location": "left",
+  "workbench.editor.showTabs": false,
+  "editor.fontSize": 18,
+  "explorer.confirmDelete": false,
+  "editor.tabSize": 2,
+  "window.restoreWindows": "all",
+  "editor.formatOnSave": true,
+  "css.fileExtensions": ["css", "scss"],
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "diffEditor.ignoreTrimWhitespace": true,
+  "files.autoSave": "off",
+  "workbench.iconTheme": "vscode-icons",
+
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ],
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+
+*/
