@@ -1,6 +1,9 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
+  <div
+    class="_full-container"
+    @touchstart="touchstartAction"
+  >
     <div class="_full-content _content-padding-top44">
       <!-- 导航栏 -->
       <NavigationBar
@@ -12,35 +15,56 @@
       ></NavigationBar>
 
       <!-- 单条说说 -->
-      <div class="mh-moment" v-for="(moment, index) in moments" :key="index">
+      <div
+        class="mh-moment"
+        v-for="(moment, index) in moments"
+        :key="index"
+      >
         <!-- 头部 -->
         <div class="mh-moment__hd">
           <!-- 头像 -->
-          <img :src="moment.user.profile_image_url" alt />
+          <img
+            :src="moment.user.profile_image_url"
+            alt
+          />
         </div>
         <!-- 身体 -->
         <div class="mh-moment__bd">
           <div class="mh-moment__name">
             <span class="mh-moment--tap-highlight">{{
               moment.user.screen_name
-            }}</span>
+              }}</span>
           </div>
-          <p
-            class="mh-moment__content"
-            :class="moment.unfold ? 'unfold' : 'fold'"
-            ref="content"
+          <!-- 正文 -->
+          <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
+          <div
+            class="moment__content-wrapper"
+            v-show="moment.text && moment.text.length > 0"
           >
-            {{ moment.text }}
-          </p>
-          <p class="mh-moment__expand" v-if="moment.showUnfold">
-            <span
-              class="mh-moment--tap-highlight"
-              @click="moment.unfold = !moment.unfold"
-              >{{ moment.unfold ? "收起" : "全文" }}</span
+            <p
+              class="mh-moment__content"
+              :class="moment.unfold ? 'unfold' : 'fold'"
+              ref="content"
             >
-          </p>
+              {{ moment.text || "" }}
+            </p>
+            <p
+              class="mh-moment__expand"
+              v-if="moment.showUnfold"
+            >
+              <span
+                class="mh-moment--tap-highlight"
+                @click="moment.unfold = !moment.unfold"
+              >{{ moment.unfold ? "收起" : "全文" }}</span>
+            </p>
+          </div>
+
           <!-- 图片九宫格 -->
-          <div class="mh-moment__pictures" :style="moment.picsWrapperStyle">
+          <div
+            class="mh-moment__pictures"
+            :style="moment.picsWrapperStyle"
+            v-if="moment.pic_infos.length > 0"
+          >
             <div
               class="mh-moment__pic"
               v-for="(pic, idx) in moment.pic_infos"
@@ -48,14 +72,24 @@
               :style="pic.picStyle"
             ></div>
           </div>
+          <!-- 地理位置 -->
+          <div
+            class="moment__location-wrapper"
+            v-if="moment.location && moment.location.length > 0"
+          >
+            <span class="mh-moment--tap-highlight">{{ moment.location }}</span>
+          </div>
 
           <!-- 时间/来源/更多 -->
           <div class="mh-moment__more-wrapper">
             <p class="mh-moment__time">{{ moment.created_at | dateFormat }}</p>
             <transition name="fade">
+              <!-- $event 当在父级组件监听这个事件的时候，我们可以通过 $event 访问到被抛出的这个值 -->
               <MomentOperationMore
                 class="more-wrapper__operation"
                 v-if="moment.showCmt"
+                :thumbed="moment.attitudes_status"
+                @thumb-click="thumbAction(moment, $event)"
               ></MomentOperationMore>
             </transition>
             <div
@@ -65,22 +99,34 @@
             ></div>
           </div>
 
-          <!-- 点赞or评论 -->
-          <div class="moment__comment-wrapper">
+          <!-- 点赞or评论 列表 -->
+          <div
+            class="moment__comment-wrapper"
+            v-if="
+              moment.attitudes_list.length > 0 &&
+                moment.comments_list.length > 0
+            "
+          >
             <!-- 点赞列表 -->
             <div
               class="comment-wrapper__attitudes"
               v-html="moment.attitudesHtml"
               @click="xxoo($event)"
+              v-if="moment.attitudes_list.length > 0"
             ></div>
             <!-- 评论列表 -->
             <div
-              class="comment-wrapper__comment"
-              v-for="(cmt, idx) in moment.comments_list"
-              :key="idx"
-              v-html="cmt.commentHtml"
-              @click="abcd"
-            ></div>
+              class="comment-wrapper__comments"
+              v-if="moment.comments_list.length > 0"
+            >
+              <div
+                class="comment-wrapper__comment"
+                v-for="(cmt, idx) in moment.comments_list"
+                :key="idx"
+                v-html="cmt.commentHtml"
+                @click="abcd"
+              ></div>
+            </div>
             <!-- 分割线 -->
             <div class="comment-wrapper__line"></div>
           </div>
@@ -246,6 +292,9 @@ export default {
 
     // 获取DOM元素列表
     let length = this.$refs.content.length;
+
+    console.log("dom --length is " + length);
+
     for (let index = 0; index < length; index++) {
       const element = this.$refs.content[index];
       const moment = this.moments[index];
@@ -321,6 +370,10 @@ export default {
       if (e.target.nodeName === "SPAN") {
         console.log("commeee");
       }
+    },
+    thumbAction(moment, thumb) {
+      moment.showCmt = false;
+      moment.attitudes_status = thumb;
     }
   },
   // 定义一个过滤器
@@ -455,9 +508,12 @@ export default {
   color: #5b6a91;
   font-size: 16px;
   font-weight: 500;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
+.moment__content-wrapper {
+  padding-bottom: 10px;
+}
 .mh-moment__content {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -477,8 +533,7 @@ export default {
 /* 全文/收齐 */
 .mh-moment__expand {
   color: #5b6a91;
-  height: 40px;
-  line-height: 40px;
+  padding-top: 10px;
 }
 
 .mh-moment__pictures {
@@ -503,6 +558,13 @@ export default {
   background-repeat: no-repeat;
   background-position: center center;
 }
+
+.moment__location-wrapper {
+  padding-top: 5px;
+  color: #5b6a91;
+  font-size: 14px;
+}
+
 .mh-moment__more-wrapper {
   position: relative;
   display: -webkit-box;
@@ -516,7 +578,7 @@ export default {
   justify-content: space-between;
   -webkit-justify-content: space-between;
 
-  height: 43px;
+  height: 41px;
 }
 
 .more-wrapper__operation {

@@ -6,9 +6,7 @@ export default {
     };
   },
   methods: {
-    fuck() {
-      console.log("object");
-    }
+    fuck() {}
   }
 };
 </script>

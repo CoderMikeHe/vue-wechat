@@ -1,15 +1,19 @@
 <template>
   <div class="mh-more__wrapper" @touchstart.stop>
     <div class="mh-more__thumb" @click="thumbAction">
-      <!-- :css="false" 加了这个没动画 -->
-      <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <!-- 🔥 :css="false" 为什么加了这个就没动画了 -->
+      <transition
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @after-enter="afterEnter"
+      >
         <img
           v-if="show"
           src="../../assets/images/moments/wx_albumLikeHL_20x20.png"
           class="mh-more__ani-pic"
-        >
+        />
       </transition>
-      {{ thumbed?'赞':'赞' }}
+      {{ liked ? "取消" : "赞" }}
     </div>
     <div class="mh-more__line"></div>
     <div class="mh-more__comment">评论</div>
@@ -18,18 +22,25 @@
 
 <script>
 export default {
-  name: "More",
+  name: "MomentOperationMore",
+  props: {
+    thumbed: Number
+  },
   data() {
     return {
-      thumbTitle: "赞",
-      thumbed: false,
+      liked: this.thumbed > 0 ? true : false,
       show: false
     };
   },
   methods: {
     thumbAction() {
-      this.thumbed = !this.thumbed;
+      this.liked = !this.liked;
       this.show = true;
+      // 加个延迟，效果贼赞
+      setTimeout(() => {
+        // 向外抛事件
+        this.$emit("thumb-click", this.liked ? 1 : 0);
+      }, 250);
     },
     // 注意： 动画钩子函数的第一个参数：el，表示 要执行动画的那个DOM元素，是个原生的 JS DOM对象
     // 大家可以认为 ， el 是通过 document.getElementById('') 方式获取到的原生JS DOM对象
@@ -45,12 +56,10 @@ export default {
       // enter 表示动画 开始之后的样式，这里，可以设置爱心完成动画之后的，结束状态
       el.style.transform = "scale(2.5, 2.5)";
       el.style.transition = "transform .25s ease-in-out";
-
-      console.log("object");
       // 这里的 done， 起始就是 afterEnter 这个函数，也就是说：done 是 afterEnter 函数的引用
       done();
     },
-    afterEnter(el) {
+    afterEnter() {
       // 动画完成之后，会调用 afterEnter
       this.show = false;
     }
