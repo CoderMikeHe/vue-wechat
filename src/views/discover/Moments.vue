@@ -1,9 +1,6 @@
 // 朋友圈
 <template>
-  <div
-    class="_full-container"
-    @touchstart="touchstartAction"
-  >
+  <div class="_full-container" @touchstart="touchstartAction">
     <div class="_full-content _content-padding-top44">
       <!-- 导航栏 -->
       <NavigationBar
@@ -15,25 +12,18 @@
       ></NavigationBar>
 
       <!-- 单条说说 -->
-      <div
-        class="mh-moment"
-        v-for="(moment, index) in moments"
-        :key="index"
-      >
+      <div class="mh-moment" v-for="(moment, index) in moments" :key="index">
         <!-- 头部 -->
         <div class="mh-moment__hd">
           <!-- 头像 -->
-          <img
-            :src="moment.user.profile_image_url"
-            alt
-          />
+          <img :src="moment.user.profile_image_url" alt />
         </div>
         <!-- 身体 -->
         <div class="mh-moment__bd">
           <div class="mh-moment__name">
             <span class="mh-moment--tap-highlight">{{
               moment.user.screen_name
-              }}</span>
+            }}</span>
           </div>
           <!-- 正文 -->
           <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -48,14 +38,12 @@
             >
               {{ moment.text || "" }}
             </p>
-            <p
-              class="mh-moment__expand"
-              v-if="moment.showUnfold"
-            >
+            <p class="mh-moment__expand" v-if="moment.showUnfold">
               <span
                 class="mh-moment--tap-highlight"
                 @click="moment.unfold = !moment.unfold"
-              >{{ moment.unfold ? "收起" : "全文" }}</span>
+                >{{ moment.unfold ? "收起" : "全文" }}</span
+              >
             </p>
           </div>
 
@@ -374,6 +362,8 @@ export default {
     thumbAction(moment, thumb) {
       moment.showCmt = false;
       moment.attitudes_status = thumb;
+
+      //
     }
   },
   // 定义一个过滤器
