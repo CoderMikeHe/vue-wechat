@@ -6,6 +6,7 @@
       :right-item="moreItem"
       @left-click="$router.back()"
       @right-click="rightItemClick"
+      style="background-color:#FFF"
     ></NavigationBar>
     <div class="_full-content _content-padding-top44">
       <section class="mh-contact-info">
@@ -90,7 +91,10 @@
             <span class="iconfont icon-contact-info-message">&nbsp;</span>发消息
           </p>
         </div>
-        <div class="mh-contact-info__cell" @click="chat">
+        <div
+          class="mh-contact-info__cell"
+          @click="chat"
+        >
           <p class="mh-contact-info__cell-center-title">
             <span class="iconfont icon-contact-info-video">&nbsp;</span>音视频通话
           </p>
@@ -98,7 +102,11 @@
       </section>
 
       <!-- ActionSheet -->
-      <actionSheet v-model="showActionSheet" @did-click-item="didClickItem" :items="items"></actionSheet>
+      <actionSheet
+        v-model="showActionSheet"
+        @did-click-item="didClickItem"
+        :items="items"
+      ></actionSheet>
     </div>
   </div>
 </template>

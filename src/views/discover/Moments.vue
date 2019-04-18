@@ -12,111 +12,131 @@
       ></NavigationBar>
 
       <!-- 单条说说 -->
-      <div class="mh-moment" v-for="(moment, index) in moments" :key="index">
-        <!-- 头部 -->
-        <div class="mh-moment__hd">
-          <!-- 头像 -->
-          <img :src="moment.user.profile_image_url" alt />
-        </div>
-        <!-- 身体 -->
-        <div class="mh-moment__bd">
-          <div class="mh-moment__name">
-            <span class="mh-moment--tap-highlight">{{
-              moment.user.screen_name
-            }}</span>
+      <div
+        class="moment__wrapper"
+        @touchstart="startDrag"
+        @touchmove="onDrag"
+        @touchend="stopDrag"
+        @touchcancel="stopDrag"
+      >
+        <div class="mh-moment" v-for="(moment, index) in moments" :key="index">
+          <!-- 头部 -->
+          <div class="mh-moment__hd">
+            <!-- 头像 -->
+            <img
+              :src="moment.user.profile_image_url"
+              alt
+              @click="skipToContactInfo(moment)"
+            />
           </div>
-          <!-- 正文 -->
-          <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
-          <div
-            class="moment__content-wrapper"
-            v-show="moment.text && moment.text.length > 0"
-          >
-            <p
-              class="mh-moment__content"
-              :class="moment.unfold ? 'unfold' : 'fold'"
-              ref="content"
-            >
-              {{ moment.text || "" }}
-            </p>
-            <p class="mh-moment__expand" v-if="moment.showUnfold">
+          <!-- 身体 -->
+          <div class="mh-moment__bd">
+            <div class="mh-moment__name">
               <span
                 class="mh-moment--tap-highlight"
-                @click="moment.unfold = !moment.unfold"
-                >{{ moment.unfold ? "收起" : "全文" }}</span
+                @click="skipToContactInfo(moment)"
+                >{{ moment.user.screen_name }}</span
               >
-            </p>
-          </div>
+            </div>
+            <!-- 正文 -->
+            <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
+            <div
+              class="moment__content-wrapper"
+              v-show="moment.text && moment.text.length > 0"
+            >
+              <p
+                class="mh-moment__content"
+                :class="moment.unfold ? 'unfold' : 'fold'"
+                ref="content"
+              >
+                {{ moment.text || "" }}
+              </p>
+              <p class="mh-moment__expand" v-if="moment.showUnfold">
+                <span
+                  class="mh-moment--tap-highlight"
+                  @click="moment.unfold = !moment.unfold"
+                  >{{ moment.unfold ? "收起" : "全文" }}</span
+                >
+              </p>
+            </div>
 
-          <!-- 图片九宫格 -->
-          <div
-            class="mh-moment__pictures"
-            :style="moment.picsWrapperStyle"
-            v-if="moment.pic_infos.length > 0"
-          >
+            <!-- 图片九宫格 -->
             <div
-              class="mh-moment__pic"
-              v-for="(pic, idx) in moment.pic_infos"
-              :key="idx"
-              :style="pic.picStyle"
-            ></div>
-          </div>
-          <!-- 地理位置 -->
-          <div
-            class="moment__location-wrapper"
-            v-if="moment.location && moment.location.length > 0"
-          >
-            <span class="mh-moment--tap-highlight">{{ moment.location }}</span>
-          </div>
-
-          <!-- 时间/来源/更多 -->
-          <div class="mh-moment__more-wrapper">
-            <p class="mh-moment__time">{{ moment.created_at | dateFormat }}</p>
-            <transition name="fade">
-              <!-- $event 当在父级组件监听这个事件的时候，我们可以通过 $event 访问到被抛出的这个值 -->
-              <MomentOperationMore
-                class="more-wrapper__operation"
-                v-if="moment.showCmt"
-                :thumbed="moment.attitudes_status"
-                @thumb-click="thumbAction(moment, $event)"
-              ></MomentOperationMore>
-            </transition>
-            <div
-              class="mh-moment__more"
-              @click.stop="moreAction(moment)"
-              @touchstart.stop
-            ></div>
-          </div>
-
-          <!-- 点赞or评论 列表 -->
-          <div
-            class="moment__comment-wrapper"
-            v-if="
-              moment.attitudes_list.length > 0 &&
-                moment.comments_list.length > 0
-            "
-          >
-            <!-- 点赞列表 -->
-            <div
-              class="comment-wrapper__attitudes"
-              v-html="moment.attitudesHtml"
-              @click="xxoo($event)"
-              v-if="moment.attitudes_list.length > 0"
-            ></div>
-            <!-- 评论列表 -->
-            <div
-              class="comment-wrapper__comments"
-              v-if="moment.comments_list.length > 0"
+              class="mh-moment__pictures"
+              :style="moment.picsWrapperStyle"
+              v-if="moment.pic_infos.length > 0"
             >
               <div
-                class="comment-wrapper__comment"
-                v-for="(cmt, idx) in moment.comments_list"
+                class="mh-moment__pic"
+                v-for="(pic, idx) in moment.pic_infos"
                 :key="idx"
-                v-html="cmt.commentHtml"
-                @click="abcd"
+                :style="pic.picStyle"
               ></div>
             </div>
-            <!-- 分割线 -->
-            <div class="comment-wrapper__line"></div>
+            <!-- 地理位置 -->
+            <div
+              class="moment__location-wrapper"
+              v-if="moment.location && moment.location.length > 0"
+            >
+              <span class="mh-moment--tap-highlight">{{
+                moment.location
+              }}</span>
+            </div>
+
+            <!-- 时间/来源/更多 -->
+            <div class="mh-moment__more-wrapper">
+              <p class="mh-moment__time">
+                {{ moment.created_at | dateFormat }}
+              </p>
+              <transition name="fade">
+                <!-- $event 当在父级组件监听这个事件的时候，我们可以通过 $event 访问到被抛出的这个值 -->
+                <MomentOperationMore
+                  class="more-wrapper__operation"
+                  v-if="moment.showCmt"
+                  :thumbed="moment.attitudes_status"
+                  @thumb-click="thumbAction(moment, $event)"
+                  @comment-click="commentAction(moment)"
+                ></MomentOperationMore>
+              </transition>
+              <div
+                class="mh-moment__more"
+                @click.stop="moreBtnAction(moment)"
+                @touchstart.stop
+              ></div>
+            </div>
+
+            <!-- 点赞or评论 列表 -->
+            <div
+              class="moment__comment-wrapper"
+              v-if="
+                moment.attitudes_list.length > 0 ||
+                  moment.comments_list.length > 0
+              "
+            >
+              <!-- 点赞列表 -->
+              <div
+                class="comment-wrapper__attitudes"
+                v-html="moment.attitudesHtml"
+                @click="xxoo($event)"
+                v-if="moment.attitudes_list.length > 0"
+              ></div>
+              <!-- 评论列表 -->
+              <div
+                class="comment-wrapper__comments"
+                v-if="moment.comments_list.length > 0"
+              >
+                <!-- 这里事件把 index idx 都传出去 -->
+                <div
+                  class="comment-wrapper__comment"
+                  v-for="(cmt, idx) in moment.comments_list"
+                  :key="idx"
+                  v-html="cmt.commentHtml"
+                  @click="commentItemDidClick(index, idx, $event)"
+                ></div>
+              </div>
+              <!-- 分割线 -->
+              <div class="comment-wrapper__line"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -139,30 +159,54 @@ import actionSheet, {
 
 import MHMoments from "../../assets/js/MHMoments.js";
 import MomentOperationMore from "./MomentOperationMore";
-
+import { mapState } from "vuex";
 export default {
   name: "moments",
   data() {
     return {
       moreItem: moreItem,
-      items: [],
+
       moments: [],
+      // actionSheet 的数据源
+      items: [],
       // 显示ActionSheet
       showActionSheet: false,
+      // 更多items
+      moreItems: [],
+      showMore: false,
+      // delItems
+      delItems: [],
+      showDel: false,
+
       // 全文或收起
       expanded: false,
 
       // 当前显示的moment
       tempMoment: {},
-      ets: ""
+      // 点赞列表爱心
+      attitudesIcon:
+        "<img src=" +
+        require("../../assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
+        " width='15' height='15'>",
+      // 要删除的评论数据的索引 {section , row}
+      delCmtIndexPath: {}
     };
   },
+  destroyed() {
+    console.log("++++++ 我已牺牲 ++++++");
+  },
   created() {
+    console.log("++++++ 重新创建 ++++++");
+
     // 配置action-sheet item
     this.configItems();
 
     // 数据额外处理
-    MHMoments.moments.forEach(element => {
+    MHMoments.moments.forEach((element, iii) => {
+      if (iii === 0) {
+        console.log("数据快报");
+        console.log(element);
+      }
       // 增加辅助属性
       // 全文/收起 <默认让其全部展开，以便获取到文本的最大高度>
       element.unfold = true;
@@ -227,8 +271,10 @@ export default {
       // 点赞列表
       element.attitudes_list = element.attitudes_list || [];
       let len1 = element.attitudes_list.length;
-      // 用来添加 user
+      // 用来添加地点赞 user
       let attitudes = [];
+      // 不管有木有点赞，先给我拼个 点赞❤️
+      element.attitudesHtml = this.attitudesIcon;
       for (let i = 0; i < len1; i++) {
         // 取出user
         const user = element.attitudes_list[i];
@@ -238,13 +284,12 @@ export default {
         // 添加数据
         attitudes.push(screenNameHtml);
       }
-      // 用,拼接 默认是,
-      let attitudesHtml = attitudes.join();
-      element.attitudesHtml =
-        "<img src=" +
-        require("../../assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
-        " width='15' height='15'>" +
-        attitudesHtml;
+      if (attitudes.length > 0) {
+        // 用,拼接 默认是按,拼接
+        let attitudesHtml = attitudes.join();
+        //  辅助属性
+        element.attitudesHtml = element.attitudesHtml + attitudesHtml;
+      }
 
       // 评论列表
       element.comments_list = element.comments_list || [];
@@ -302,7 +347,28 @@ export default {
     }
   },
   methods: {
+    // https://blog.csdn.net/qq_34439125/article/details/85602508
+    // https://www.jianshu.com/p/0fed94bb1239
+    // https://www.cnblogs.com/qq120848369/p/6651096.html
+    // https://www.cnblogs.com/winyh/p/6714923.html
+    // https://www.cnblogs.com/fengfan/p/4506555.html
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/Touch_events
+    // 开始拖拽
+    startDrag(e) {
+      console.log("startDrag");
+      console.log(e);
+    },
+    onDrag(e) {
+      console.log("onDrag");
+    },
+    stopDrag(e) {
+      console.log("stopDrag");
+    },
+
+    // 导航栏有按钮点击事件
     rightItemClick() {
+      this.items = this.moreItems;
+      this.showMore = true;
       this.showActionSheet = true;
     },
     // 配置 actionsheet items
@@ -314,12 +380,53 @@ export default {
       const album = new ActionSheetItem({
         title: "从手机相册选取"
       });
-      this.items = [takePhoto, album];
+      const del = new ActionSheetItem({
+        title: "删除",
+        destructive: true
+      });
+
+      // 引用数组
+      this.moreItems = [takePhoto, album];
+      this.delItems = [del];
     },
+    // actionSheet事件点击
     didClickItem(index) {
       console.log(index);
+      if (index === 0) {
+        // 取消按钮
+        this.items = [];
+        this.showMore = false;
+        this.showDel = false;
+        this.delCmtIndexPath = {};
+        return;
+      }
+      // 如果是弹出删除
+      if (this.showDel) {
+        this.showDel = false;
+        // 调用删除评论事件
+        this.deleteComment(this.delCmtIndexPath);
+        this.delCmtIndexPath = {};
+      }
     },
-    moreAction(moment) {
+    // 删除评论数据
+    deleteComment(indexPath) {
+      // 删除数据 容错处理
+      indexPath = indexPath || {};
+      if (Object.keys(indexPath).length === 0) return;
+      // 取出moment
+      const moment = this.moments[indexPath.section];
+      // 取出评论数据
+      const comment = moment.comments_list[indexPath.row];
+      // 开始删除
+      moment.comments_list.some((cmt, i) => {
+        if (cmt.idstr === comment.idstr) {
+          moment.comments_list.splice(i, 1);
+          return true;
+        }
+      });
+    },
+    // moment 更多按钮事件
+    moreBtnAction(moment) {
       // 三部曲
       if (Object.keys(this.tempMoment).length === 0) {
         moment.showCmt = true;
@@ -351,19 +458,113 @@ export default {
     action() {
       console.log("----shhshshhs----");
     },
-    abcd(e) {
-      console.log(e);
-      console.log(e.target.nodeName);
-      e.stopPropagation();
-      if (e.target.nodeName === "SPAN") {
+    // 跳转到用户信息
+    skipToContactInfo(moment) {
+      this.$router.push("/contacts/contact-info");
+    },
+
+    // 评论列表中item的点击事件
+    commentItemDidClick(section, row, event) {
+      console.log(event);
+      console.log(event.target.nodeName);
+      if (event.target.nodeName === "DIV") {
+        // 单纯的点击某个评论列表
+        // 取出moment
+        const moment = this.moments[section];
+        // 取出评论数据
+        const comment = moment.comments_list[row];
+        if (comment.from_user.idstr === this.user.idstr) {
+          // 自己的评论
+          this.items = this.delItems;
+          this.showDel = true;
+          this.showActionSheet = true;
+          this.delCmtIndexPath = {};
+          // 记录要删除的评论索引
+          this.delCmtIndexPath = {
+            section: section,
+            row: row
+          };
+        } else {
+          // 回复/评论
+          // CMH TODO
+        }
+        return;
+      }
+
+      if (event.target.nodeName === "SPAN") {
         console.log("commeee");
       }
     },
+    // 点赞
     thumbAction(moment, thumb) {
       moment.showCmt = false;
       moment.attitudes_status = thumb;
+      moment.attitudes_list = moment.attitudes_list || [];
+      // 数据处理
+      if (thumb === 0) {
+        // 取消点赞
+        moment.attitudes_count -= 1;
+        if (moment.attitudes_count < 0) moment.attitudes_count = 0;
+        moment.attitudes_list.some((item, i) => {
+          if (item.idstr === this.user.idstr) {
+            // 从数组中删除
+            moment.attitudes_list.splice(i, 1);
+            console.log(" +++++ come hear  baby ++++");
+            return true;
+          }
+        });
+      } else {
+        // 点赞
+        moment.attitudes_count += 1;
+        moment.attitudes_list.push(this.user);
+      }
 
-      //
+      // 数据处理
+      if (moment.attitudes_list.length === 0) {
+        // 没有点赞数据
+        moment.attitudesHtml = this.attitudesIcon;
+      } else {
+        // 有点赞数据
+        if (thumb === 0) {
+          // 取消点赞
+          // 先拼接一个,
+          moment.attitudesHtml = moment.attitudesHtml + ",";
+          // &nbsp;&nbsp;<span>UI中国</span>,&nbsp;&nbsp;<span>photoshop资源库</span>,&nbsp;&nbsp;<span>Lightroom资源库</span>,&nbsp;&nbsp;<span>Mike-乱港三千-Mr_元先森</span>,
+
+          // 删除
+          let regExpStr =
+            "&nbsp;&nbsp;" + "<span>" + this.user.screen_name + "</span>" + ",";
+          let regExp = new RegExp(regExpStr);
+          moment.attitudesHtml = moment.attitudesHtml.replace(regExp, "");
+          // 删除,
+          moment.attitudesHtml = moment.attitudesHtml.substring(
+            0,
+            moment.attitudesHtml.length - 1
+          );
+          console.log("取消点赞");
+          console.log(moment.attitudesHtml);
+          console.log(moment);
+        } else {
+          // 点赞
+          if (moment.attitudes_list.length > 1) {
+            moment.attitudesHtml = moment.attitudesHtml + ",";
+          }
+          // 拼接数据
+          moment.attitudesHtml =
+            moment.attitudesHtml +
+            "&nbsp;&nbsp;" +
+            "<span>" +
+            this.user.screen_name +
+            "</span>";
+        }
+      }
+
+      console.log("点赞数据列表");
+      console.log(moment);
+    },
+    // 评论
+    commentAction(moment) {
+      console.log(moment);
     }
   },
   // 定义一个过滤器
@@ -382,17 +583,11 @@ export default {
 
       var curTimestamp = parseInt(new Date().getTime() / 1000); //当前时间戳
       var timestampDiff = curTimestamp - timestamp; // 参数时间戳与当前时间戳相差秒数
-
-      var curDate = new Date(curTimestamp * 1000); // 当前时间日期对象
       var tmDate = new Date(timestamp * 1000); // 参数时间戳转换成的日期对象
 
       var Y = tmDate.getFullYear(),
         m = tmDate.getMonth() + 1,
         d = tmDate.getDate();
-
-      var H = tmDate.getHours(),
-        i = tmDate.getMinutes(),
-        s = tmDate.getSeconds();
 
       if (timestampDiff < 60) {
         // 一分钟以内
@@ -415,12 +610,18 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      // 当前用户
+      user: state => state.user
+    })
+  },
   components: {
     actionSheet,
     MomentOperationMore
   }
 
+  // 🔥👉vue在v-html中绑定事件
   // https://blog.csdn.net/fangdengfu123/article/details/84992278
   // https://blog.csdn.net/qq_25075279/article/details/84646782
   // https://blog.csdn.net/qq_31393401/article/details/81017912

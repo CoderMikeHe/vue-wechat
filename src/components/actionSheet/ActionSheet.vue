@@ -12,14 +12,14 @@
               class="mh-actionsheet__cell"
               v-for="(item, index) in items"
               :key="index"
-              :style="{color:item.destructive?'red':'#191919'}"
-              @click="didClickItem(index+1)"
+              :style="{ color: item.destructive ? 'red' : '#191919' }"
+              @click="didClickItem(index + 1)"
             >
               <span v-if="item.iconfont" :class="item.iconfont">&nbsp;</span>
               {{ item.title }}
-              <span
-                style="display:block;font-size:12px;color:#888"
-              >{{ item.subtitle }}</span>
+              <span style="display:block;font-size:12px;color:#888">{{
+                item.subtitle
+              }}</span>
             </div>
           </div>
           <div
@@ -27,7 +27,9 @@
             v-if="cancelText"
             :style="{ 'margin-top': cancelText ? '6px' : '0' }"
           >
-            <div class="mh-actionsheet__cell" @click="didClickItem(0)">{{ cancelText }}</div>
+            <div class="mh-actionsheet__cell" @click="didClickItem(0)">
+              {{ cancelText }}
+            </div>
           </div>
         </div>
       </transition>
@@ -56,6 +58,7 @@ export default {
     items: {
       type: Array,
       // [ActionSheetItem]
+      // eslint-disable-next-line vue/require-valid-default-prop
       default: []
     },
     // title
@@ -87,7 +90,10 @@ export default {
     // 事件点击
     didClickItem(index) {
       this.currentValue = false;
-      this.$emit("did-click-item", index);
+      // 延迟一点
+      setTimeout(() => {
+        this.$emit("did-click-item", index);
+      }, 250);
     }
   }
 };

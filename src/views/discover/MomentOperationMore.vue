@@ -16,7 +16,7 @@
       {{ liked ? "取消" : "赞" }}
     </div>
     <div class="mh-more__line"></div>
-    <div class="mh-more__comment">评论</div>
+    <div class="mh-more__comment" @click="commentAction">评论</div>
   </div>
 </template>
 
@@ -40,6 +40,13 @@ export default {
       setTimeout(() => {
         // 向外抛事件
         this.$emit("thumb-click", this.liked ? 1 : 0);
+      }, 250);
+    },
+    commentAction() {
+      // 加个延迟，效果贼赞
+      setTimeout(() => {
+        // 向外抛事件
+        this.$emit("comment-click");
       }, 250);
     },
     // 注意： 动画钩子函数的第一个参数：el，表示 要执行动画的那个DOM元素，是个原生的 JS DOM对象

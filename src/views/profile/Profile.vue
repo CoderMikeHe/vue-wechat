@@ -4,29 +4,35 @@
     <div class="mh-profile__header" @click="skipUserInfo">
       <div class="mh-cell">
         <div class="mh-cell__hd">
-          <img :src="$store.state.user.profileImageUrl" width="66px" height="66px" alt>
+          <img
+            :src="$store.state.user.profile_image_url"
+            width="66px"
+            height="66px"
+            alt
+          />
         </div>
         <div class="mh-cell__bd">
           <div class="mh-profile__info">
-            <h1
-              class="mh-profile__title"
-              @click.stop="userNameClicked"
-            >{{ $store.state.user.screenName }}</h1>
+            <h1 class="mh-profile__title" @click.stop="userNameClicked">
+              {{ $store.state.user.screen_name }}
+            </h1>
             <div class="mh-profile__detail">
-              <p class="mh-profile__detail-bd">微信号：{{ $store.state.user.wechatId }}</p>
+              <p class="mh-profile__detail-bd">
+                微信号：{{ $store.state.user.wechatId }}
+              </p>
               <div class="mh-profile__detail-ft">
                 <img
                   src="../../assets/images/profile/setting_myQR_36x36.png"
                   width="18px"
                   height="18px"
                   alt
-                >
+                />
                 <img
                   src="@/assets/images/common/tableview_arrow_8x13.png"
                   width="8px"
                   height="13px"
                   alt
-                >
+                />
               </div>
             </div>
           </div>
@@ -35,8 +41,16 @@
     </div>
 
     <!-- Item list -->
-    <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
-      <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+    <div
+      class="mh-common-group"
+      v-for="(group, section) in dataSource"
+      :key="section"
+    >
+      <common
+        :group="group"
+        :section="section"
+        @did-select-row="didSelectRow"
+      ></common>
     </div>
   </div>
 </template>

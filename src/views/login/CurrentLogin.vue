@@ -4,7 +4,7 @@
     <div class="_full-content">
       <!-- AvatarView -->
       <div class="mh-current-login__avatar">
-        <img src="../../assets/images/other/AppIcon120x120.png" alt>
+        <img src="../../assets/images/other/AppIcon120x120.png" alt />
         <p>491273090</p>
       </div>
       <!-- PasswordView -->
@@ -24,10 +24,14 @@
                 type="password"
                 placeholder="请填写QQ密码"
                 v-model="password"
-              >
+              />
             </div>
           </div>
-          <div class="mh-current-login__cell mh-current-login__captcha" key="captcha" v-else>
+          <div
+            class="mh-current-login__cell mh-current-login__captcha"
+            key="captcha"
+            v-else
+          >
             <div class="mh-current-login__cell-hd">
               <label class="mh-current-login__label">验证码</label>
             </div>
@@ -37,7 +41,7 @@
                 type="text"
                 placeholder="请输入验证码"
                 v-model="captcha"
-              >
+              />
             </div>
             <div class="mh-current-login__cell-ft">
               <button class="mh-current-login__btn">获取验证码</button>
@@ -53,18 +57,29 @@
       <div class="mh-current-login__login">
         <a
           class="mh-btn mh-btn_primary"
-          :class="{'mh-btn_disabled':loginBtnDisabled}"
+          :class="{ 'mh-btn_disabled': loginBtnDisabled }"
           @click="login"
-        >登录</a>
+          >登录</a
+        >
       </div>
       <!-- 底部更多面板 -->
       <div class="mh-current-login__more">
-        <span class="mh-current-login__more-item" @click="itemDidClick(0)">找回密码</span>
-        <span class="mh-current-login__more-item" @click="itemDidClick(1)">紧急冻结</span>
-        <span class="mh-current-login__more-item" @click="itemDidClick(2)">更多选项</span>
+        <span class="mh-current-login__more-item" @click="itemDidClick(0)"
+          >找回密码</span
+        >
+        <span class="mh-current-login__more-item" @click="itemDidClick(1)"
+          >紧急冻结</span
+        >
+        <span class="mh-current-login__more-item" @click="itemDidClick(2)"
+          >更多选项</span
+        >
       </div>
       <!-- ActionSheet -->
-      <ActionSheet v-model="showActionSheet" @did-click-item="didClickItem" :items="items"></ActionSheet>
+      <ActionSheet
+        v-model="showActionSheet"
+        @did-click-item="didClickItem"
+        :items="items"
+      ></ActionSheet>
     </div>
   </div>
 </template>
@@ -101,13 +116,13 @@ export default {
   methods: {
     itemDidClick(idx) {
       switch (idx) {
-        case 0:
-          break;
-        case 1:
-          break;
-        default:
-          this.showActionSheet = true;
-          break;
+      case 0:
+        break;
+      case 1:
+        break;
+      default:
+        this.showActionSheet = true;
+        break;
       }
     },
     // 配置actionsheet items
@@ -127,17 +142,17 @@ export default {
     didClickItem(idx) {
       if (idx === 0) return;
       switch (idx) {
-        case 1:
-          console.log("history 2 " + window.history.length);
-          console.log(window.history);
-          this.$router.push("/current-login/other-login");
-          console.log("history 3 " + window.history.length);
-          console.log(window.history);
-          break;
-        case 2:
-          break;
-        default:
-          break;
+      case 1:
+        console.log("history 2 " + window.history.length);
+        console.log(window.history);
+        this.$router.push("/current-login/other-login");
+        console.log("history 3 " + window.history.length);
+        console.log(window.history);
+        break;
+      case 2:
+        break;
+      default:
+        break;
       }
     },
     changeBtnDidClick() {
@@ -155,10 +170,11 @@ export default {
         console.log(this);
         const user = {
           /// PS: 假设请求到数据模型是  User模型
-          screenName: "Mike-乱港三千-Mr_元先森",
+          screen_name: "Mike-乱港三千-Mr_元先森",
           idstr: "61856069",
-          profileImageUrl:
+          profile_image_url:
             "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
+          avatar_large: "",
           /// 用户的封面
           coverImageUrl:
             "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
