@@ -40,7 +40,7 @@
 }
 
 ._mh-cell-access:active {
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
 }
 
 /* 点击高亮 */
@@ -53,10 +53,8 @@
 
 /* 点击高亮 */
 ._mh-tap-highlight:active {
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
 }
-
-
 
 /* --------👇 mh-cell Start 👇--------*/
 .mh-cell {
@@ -71,7 +69,7 @@
 }
 
 .mh-cell::before {
-  content: " ";
+  content: ' ';
   position: absolute;
   left: 0;
   top: 0;

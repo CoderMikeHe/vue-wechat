@@ -1,31 +1,51 @@
 <template>
   <div class="_full-content _content-padding-top44 _content-padding-bottom49">
-    <NavigationBar :right-item="addItem" title="微信" @right-click="rightItemDidClicked"></NavigationBar>
+    <NavigationBar
+      :right-item="addItem"
+      title="微信"
+      @right-click="rightItemDidClicked"
+    ></NavigationBar>
     <!-- mask -->
-    <div class="mh-mainframe__mask" v-if="showMenu" @click.stop="showMenu=false"></div>
+    <div
+      class="mh-mainframe__mask"
+      v-if="showMenu"
+      @click.stop="showMenu = false"
+    ></div>
     <ul
       class="mh-more__menu"
-      :class="[showMenu?'mh-more__menu-open':'mh-more__menu-close']"
-      @click.stop="showMenu=false"
+      :class="[showMenu ? 'mh-more__menu-open' : 'mh-more__menu-close']"
+      @click.stop="showMenu = false"
     >
       <li @click="menuItemDidClicked(0)">
         <div>
-          <span class="iconfont icon-mainframe-message mh-more__menu-item-icon"></span>发起群聊
+          <span
+            class="iconfont icon-mainframe-message mh-more__menu-item-icon"
+          ></span
+          >发起群聊
         </div>
       </li>
       <router-link tag="li" to="/contacts/add-friends">
         <div>
-          <span class="iconfont icon-mainframe-add-friend mh-more__menu-item-icon"></span>添加朋友
+          <span
+            class="iconfont icon-mainframe-add-friend mh-more__menu-item-icon"
+          ></span
+          >添加朋友
         </div>
       </router-link>
       <li @click="menuItemDidClicked(2)">
         <div>
-          <span class="iconfont icon-mainframe-scan mh-more__menu-item-icon"></span>扫一扫
+          <span
+            class="iconfont icon-mainframe-scan mh-more__menu-item-icon"
+          ></span
+          >扫一扫
         </div>
       </li>
       <li @click="menuItemDidClicked(3)">
         <div>
-          <span class="iconfont icon-mainframe-pay mh-more__menu-item-icon"></span>收付款
+          <span
+            class="iconfont icon-mainframe-pay mh-more__menu-item-icon"
+          ></span
+          >收付款
         </div>
       </li>
     </ul>
@@ -54,19 +74,19 @@ export default {
     menuItemDidClicked(index) {
       console.log(index);
       switch (index) {
-        case 0: // 发起群聊
-          break;
-        case 1: // 添加朋友
-          // this.$router.push("/contacts/add-friends");
-          console.log("mlgb");
-          break;
-        case 2: // 扫一扫
-          break;
-        case 3: // 收付款
-          break;
+      case 0: // 发起群聊
+        break;
+      case 1: // 添加朋友
+        // this.$router.push("/contacts/add-friends");
+        console.log("mlgb");
+        break;
+      case 2: // 扫一扫
+        break;
+      case 3: // 收付款
+        break;
 
-        default:
-          break;
+      default:
+        break;
       }
     }
   }

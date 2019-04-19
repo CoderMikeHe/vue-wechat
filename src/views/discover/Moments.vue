@@ -1,26 +1,47 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content _content-padding-top44">
+  <div
+    class="_full-container"
+    @touchstart="touchstartAction"
+  >
+    <div
+      class="_full-content"
+      id="ko"
+    >
       <!-- 导航栏 -->
-      <NavigationBar
+      <!-- <NavigationBar
         title="朋友圈"
         :left-item="backItem"
         :right-item="moreItem"
         @left-click="$router.back()"
         @right-click="rightItemClick"
-      ></NavigationBar>
-
+        @touchstart="startDrag"
+        @touchmove="onDrag"
+        @touchend="stopDrag"
+        @touchcancel="stopDrag"
+      ></NavigationBar> -->
+      <!-- refreBall -->
+      <div
+        class="moment__refresh"
+        :class="{ kkk: rotes }"
+        :style="rotes ? {} : refreshStyle"
+      ></div>
       <!-- 单条说说 -->
       <div
         class="moment__wrapper"
+        id="drag"
         @touchstart="startDrag"
         @touchmove="onDrag"
         @touchend="stopDrag"
         @touchcancel="stopDrag"
         :style="style"
       >
-        <div class="mh-moment" v-for="(moment, index) in moments" :key="index">
+        <div class="moment__profile"></div>
+        <div
+          class="mh-moment"
+          v-for="(moment, index) in moments"
+          :key="index"
+        >
           <!-- 头部 -->
           <div class="mh-moment__hd">
             <!-- 头像 -->
@@ -36,8 +57,7 @@
               <span
                 class="mh-moment--tap-highlight"
                 @click="skipToContactInfo(moment)"
-                >{{ moment.user.screen_name }}</span
-              >
+              >{{ moment.user.screen_name }}</span>
             </div>
             <!-- 正文 -->
             <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -52,12 +72,14 @@
               >
                 {{ moment.text || "" }}
               </p>
-              <p class="mh-moment__expand" v-if="moment.showUnfold">
+              <p
+                class="mh-moment__expand"
+                v-if="moment.showUnfold"
+              >
                 <span
                   class="mh-moment--tap-highlight"
                   @click="moment.unfold = !moment.unfold"
-                  >{{ moment.unfold ? "收起" : "全文" }}</span
-                >
+                >{{ moment.unfold ? "收起" : "全文" }}</span>
               </p>
             </div>
 
@@ -81,7 +103,7 @@
             >
               <span class="mh-moment--tap-highlight">{{
                 moment.location
-              }}</span>
+                }}</span>
             </div>
 
             <!-- 时间/来源/更多 -->
@@ -157,7 +179,6 @@ import MHBarButtonItem, { moreItem } from "assets/js/MHBarButtonItem.js";
 import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
-
 import MHMoments from "../../assets/js/MHMoments.js";
 import MomentOperationMore from "./MomentOperationMore";
 import { mapState } from "vuex";
@@ -191,6 +212,7 @@ export default {
         " width='15' height='15'>",
       // 要删除的评论数据的索引 {section , row}
       delCmtIndexPath: {},
+      rotes: false,
       startY: "", //保存touch时的Y坐标
       moveDistance: 0, //保存向下滑动的距离
       moveState: 0, //开始滑动到结束后状态的变化 0:下拉即可刷新 1:释放即可刷新 2:加载中
@@ -360,32 +382,48 @@ export default {
     // https://developer.mozilla.org/zh-CN/docs/Web/API/Touch_events
     // 开始拖拽
     startDrag(e) {
+      this.rotes = false;
       console.log("startDrag");
       this.duration = 0; // 关闭动画
       this.moveDistance = 0; // 滑动距离归0
       let t = e.targetTouches[0]; // 获得开始Y坐标
 
-      console.log(e.targetTouches[0].clientY);
-      console.log(e.targetTouches[0].pageY);
-      console.log(e.targetTouches[0].screenY);
+      console.log("start clientY==== " + t.clientY);
+      console.log("start pageY==== " + t.pageY);
+      console.log("start screenY==== " + t.screenY);
 
       this.startY = t.clientY;
     },
     onDrag(e) {
-      console.log("onDrag");
-      let scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      //首先判断我们有没有滚动条，如果有，我们下拉刷新就不能启用。
+      console.log(document.getElementById("drag"));
+      console.log(document.getElementById("ko").scrollTop);
+      console.log(document.body.scrollTop);
+      console.log(document.documentElement.scrollTop);
+      let scrollTop = document.getElementById("drag").scrollTop;
+      let top =
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        window.pageYOffset;
+      console.log("onDrag ====  " + scrollTop);
+      console.log("兼容Top ====  " + top);
+
+      let t = e.targetTouches[0];
+      let move = t.clientY - this.startY;
+      console.log("moving clientY==== " + t.clientY);
+      console.log("moving pageY==== " + t.pageY);
+      console.log("moving screenY==== " + t.screenY);
+      console.log("moving move==== " + move);
+      console.log("moving distance ====== " + Math.pow(move, 0.8));
+      // 首先判断我们有没有滚动条，如果有，我们下拉刷新就不能启用。
       if (scrollTop > 0) return;
 
-      let move = e.targetTouches[0].clientY - this.startY;
       //判断手指滑动的距离，只有为正数才代表用户下拉了。
       if (move > 0) {
-        //阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
+        // 阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
         e.preventDefault();
-        //增加滑动阻力的感觉
+        // 增加滑动阻力的感觉
         this.moveDistance = Math.pow(move, 0.8);
-        if (this.moveDistance > 50) {
+        if (this.moveDistance > 60) {
           //如果滑动距离大于50 那我就告诉你，释放即可刷新
           if (this.moveState === 1) return;
           this.moveState = 1;
@@ -398,17 +436,19 @@ export default {
     },
     stopDrag(e) {
       console.log("stopDrag");
+
       // 只要手指拿开，我都需要加上结束时的动画，这里为300ms
       this.duration = 300;
       if (this.moveDistance > 50) {
+        this.rotes = true;
         //这里逻辑跟touchMove一样，但是需要真的加载数据了，那moveState变为2 所以加载动画在这出现
         this.moveState = 2;
         //因为还没加载完，我得让加载动画显示着，所以这里移动距离为50
-        this.moveDistance = 50;
-        this.$emit("refresh", () => {
-          //这里就是成功后的回调了，如果该函数被调用，那就以为着加载数据完成，所以状态要回到0，当然需要在父组件调用。
-          this.moveState = 0;
-        });
+        this.moveDistance = 0;
+        // this.$emit("refresh", () => {
+        //   //这里就是成功后的回调了，如果该函数被调用，那就以为着加载数据完成，所以状态要回到0，当然需要在父组件调用。
+        //   this.moveState = 0;
+        // });
       } else {
         //否则 给我老老实实恢复原样
         this.moveDistance = 0;
@@ -663,8 +703,18 @@ export default {
   computed: {
     style() {
       return {
-        transition: `${this.duration}ms`,
+        // transition: `${this.duration}ms`,
         transform: `translate3d(0,${this.moveDistance}px, 0)`
+      };
+    },
+    // 刷新ball
+    refreshStyle() {
+      var cy = this.moveDistance;
+      // cy = cy > 50 ? 50 : cy;
+      return {
+        // top: -40 + cy + "px",
+        // transition: transform 0.25s,
+        transform: "rotate(" + -cy * 3 + "deg)"
       };
     },
 
@@ -680,9 +730,9 @@ export default {
       //0意味着开始也意味着结束，这里是结束，并且只有动画生效我们才能 moveDistance 设为0，
       //为什么动画生效才行，因为动画生效意味着手指离开了屏幕，如果不懂去看touchEnd方法，这时
       //我们让距离变为0才会有动画效果。
-      if (state === 0 && this.duration === 300) {
-        this.moveDistance = 0;
-      }
+      // if (state === 0 && this.duration === 300) {
+      //   this.moveDistance = 0;
+      // }
     }
   },
   components: {
@@ -711,6 +761,19 @@ export default {
   height: 40px;
 }
 
+.kkk {
+  animation: rotale 1.25s linear infinite;
+  -webkit-animation: rotale 1.25s linear infinite; /*Safari and Chrome*/
+}
+@keyframes rotale {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* 点击高亮 */
 .mh-moment--tap-highlight {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -718,6 +781,28 @@ export default {
 }
 .mh-moment--tap-highlight:active {
   background-color: #c7c7c5;
+}
+
+.moment__wrapper {
+  position: relative;
+  font-size: 17px;
+  height: 100%;
+  width: 100%;
+  /*
+  https://segmentfault.com/q/1010000012872663 
+  和你的页面布局有关。
+正常情况下滚动条是属于 html 的，页面撑开可以正常获取document.documentElement.scrollTop。
+在滚动条属于 html 或 body 的情况下document.body.scrollTop || document.documentElement.scrollTop能正常拿到相应值。
+
+如果都为0，那说明：
+
+当前滚动条位置就是在顶部。
+没有产生滚动。
+你当前的滚动条不再属于 html 或者 body。
+其它我没想到的= =。 
+
+*/
+  overflow: scroll;
 }
 
 /* 单条说说--Start */
@@ -922,6 +1007,24 @@ export default {
 .comment-wrapper__comment:active {
   background-color: #ced2de;
 }
+.moment__profile {
+  width: 414px;
+  height: 414px;
+  background: url(../../assets/images/moments/Kris.png) no-repeat 0 0;
+  background-size: contain;
+}
+
+.moment__refresh {
+  position: absolute;
+  left: 20px;
+  top: 88px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  background: url(../../assets/images/moments/wx_album_refresh.png) no-repeat 0
+    0;
+  background-size: contain;
+}
 .comment-wrapper__comment >>> span {
   color: #5b6a91;
   font-weight: 500;
@@ -929,10 +1032,9 @@ export default {
 .comment-wrapper__comment >>> span:active {
   background-color: #c7c7c7;
 }
+
 .comment-wrapper__line {
   background-color: #fff;
   height: 16px;
 }
-
-/* 评论 */
 </style>
