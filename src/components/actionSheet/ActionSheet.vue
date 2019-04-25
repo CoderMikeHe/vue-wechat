@@ -1,10 +1,21 @@
 <template>
   <transition name="mh-actionsheet-fade">
-    <div class="mh-mask" @click.stop="didClickItem(0)" v-show="currentValue">
+    <div
+      class="mh-mask"
+      @click.stop="didClickItem(0)"
+      v-show="currentValue"
+    >
       <!-- 禁止掉事件冒泡 -->
       <transition name="mh-actionsheet-float">
-        <div class="mh-actionsheet" @click.stop v-show="currentValue">
-          <div class="mh-actionsheet__title" v-if="title">
+        <div
+          class="mh-actionsheet"
+          @click.stop
+          v-show="currentValue"
+        >
+          <div
+            class="mh-actionsheet__title"
+            v-if="title"
+          >
             <p class="mh-actionsheet__title-text">{{ title }}</p>
           </div>
           <div class="mh-actionsheet__menu">
@@ -15,11 +26,14 @@
               :style="{ color: item.destructive ? 'red' : '#191919' }"
               @click="didClickItem(index + 1)"
             >
-              <span v-if="item.iconfont" :class="item.iconfont">&nbsp;</span>
+              <span
+                v-if="item.iconfont"
+                :class="item.iconfont"
+              >&nbsp;</span>
               {{ item.title }}
               <span style="display:block;font-size:12px;color:#888">{{
                 item.subtitle
-              }}</span>
+                }}</span>
             </div>
           </div>
           <div
@@ -27,7 +41,10 @@
             v-if="cancelText"
             :style="{ 'margin-top': cancelText ? '6px' : '0' }"
           >
-            <div class="mh-actionsheet__cell" @click="didClickItem(0)">
+            <div
+              class="mh-actionsheet__cell"
+              @click="didClickItem(0)"
+            >
               {{ cancelText }}
             </div>
           </div>
@@ -151,7 +168,7 @@ export { ActionSheetItem };
   left: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  overflow-y: auto;
+  overflow-y: hidden;
   opacity: 1;
 }
 

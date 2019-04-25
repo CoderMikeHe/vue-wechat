@@ -113,9 +113,24 @@ new Vue({
 // 👉谷歌跨域问题
 // - [Mac上解决Chrome浏览器跨域问题](https://www.jianshu.com/p/2db73311fcbe)
 
+// 👉Fixed布局的坑
+// - [移动端onTouchMove事件 以及Fixed定位的坑](https://juejin.im/post/5b28d6cf51882574d20baa1c)
+// - [fixed定位问题](https://www.jianshu.com/p/33da1c0b079c)
+// - [深入研究-webkit-overflow-scrolling:touch及ios滚动](https://www.cnblogs.com/xiahj/p/8036419.html)
+// - [移动Web开发实践——解决position:fixed自适应BUG](https://www.cnblogs.com/Megasu/p/4104096.html)
+// - [移动端web页面使用position:fixed问题总结](https://github.com/maxzhang/maxzhang.github.com/issues/2)
+// - [Web移动端Fixed布局的解决方案](https://efe.baidu.com/blog/mobile-fixed-layout/)
+// - [解决页面使用overflow: scroll在iOS上滑动卡顿的问题](https://www.jianshu.com/p/1f4693d0ad2d)
+// - [fixed兼容性](https://www.cnblogs.com/cina33blogs/p/7251055.html)
+// - [小技巧css解决移动端ios不兼容position:fixed属性，无需插件](https://blog.csdn.net/liu__hua/article/details/40106595)
+// - [移动端整体布局-解决ios下fixed定位抖动的问题](https://blog.csdn.net/cengjingcanghai123/article/details/51511116)
+
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
-
+// - [better-scroll](https://github.com/ustbhuangyi/better-scroll)
+// - [cube-ui](https://github.com/didi/cube-ui/)
+// - [当 better-scroll 遇见 Vue](https://zhuanlan.zhihu.com/p/27407024)
+// - [IScroll 实践指南(上)](https://qbaty.iteye.com/blog/1221061)
 /** 
  * 
  * {
