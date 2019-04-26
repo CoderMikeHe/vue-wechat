@@ -1,10 +1,43 @@
 <template>
-  <div class="_full-content _content-padding-top44 _content-padding-bottom49">
+  <div
+    class="_full-content  _content-padding-top44 _content-padding-bottom49"
+    id="xo"
+    @click="ahk"
+  >
     <NavigationBar
       :right-item="addItem"
       title="微信"
       @right-click="rightItemDidClicked"
     ></NavigationBar>
+    <h3 style="height: 44px">检点点0</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点0</h3>
+    <h3 style="height: 44px">检点点0</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点0</h3>
+    <h3 style="height: 44px">检点点0</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点</h3>
+    <h3 style="height: 44px">检点点0</h3>
+    <h3 style="height: 44px">检点点222222</h3>
+
     <!-- mask -->
     <div
       class="mh-mainframe__mask"
@@ -65,24 +98,44 @@ export default {
       showMenu: false
     };
   },
+  created() {
+    console.log("我被嗲啊啊 ");
+  },
   components: {},
   methods: {
+    ahk() {
+      var el = document.getElementById("xo");
+
+      console.log(
+        "el.scrollTop  ==== " + el.scrollTop + " ====== " + el.clientHeight
+      );
+      console.log(
+        "document.documentElement.scrollTop  ==== " +
+          document.documentElement.scrollTop
+      );
+      console.log("document.body.scrollTop  ==== " + document.body.scrollTop);
+    },
     rightItemDidClicked(index) {
       this.showMenu = !this.showMenu;
+      // this.$router.push("/contacts/contact-info");
+
+      // this.$router.push("/test");
     },
     // 菜单项事件
     menuItemDidClicked(index) {
       console.log(index);
       switch (index) {
       case 0: // 发起群聊
+        this.$router.push("/test");
         break;
       case 1: // 添加朋友
-        // this.$router.push("/contacts/add-friends");
-        console.log("mlgb");
+        // this.$router.push("/test");
+        // console.log("mlgb");
         break;
       case 2: // 扫一扫
         break;
       case 3: // 收付款
+        this.$router.push("/test");
         break;
 
       default:
@@ -95,7 +148,7 @@ export default {
 
 <style scoped>
 .mh-mainframe__mask {
-  position: absolute;
+  position: fixed;
   z-index: 4;
   width: 100%;
   top: 44px;
@@ -104,7 +157,7 @@ export default {
   overflow: hidden;
 }
 .mh-more__menu {
-  position: absolute;
+  position: fixed;
   z-index: 4;
   width: 133px;
   font-size: 16px;

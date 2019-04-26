@@ -1,48 +1,62 @@
 <template>
-  <div>
-    <nav class="mh-tab-bar">
-      <router-link
-        class="mh-tab-item"
-        to="/mainframe"
-        replace
-        @click.native.prevent="itemDidClicked(0)"
-      >
-        <span class="mh-tab-icon-box">
-          <img class="mh-tab-icon" :src="getMainFrameImage" alt>
-          <span class="mh-tab-badge">9</span>
-        </span>
-        <span class="mh-tab-label">微信</span>
-      </router-link>
-      <router-link
-        class="mh-tab-item"
-        to="/contacts"
-        replace
-        @click.native.prevent="itemDidClicked(1)"
-      >
-        <img class="mh-tab-icon" :src="getContactsImage" alt>
-        
-        <span class="mh-tab-label">通讯录</span>
-      </router-link>
-      <router-link
-        class="mh-tab-item"
-        to="/discover"
-        replace
-        @click.native.prevent="itemDidClicked(2)"
-      >
-        <img class="mh-tab-icon" :src="getDiscoverImage" alt>
-        <span class="mh-tab-label">发现</span>
-      </router-link>
-      <router-link
-        class="mh-tab-item"
-        to="/profile"
-        replace
-        @click.native.prevent="itemDidClicked(3)"
-      >
-        <img class="mh-tab-icon" :src="getProfileImage" alt>
-        <span class="mh-tab-label">我</span>
-      </router-link>
-    </nav>
-  </div>
+  <nav class="mh-tab-bar">
+    <router-link
+      class="mh-tab-item"
+      to="/homepage/mainframe"
+      replace
+      @click.native.prevent="itemDidClicked(0)"
+    >
+      <span class="mh-tab-icon-box">
+        <img
+          class="mh-tab-icon"
+          :src="getMainFrameImage"
+          alt
+        />
+        <span class="mh-tab-badge">9</span>
+      </span>
+      <span class="mh-tab-label">微信</span>
+    </router-link>
+    <router-link
+      class="mh-tab-item"
+      to="/homepage/contacts"
+      replace
+      @click.native.prevent="itemDidClicked(1)"
+    >
+      <img
+        class="mh-tab-icon"
+        :src="getContactsImage"
+        alt
+      />
+
+      <span class="mh-tab-label">通讯录</span>
+    </router-link>
+    <router-link
+      class="mh-tab-item"
+      to="/homepage/discover"
+      replace
+      @click.native.prevent="itemDidClicked(2)"
+    >
+      <img
+        class="mh-tab-icon"
+        :src="getDiscoverImage"
+        alt
+      />
+      <span class="mh-tab-label">发现</span>
+    </router-link>
+    <router-link
+      class="mh-tab-item"
+      to="/homepage/profile"
+      replace
+      @click.native.prevent="itemDidClicked(3)"
+    >
+      <img
+        class="mh-tab-icon"
+        :src="getProfileImage"
+        alt
+      />
+      <span class="mh-tab-label">我</span>
+    </router-link>
+  </nav>
 </template>
 
 <script>
@@ -106,14 +120,14 @@ export default {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  position: fixed;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
   background-color: #f6f6f6;
   /* 适当增加z-index，因为fixed总是相对窗口的层级 */
   z-index: 3;
+  height: 49px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 // 该类名，解决 tabbar 点击无法切换的问题

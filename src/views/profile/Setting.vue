@@ -1,39 +1,56 @@
 <template>
-  <div class="_full-container">
-    <NavigationBar title="设置" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
-    <div class="_full-content _content-padding-top44">
-      <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
-        <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
-      </div>
-      <!-- 切换账号 -->
-      <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="switchAccount">切换账号</a>
-        </div>
-      </div>
-      <!-- 退出登录 -->
-      <div class="mh-common-group">
-        <div class="mh-center-cell">
-          <a class="mh-center-content _mh-cell-access" @click="logout">退出登录</a>
-        </div>
-      </div>
-      <!-- ActionSheet -->
-      <actionSheet
-        v-model="showActionSheet"
-        @did-click-item="didClickItem"
-        :items="items"
-        title="退出后不会删除任何历史数据，下次登录依然可以使用本账号"
-      ></actionSheet>
+  <!-- <div> -->
 
-      <!-- SwitchAccount -->
-      <transition
-        enter-active-class="animated slideInUp faster"
-        leave-active-class="animated slideOutDown faster"
-      >
-        <router-view></router-view>
-      </transition>
+  <div class="_full-content _content-padding-top44">
+    <NavigationBar
+      title="设置"
+      :left-item="backItem"
+      @left-click="$router.back()"
+    ></NavigationBar>
+    <div
+      class="mh-common-group"
+      v-for="(group, section) in dataSource"
+      :key="section"
+    >
+      <common
+        :group="group"
+        :section="section"
+        @did-select-row="didSelectRow"
+      ></common>
     </div>
+    <!-- 切换账号 -->
+    <div class="mh-common-group">
+      <div class="mh-center-cell">
+        <a class="mh-center-content _mh-cell-access" @click="switchAccount"
+          >切换账号</a
+        >
+      </div>
+    </div>
+    <!-- 退出登录 -->
+    <div class="mh-common-group">
+      <div class="mh-center-cell">
+        <a class="mh-center-content _mh-cell-access" @click="logout"
+          >退出登录</a
+        >
+      </div>
+    </div>
+    <!-- ActionSheet -->
+    <actionSheet
+      v-model="showActionSheet"
+      @did-click-item="didClickItem"
+      :items="items"
+      title="退出后不会删除任何历史数据，下次登录依然可以使用本账号"
+    ></actionSheet>
+
+    <!-- SwitchAccount -->
+    <transition
+      enter-active-class="animated slideInUp faster"
+      leave-active-class="animated slideOutDown faster"
+    >
+      <router-view></router-view>
+    </transition>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>

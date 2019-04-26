@@ -1,9 +1,21 @@
 <template>
-  <div class="_full-container">
-    <NavigationBar title="通用" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
+  <div>
+    <NavigationBar
+      title="通用"
+      :left-item="backItem"
+      @left-click="$router.back()"
+    ></NavigationBar>
     <div class="_full-content _content-padding-top44">
-      <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
-        <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+      <div
+        class="mh-common-group"
+        v-for="(group, section) in dataSource"
+        :key="section"
+      >
+        <common
+          :group="group"
+          :section="section"
+          @did-select-row="didSelectRow"
+        ></common>
       </div>
       <!-- 切换账号 -->
       <div class="mh-common-group">
@@ -112,7 +124,18 @@ export default {
       });
       group4.items = [chatRecord, storageSpace];
 
-      this.dataSource = [group0, group1, group2, group3, group4];
+      this.dataSource = [
+        group0,
+        group1,
+        group2,
+        group3,
+        group4,
+        group0,
+        group1,
+        group2,
+        group3,
+        group4
+      ];
     },
     // item点击事件
     didSelectRow(section, row) {
@@ -122,6 +145,11 @@ export default {
     // 清除历史记录
     clearChatHistory() {
       this.showActionSheet = true;
+      console.log(
+        "document.documentElement.scrollTop  ==== " +
+          document.documentElement.scrollTop
+      );
+      console.log("document.body.scrollTop  ==== " + document.body.scrollTop);
     },
     // 配置actionsheet items
     configItems() {

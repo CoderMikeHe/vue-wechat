@@ -1,14 +1,16 @@
 <template>
-  <div class="app-container">
+  <div class="app__wrapper">
     <transition
       name="custom-classes-transition"
       :enter-active-class="enterAnimate"
       :leave-active-class="leaveAnimate"
     >
+      <!-- <keep-alive> -->
       <router-view></router-view>
+      <!-- </keep-alive> -->
     </transition>
     <!-- tabBar -->
-    <tabBar></tabBar>
+    <!-- <tabBar></tabBar> -->
   </div>
 </template>
 
@@ -37,8 +39,10 @@ export default {
     // 监听路由变化 设置页面的过度效果
     $route(to, from) {
       console.log(to, from);
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
+      const toDepth = 3;
+      //  to.path.split("/").length;
+      const fromDepth = 2;
+      //  from.path.split("/").length;
 
       console.log(toDepth + this.enterAnimate);
       console.log(fromDepth + this.leaveAnimate);
@@ -65,7 +69,8 @@ export default {
 </script>
 
 <style scoped>
-.app-container {
+/* app 容器 */
+.app__wrapper {
   overflow: hidden;
   position: relative;
   height: 100%;

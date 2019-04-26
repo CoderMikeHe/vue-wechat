@@ -420,10 +420,10 @@ export default {
     onDrag(e) {
       this.touchSate = 2;
 
-      // console.log(document.getElementById("drag"));
-      // console.log(document.getElementById("ko").scrollTop);
-      // console.log(document.body.scrollTop);
-      // console.log(document.documentElement.scrollTop);
+      console.log(document.getElementById("drag"));
+      console.log(document.getElementById("ko").scrollTop);
+      console.log(document.body.scrollTop);
+      console.log(document.documentElement.scrollTop);
       let scrollTop = document.getElementById("drag").scrollTop;
       console.log("onDrag ====  " + scrollTop);
 

@@ -39,12 +39,19 @@ import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
 MHPreferenceSettingHelper.initialize()
 
 // 获取用户信息
-let user = MHPreferenceSettingHelper.getItem('491273090') || {}
-if (Object.keys(user).length === 0) {
-  router.replace('/current-login')
-} else {
-  router.replace('/mainframe')
-}
+// let user = MHPreferenceSettingHelper.getItem('491273090') || {}
+// if (Object.keys(user).length === 0) {
+//   router.replace('/current-login')
+// } else {
+//   router.replace('/mainframe')
+// }
+
+// 记录样式
+router.afterEach((to, from) => {
+  // ...
+  console.log('afterEach-to', to)
+  console.log('afterEach-from', from)
+})
 
 new Vue({
   router,
