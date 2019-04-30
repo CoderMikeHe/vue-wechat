@@ -1,21 +1,28 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content" id="ko">
+  <div
+    class="_full-container"
+    @touchstart="touchstartAction"
+  >
+    <div
+      class="_full-content"
+      id="ko"
+    >
       <!-- 导航栏 -->
-      <NavigationBar
+      <!-- <NavigationBar
         title="朋友圈"
         :left-item="backItem"
         :right-item="moreItem"
         @left-click="$router.back()"
         @right-click="rightItemClick"
-      ></NavigationBar>
-      <div class="moment__background"></div>
+      ></NavigationBar> -->
+      <!-- 背景页 -->
+
       <!-- refreBall -->
       <div
         class="moment__refresh"
         :style="refreshStyle"
-        :class="{ kkk: refreshState === 2 }"
+        :class="{ kkk: topStatus === 'loading' }"
       ></div>
       <!-- 单条说说 -->
       <div
@@ -27,7 +34,12 @@
         @touchcancel="stopDrag"
         @scroll.passive="onScroll($event)"
       >
-        <div :style="style">
+        <div class="moment__background"></div>
+        <div
+          id="drag-inner"
+          :style="transform"
+          :class="{ moment__dropped: topDropped || bottomDropped }"
+        >
           <MomentProfile
             class="moment__profile"
             @cover-click="coverDidClick"
@@ -52,8 +64,7 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                  >{{ moment.user.screen_name }}</span
-                >
+                >{{ moment.user.screen_name }}</span>
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -68,20 +79,25 @@
                 >
                   {{ moment.text || "" }}
                 </p>
-                <p class="mh-moment__expand" v-if="moment.showUnfold">
+                <p
+                  class="mh-moment__expand"
+                  v-if="moment.showUnfold"
+                >
                   <span
                     class="mh-moment--tap-highlight"
                     @click="moment.unfold = !moment.unfold"
-                    >{{ moment.unfold ? "收起" : "全文" }}</span
-                  >
+                  >{{ moment.unfold ? "收起" : "全文" }}</span>
                 </p>
               </div>
 
-              <!-- 图片九宫格 -->
+              <!-- 图片九宫格 type === 0 -->
               <div
                 class="mh-moment__pictures"
                 :style="moment.picsWrapperStyle"
-                v-if="moment.pic_infos.length > 0"
+                v-if="
+                  moment.pic_infos.length > 0 &&
+                    (moment.type === undefined || moment.type === 0)
+                "
               >
                 <div
                   class="mh-moment__pic"
@@ -90,6 +106,55 @@
                   :style="pic.picStyle"
                 ></div>
               </div>
+              <!-- 视频 type === 1 -->
+              <div
+                class="moment__video-wrapper"
+                v-if="moment.type === 1"
+              >
+                <div class="video-wrapper__play"></div>
+              </div>
+              <!-- 分享 type === 2 -->
+              <div
+                class="moment__share-wrapper"
+                v-if="moment.type === 2"
+              >
+                <!-- shareInfoType === 0网页 -->
+                <div
+                  class="share-wrapper__content"
+                  v-if="moment.shareInfo.shareInfoType === 0"
+                >
+                  <div class="content__share-hd">
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
+                  </div>
+                  <div class="content__share-bd">
+                    {{ moment.shareInfo.title }}
+                  </div>
+                </div>
+                <!-- shareInfoType === 0音乐 -->
+                <div
+                  class="share-wrapper__content"
+                  v-if="moment.shareInfo.shareInfoType === 1"
+                >
+                  <div class="content__share-hd">
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
+                    <div class="content__play"></div>
+                  </div>
+                  <div class="content__share-bd">
+                    <p class="content__title">
+                      {{ moment.shareInfo.title }}
+                    </p>
+                    <p class="content__subtitle">
+                      {{ moment.shareInfo.descr }}
+                    </p>
+                  </div>
+                </div>
+              </div>
               <!-- 地理位置 -->
               <div
                 class="moment__location-wrapper"
@@ -97,7 +162,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                }}</span>
+                  }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -156,7 +221,11 @@
               </div>
             </div>
           </div>
-          <div class="weui-loadmore">
+          <!-- 上拉加载刷新控件 -->
+          <div
+            class="weui-loadmore"
+            ref="loadMore"
+          >
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -179,9 +248,14 @@ import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
 import MHMoments from "../../assets/js/MHMoments.js";
+import MHMoments2 from "../../assets/js/MHMoments2.js";
+import MHMoments3 from "../../assets/js/MHMoments3.js";
+import MHMoments4 from "../../assets/js/MHMoments4.js";
 import MomentOperationMore from "./MomentOperationMore";
 import MomentProfile from "./MomentProfile";
 import { mapState } from "vuex";
+// 工具类
+import utils from "../../assets/utils/utils.js";
 export default {
   name: "moments",
   data() {
@@ -222,13 +296,33 @@ export default {
       refreshState: 0,
       duration: 0, //动画持续时间，0就是没有动画
       // 下拉刷新临界点
-      criticalPoint: 40,
+      topDistance: 40,
       // touchState 触摸状态(0 touchend ; 1 touchstart ; 2 touchend)
       touchSate: 0,
       // 最后一次topValue
-      lastTop: 0,
+      lastRefreshTop: 0,
       // startScrollTop
-      startScrollTop: 0
+      startScrollTop: 0,
+
+      // 移动方向 up：上拉 down：下拉
+      direction: "",
+      // 下拉刷新状态
+      topStatus: "",
+      topDropped: false,
+
+      // 是否到达底部
+      bottomReached: false,
+      // 底部控件状态
+      bottomStatus: "",
+      // 底部控件是否处于 drop状态
+      bottomDropped: false,
+
+      // tempSt
+      tempStartScrollTop: 0,
+      tempStartY: 0,
+      currentY: 0,
+      // page
+      page: 1
     };
   },
   destroyed() {
@@ -239,154 +333,20 @@ export default {
 
     // 配置action-sheet item
     this.configItems();
-
-    // 数据额外处理
-    MHMoments.moments.forEach((element, iii) => {
-      if (iii === 0) {
-        console.log("数据快报");
-        console.log(element);
-      }
-      // 增加辅助属性
-      // 全文/收起 <默认让其全部展开，以便获取到文本的最大高度>
-      element.unfold = true;
-      // 是否显示 全文/收起
-      element.showUnfold = false;
-
-      // 是否显示评论 一进来都不显示
-      element.showCmt = false;
-
-      // 1.针对图片处理
-      element.pic_infos = element.pic_infos || [];
-      // 图片盒子的样式 <PS：只需要处理 四张图的场景即可，其他场景靠内部图片撑开>
-      element.picsWrapperStyle = {};
-      let length = element.pic_infos.length;
-      if (length > 0) {
-        // 先循环一波，配置backgroundImage
-        for (let i = 0; i < length; i++) {
-          // 取出对象
-          let pic = element.pic_infos[i];
-          let picStyle = {
-            backgroundImage: "url(" + pic.bmiddle.url + ")"
-          };
-          // 设置图片样式
-          pic.picStyle = picStyle;
-        }
-
-        // 只处理1张图和4张图的情况
-        if (length === 1) {
-          // 1张图
-          let maxW = 86 * 2 + 12;
-          let maxH = 180;
-
-          // 取出对象
-          let pic = element.pic_infos[0];
-          let bmiddle = pic.bmiddle;
-
-          // 数据处理
-          let picW = 0;
-          let picH = 0;
-          if (pic.keep_size === 1 || bmiddle.width < 1 || bmiddle.height < 1) {
-            /// 固定方形
-            picW = picH = maxW;
-          } else {
-            /// 等比显示
-            if (bmiddle.width < bmiddle.height) {
-              picW = (bmiddle.width / bmiddle.height) * maxH;
-              picH = maxH;
-            } else {
-              picW = maxW;
-              picH = (bmiddle.height / bmiddle.width) * maxW;
-            }
-          }
-          // 新增属性
-          pic.picStyle.width = picW + "px";
-          pic.picStyle.height = picH + "px";
-        } else if (length === 4) {
-          // 4张图
-          element.picsWrapperStyle.width = 86 * 2 + 2 * 6 + "px";
-        }
-      }
-
-      // 点赞列表
-      element.attitudes_list = element.attitudes_list || [];
-      let len1 = element.attitudes_list.length;
-      // 用来添加地点赞 user
-      let attitudes = [];
-      // 不管有木有点赞，先给我拼个 点赞❤️
-      element.attitudesHtml = this.attitudesIcon;
-      for (let i = 0; i < len1; i++) {
-        // 取出user
-        const user = element.attitudes_list[i];
-        // 拼接数据
-        let screenNameHtml =
-          "&nbsp;&nbsp;" + "<span>" + user.screen_name + "</span>";
-        // 添加数据
-        attitudes.push(screenNameHtml);
-      }
-      if (attitudes.length > 0) {
-        // 用,拼接 默认是按,拼接
-        let attitudesHtml = attitudes.join();
-        //  辅助属性
-        element.attitudesHtml = element.attitudesHtml + attitudesHtml;
-      }
-
-      // 评论列表
-      element.comments_list = element.comments_list || [];
-      let len2 = element.comments_list.length;
-      for (let i = 0; i < len2; i++) {
-        // 取出comment
-        const comment = element.comments_list[i];
-        // 评论内容
-        let text = "：" + comment.text;
-        // 来源
-        let fromUser = "<span>" + comment.from_user.screen_name + "</span>";
-        // 是否有toUser
-        let toUser = "";
-        if (comment.to_user) {
-          toUser = "回复" + "<span>" + comment.to_user.screen_name + "</span>";
-        }
-        // 评论内容
-        let commentHtml = fromUser + toUser + text;
-        // 拓展属性
-        comment.commentHtml = commentHtml;
-      }
-
-      // 压栈
-      this.moments.push(element);
-    });
+    // 🔥 数组拼接另一个数组
+    // 👉 - [js数组拼接的四种方法]https://blog.csdn.net/cristina_song/article/details/82805444
+    let temps = this.handleWebDatas(MHMoments.moments);
+    // 🔥 尽量用 push 来拼接数组，而不是concat
+    // 👉 - [数组更新检测](https://cn.vuejs.org/v2/guide/list.html)
+    this.moments.push(...temps); // es6 写法
   },
   mounted() {
-    console.log("after");
-    console.log(this.$refs.content);
-
-    let winWidth = window.innerWidth;
-    console.log("winWidth:" + winWidth);
-
-    // 获取DOM元素列表
-    let length = this.$refs.content.length;
-
-    console.log("dom --length is " + length);
-
-    for (let index = 0; index < length; index++) {
-      const element = this.$refs.content[index];
-      const moment = this.moments[index];
-
-      let descHeight = window
-        .getComputedStyle(element)
-        .height.replace("px", "");
-
-      if (descHeight > 5 * 20) {
-        moment.unfold = false;
-        moment.showUnfold = true;
-      } else {
-        moment.unfold = true;
-        moment.showUnfold = false;
-      }
-      // console.log("descHeight:" + descHeight);
-    }
-
+    // 处理dom数据
+    this.handleDomDatas(0);
     // 开始刷新
-    this.refreshState = 2;
+    this.topStatus = "loading";
+    // 调用一次请求数据
+    this.topMethod();
   },
   methods: {
     // https://blog.csdn.net/qq_34439125/article/details/85602508
@@ -403,124 +363,199 @@ export default {
       this.duration = 0; // 关闭动画
       this.moveDistance = 0; // 滑动距离归0
       let t = e.targetTouches[0]; // 获得开始Y坐标
-      let t1 = e.changedTouches[0];
-      // console.log("start clientY==== " + t.clientY);
-      // console.log("start pageY==== " + t.pageY);
-      // console.log("start screenY==== " + t.screenY);
-      // console.log("-------------------------------");
-      // console.log("start clientY==== " + t1.clientY);
-      // console.log("start pageY==== " + t1.pageY);
-      // console.log("start screenY==== " + t1.screenY);
+
       this.startY = t.clientY;
       let scrollTop = document.getElementById("drag").scrollTop;
       console.log("startDrag ====  " + scrollTop);
+      // 记录一下起始 st
       this.startScrollTop = scrollTop;
+
+      this.tempStartY = this.startY;
+      this.tempStartScrollTop = scrollTop;
+
+      this.bottomReached = false;
+
+      if (this.topStatus !== "loading") {
+        this.topStatus = "pull";
+        this.topDropped = false;
+      }
+      if (this.bottomStatus !== "loading") {
+        this.bottomStatus = "pull";
+        this.bottomDropped = false;
+      }
     },
     // 正在拖拽
     onDrag(e) {
       this.touchSate = 2;
+      let scrollEventTarget = document.getElementById("drag");
+      let scrollTop = scrollEventTarget.scrollTop;
+      let currentY = e.targetTouches[0].clientY;
+      let currentScrollTop = scrollEventTarget.scrollTop;
 
-      console.log(document.getElementById("drag"));
-      console.log(document.getElementById("ko").scrollTop);
-      console.log(document.body.scrollTop);
-      console.log(document.documentElement.scrollTop);
-      let scrollTop = document.getElementById("drag").scrollTop;
-      console.log("onDrag ====  " + scrollTop);
+      // 偏移距离
+      let distance = (currentY - this.startY) / 2;
+      // 上拉or下拉
+      this.direction = distance > 0 ? "down" : "up";
 
-      let t = e.targetTouches[0];
-
-      // console.log("moving clientY==== " + t.clientY);
-      // console.log("moving pageY==== " + t.pageY);
-      // console.log("moving screenY==== " + t.screenY);
-      console.log("moving move before ==== " + (t.clientY - this.startY));
-
-      // 如果滚动条已经在顶部了。就没必要做下拉刷新了,且会触发 onscroll 事件
-      if (scrollTop > 0) {
-        return;
-      }
-      if (this.startScrollTop > 0 && scrollTop === 0) {
-        // 从已经下滑一段距离向下拖拽，会导致 move 距离很大，当到达临界点的时候，突然掉下来 影响用户体验
-        this.startY = t.clientY - 1;
-        this.startScrollTop = 0;
-      }
-
-      let move = t.clientY - this.startY;
-      console.log("moving move after ==== " + move);
-      // 判断手指滑动的距离，只有为正数才代表用户下拉了。
-      if (move > 0) {
-        let move = t.clientY - this.startY;
+      // 判断是否在顶部且处于下拉状态
+      if (currentScrollTop === 0 && this.direction === "down") {
         // 阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
+        // 组织掉 onscroll 默认事件
         e.preventDefault();
-        // 增加滑动阻力的感觉
-        let d = Math.pow(move, 0.8);
-        // let k = d - this.startScrollTop;
-        // console.log("开始时的startScrollTop === " + this.startScrollTop);
-        // console.log("差值计算值 === " + k);
-        this.moveDistance = d;
-        console.log("moving distance ====== " + Math.pow(move, 0.8));
-        // 正在刷新 后面就不用区分状态了
-        if (this.refreshState === 2) {
-          this.lastTop = 0;
-          return;
-        } else {
-          if (d > this.criticalPoint) {
-            this.lastTop = 60;
+        e.stopPropagation();
+        // 容错处理：从已经下滑一段距离向下拖拽，会导致 move 距离很大，当到达临界点的时候，突然掉下来 影响用户体验
+        if (this.startScrollTop !== 0 && currentScrollTop === 0) {
+          this.startY = currentY;
+          this.startScrollTop = 0;
+          distance = 0;
+        }
+        // 不管下拉刷新状态，这个distance长期有效
+        this.moveDistance = distance;
+        // 如果当前正在刷新
+        if (this.topStatus !== "loading") {
+          // 如果大于临界点，释放即可刷新 的状态
+          if (this.moveDistance > this.topDistance) {
+            // 减少计算型属性的计算
+            if (this.topStatus !== "drop") {
+              // 释放即可刷新
+              this.topStatus = "drop";
+              // 拖拽过程中 一旦某一次有超过了临界点
+              this.lastRefreshTop = 60;
+            }
+          } else {
+            // 减少计算型属性的计算
+            if (this.topStatus !== "pull") {
+              // 下拉即可刷新
+              this.topStatus = "pull";
+            }
           }
         }
-        // 如果大于临界点，释放即可刷新 的状态
-        if (this.moveDistance > this.criticalPoint) {
-          // 减少计算型属性的计算
-          if (this.refreshState === 1) return;
-          // 释放即可刷新
-          this.refreshState = 1;
-        } else {
-          // 减少计算型属性的计算
-          if (this.refreshState === 0) return;
-          // 下拉即可刷新
-          this.refreshState = 0;
+
+        // 正在刷新 后面就不用区分状态了
+        // if (this.refreshState === 2) {
+        //   this.lastRefreshTop = 0;
+        //   return;
+        // } else {
+        //   if (distance > this.topDistance) {
+        //     this.lastRefreshTop = 60;
+        //   }
+        // }
+
+        console.log("++++ 下拉过程中 ++++");
+      }
+
+      // 如果滚动条已经在顶部了。就没必要做下拉刷新了,且会触发 onscroll 事件
+      // 上拉
+      if (this.direction === "up") {
+        // 检测上拉临界点
+        let upCriP =
+          scrollEventTarget.scrollHeight - scrollEventTarget.clientHeight;
+        // 这里需要容个错
+        if (currentScrollTop === upCriP && this.startScrollTop !== upCriP) {
+          // 赋值
+          this.startScrollTop = upCriP;
+          // 重新设置 startY
+          this.startY = currentY;
+          // distance 值赋值为0
+          distance = 0;
+          this.currentY = currentY;
+        }
+        // 检查是否到达过底部（PS：微信的逻辑：只要上拉刷新控件完全显示了，就认为可以加载更多）
+        this.bottomReached = this.checkBottomReached();
+        if (this.bottomReached) {
+          // 主要是阻止 OnScroll事件
+          e.preventDefault();
+          e.stopPropagation();
+          this.moveDistance = distance;
+          // 阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
         }
       }
+
+      console.log(
+        "--- scrollTop " +
+        scrollTop +
+        " --- direction " +
+        this.direction +
+        " --- distance " +
+        distance +
+        " --- moveDistance " +
+        this.moveDistance +
+        " --- bottomReached " +
+        this.bottomReached
+      );
+    },
+    // 🔥检查是否滚动到底部
+    // - https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollHeight
+    checkBottomReached() {
+      let scrollEventTarget = document.getElementById("drag");
+      let a = scrollEventTarget.scrollTop + scrollEventTarget.clientHeight;
+      let b = scrollEventTarget.scrollHeight;
+      return a >= b;
     },
     // 结束拖拽
-    stopDrag(e) {
+    stopDrag() {
       let scrollTop = document.getElementById("drag").scrollTop;
-      console.log("stopDrag ====  " + scrollTop);
-
       this.touchSate = 0;
-      if (this.refreshState === 2) {
-      } else {
-        this.lastTop = 0;
+      if (
+        this.direction === "down" &&
+        scrollTop === 0 &&
+        this.topStatus !== "loading" &&
+        this.moveDistance > 0
+      ) {
+        this.topDropped = true;
+        if (this.topStatus === "drop") {
+          this.topStatus = "loading";
+          this.topMethod();
+        } else {
+          this.topStatus = "pull";
+        }
       }
-      // 只要手指拿开，我都需要加上结束时的动画，这里为300ms
-      this.duration = 300;
 
-      if (this.moveDistance > this.criticalPoint) {
-        // 这里逻辑跟touchMove一样，但是需要真的加载数据了，那refreshState变为2 所以加载动画在这出现
-        this.refreshState = 2;
-        // this.$emit("refresh", () => {
-        //   //这里就是成功后的回调了，如果该函数被调用，那就以为着加载数据完成，所以状态要回到0，当然需要在父组件调用。
-        //   this.refreshState = 0;
-        // });
+      // 只要到达了上拉控件到达了底部，就给我刷新
+      if (
+        this.direction === "up" &&
+        this.bottomReached &&
+        this.bottomStatus !== "loading" &&
+        this.moveDistance < 0
+      ) {
+        this.bottomDropped = true;
+        this.bottomReached = false;
+        this.bottomStatus = "loading";
+        // 上拉加载事件
+        this.bottomMethod();
       }
 
+      // 清空
+      this.direction = "";
       // 微信结束了拖拽，都得归0处理
       this.moveDistance = 0;
+      // 结束drag
+      this.lastRefreshTop = 0;
     },
 
     // 一旦 scrollTop >0 就会触发onscroll
     onScroll(e) {
-      let ele = document.getElementById("drag");
-      console.log("+++ start +++");
-      console.log("onScroll-scrollTop   ==== ", e.target.scrollTop);
-      console.log("onScroll-scrollTop   ==== ", ele.scrollTop);
-      console.log("onScroll-scrollHeight   ==== ", ele.scrollHeight);
-      console.log("onScroll-scrollHeight   ==== ", ele.clientHeight);
-      console.log("+++ end +++");
-
       // 滚动条位置
       let scrollTop = e.target.scrollTop;
-      // lastTop
-      this.lastTop = scrollTop;
+      // 这里假设 只要露出上拉加载的 80%就认为可以刷新
+      let sh = e.target.scrollHeight - 50;
+      let st = e.target.scrollTop + e.target.clientHeight;
+
+      console.log("+++ start +++");
+      console.log("sh === " + sh);
+      console.log("st === " + st);
+      // console.log("touchState === " + this.touchSate);
+
+      // 必须是touchEnd的情况下有效，且不是正在下拉刷新
+      if (st >= sh && this.touchSate === 0 && this.bottomStatus !== "loading") {
+        console.log("+++ OnScroll上拉加载事件 +++");
+        this.bottomStatus = "loading";
+        // 上拉加载事件
+        this.bottomMethod();
+      }
+
+      // lastRefreshTop
+      this.lastRefreshTop = scrollTop;
     },
 
     // 导航栏有按钮点击事件
@@ -729,12 +764,197 @@ export default {
     commentAction(moment) {
       console.log(moment);
     },
-
     // 封面被点击
     coverDidClick() {
       this.items = this.coverItems;
       this.shwoCover = true;
       this.showActionSheet = true;
+    },
+
+    // 下拉刷新事件
+    topMethod() {
+      setTimeout(() => {
+        this.topStatus = "";
+        this.moveDistance = 0;
+      }, 5000);
+    },
+    // 上拉加载事件
+    bottomMethod() {
+      let page = this.page + 1;
+      // 模拟一下网络请求数据
+      setTimeout(() => {
+        console.log("++++ 上拉加载事件 ++++ " + page);
+        this.page = page;
+        this.bottomStatus = "";
+        // 记录一一下起始索引
+        let start = this.moments.length;
+        // 数据更新
+        let temps = [];
+        if (page === 2) {
+          temps = this.handleWebDatas(MHMoments2.moments);
+        } else if (page === 3) {
+          temps = this.handleWebDatas(MHMoments3.moments);
+        } else if (page === 4) {
+          temps = this.handleWebDatas(MHMoments4.moments);
+        }
+        this.moments.push(...temps);
+        // dom更新
+        this.$nextTick(() => {
+          this.handleDomDatas(start);
+        });
+      }, 2500);
+    },
+
+    // 数据web处理
+    handleWebDatas(ms) {
+      // 数据处理
+      let temps = [];
+      if (!utils.objIsArray(ms)) return temps;
+
+      ms.forEach((element, iii) => {
+        if (iii === 0) {
+          console.log("数据快报");
+          console.log(element);
+        }
+        // 增加辅助属性
+        // 全文/收起 <默认让其全部展开，以便获取到文本的最大高度>
+        element.unfold = true;
+        // 是否显示 全文/收起
+        element.showUnfold = false;
+        // 是否显示评论 一进来都不显示
+        element.showCmt = false;
+
+        // 1.针对图片处理
+        element.pic_infos = element.pic_infos || [];
+        // 图片盒子的样式 <PS：只需要处理 四张图的场景即可，其他场景靠内部图片撑开>
+        element.picsWrapperStyle = {};
+        let length = element.pic_infos.length;
+        if (length > 0) {
+          // 先循环一波，配置backgroundImage
+          for (let i = 0; i < length; i++) {
+            // 取出对象
+            let pic = element.pic_infos[i];
+            let picStyle = {
+              backgroundImage: "url(" + pic.bmiddle.url + ")"
+            };
+            // 设置图片样式
+            pic.picStyle = picStyle;
+          }
+
+          // 只处理1张图和4张图的情况
+          if (length === 1) {
+            // 1张图
+            let maxW = 86 * 2 + 12;
+            let maxH = 180;
+
+            // 取出对象
+            let pic = element.pic_infos[0];
+            let bmiddle = pic.bmiddle;
+
+            // 数据处理
+            let picW = 0;
+            let picH = 0;
+            if (
+              pic.keep_size === 1 ||
+              bmiddle.width < 1 ||
+              bmiddle.height < 1
+            ) {
+              /// 固定方形
+              picW = picH = maxW;
+            } else {
+              /// 等比显示
+              if (bmiddle.width < bmiddle.height) {
+                picW = (bmiddle.width / bmiddle.height) * maxH;
+                picH = maxH;
+              } else {
+                picW = maxW;
+                picH = (bmiddle.height / bmiddle.width) * maxW;
+              }
+            }
+            // 新增属性
+            pic.picStyle.width = picW + "px";
+            pic.picStyle.height = picH + "px";
+          } else if (length === 4) {
+            // 4张图
+            element.picsWrapperStyle.width = 86 * 2 + 2 * 6 + "px";
+          }
+        }
+
+        // 点赞列表
+        element.attitudes_list = element.attitudes_list || [];
+        let len1 = element.attitudes_list.length;
+        // 用来添加地点赞 user
+        let attitudes = [];
+        // 不管有木有点赞，先给我拼个 点赞❤️
+        element.attitudesHtml = this.attitudesIcon;
+        for (let i = 0; i < len1; i++) {
+          // 取出user
+          const user = element.attitudes_list[i];
+          // 拼接数据
+          let screenNameHtml =
+            "&nbsp;&nbsp;" + "<span>" + user.screen_name + "</span>";
+          // 添加数据
+          attitudes.push(screenNameHtml);
+        }
+        if (attitudes.length > 0) {
+          // 用,拼接 默认是按,拼接
+          let attitudesHtml = attitudes.join();
+          //  辅助属性
+          element.attitudesHtml = element.attitudesHtml + attitudesHtml;
+        }
+
+        // 评论列表
+        element.comments_list = element.comments_list || [];
+        let len2 = element.comments_list.length;
+        for (let i = 0; i < len2; i++) {
+          // 取出comment
+          const comment = element.comments_list[i];
+          // 评论内容
+          let text = "：" + comment.text;
+          // 来源
+          let fromUser = "<span>" + comment.from_user.screen_name + "</span>";
+          // 是否有toUser
+          let toUser = "";
+          if (comment.to_user) {
+            toUser =
+              "回复" + "<span>" + comment.to_user.screen_name + "</span>";
+          }
+          // 评论内容
+          let commentHtml = fromUser + toUser + text;
+          // 拓展属性
+          comment.commentHtml = commentHtml;
+        }
+        // 压栈
+        temps.push(element);
+      });
+
+      return temps;
+    },
+
+    // 处理dom数据 start 起始索引
+    handleDomDatas(start) {
+      if (this.$refs.content === undefined) return;
+      // 获取DOM元素列表
+      this.$refs.content;
+      let length = this.$refs.content.length;
+      for (let i = start; i < length; i++) {
+        // 取出元素
+        const element = this.$refs.content[i];
+        // 取出数据
+        const moment = this.moments[i];
+        // 获取文本内容高度
+        let contentH = window
+          .getComputedStyle(element)
+          .height.replace("px", "");
+        // 判断
+        if (contentH > 5 * 20) {
+          moment.unfold = false;
+          moment.showUnfold = true;
+        } else {
+          moment.unfold = true;
+          moment.showUnfold = false;
+        }
+      }
     }
   },
   // 定义一个过滤器
@@ -781,63 +1001,41 @@ export default {
     }
   },
   computed: {
-    style() {
-      return {
-        transition: `${this.duration}ms`,
-        transform: `translate3d(0,${this.moveDistance}px, 0)`
-      };
+    //
+    transform() {
+      return { transform: `translate3d(0,${this.moveDistance}px, 0)` };
     },
 
     // 刷新ball样式处理
     refreshStyle() {
       // 控制刷新小球的状态
       var cy = this.moveDistance;
-      let opacity = cy > 40 ? 1 : 0;
+      let opacity = cy > this.topDistance ? 1 : 0;
       let top = -30;
       let transform = "";
-      let transition = "";
-
+      let duration = "0.2s";
+      let property = "";
       // 正在刷新
-      if (this.refreshState === 2) {
-        console.log(
-          "正在刷新 touchState ===== " +
-            this.touchSate +
-            "lastTop ===== " +
-            this.lastTop
-        );
+      if (this.topStatus === "loading") {
         // 正在刷新的过程中，小球可以根据页面滚动而滚动
-        top = 60 - this.lastTop;
+        top = Math.max(-30, 60 - this.lastRefreshTop);
         opacity = 1;
         transform = "";
-        transition = "";
       } else {
         // 正在touchmove, 只控制显示or隐藏，不做top处理
         if (this.touchSate === 2) {
-          console.log(
-            "正在拖拽 touchState ===== " +
-              this.touchSate +
-              "  " +
-              "lastTop ===== " +
-              this.lastTop
-          );
-          top = cy > this.criticalPoint ? 60 : this.lastTop;
+          top = cy > this.topDistance ? 60 : this.lastRefreshTop;
           transform = "rotate(" + -cy * 3 + "deg)";
-          transition = "top 0.2s ease";
+          property = "top,opacity";
         } else if (this.touchSate === 0) {
-          console.log(
-            "借宿拖拽 touchState ===== " +
-              this.touchSate +
-              "  " +
-              "lastTop ===== " +
-              this.lastTop
-          );
-          transition = "all 0.2s ease";
+          property = "top,opacity";
         }
       }
       // 返回样式
       return {
         top: top + "px",
-        transition: transition,
+        transitionDuration: duration,
+        transitionProperty: property,
         opacity: opacity,
         transform: transform
       };
@@ -848,29 +1046,7 @@ export default {
       user: state => state.user
     })
   },
-  watch: {
-    //这里是给用户操作返回的核心
-    refreshState(state) {
-      // 我们监听refreshState的状态，
-      // 0意味着开始也意味着结束，这里是结束，并且只有动画生效我们才能 moveDistance 设为0，
-      // 为什么动画生效才行，因为动画生效意味着手指离开了屏幕，如果不懂去看touchEnd方法，这时
-      // 我们让距离变为0才会有动画效果。
-
-      if (state === 0) {
-        console.log("+++++ 下拉即可刷新 +++++");
-        if (state === 0 && this.duration === 300) {
-          this.moveDistance = 0;
-        }
-      } else if (state === 1) {
-        console.log("+++++ 松手即可刷新 +++++");
-      } else {
-        console.log("+++++ 正在刷新 +++++");
-        setTimeout(() => {
-          this.refreshState = 0;
-        }, 5000);
-      }
-    }
-  },
+  watch: {},
   components: {
     actionSheet,
     MomentOperationMore,
@@ -898,6 +1074,11 @@ export default {
   height: 40px;
 }
 
+/* 下拽回弹动画 */
+.moment__dropped {
+  transition: 0.25s;
+}
+
 .kkk {
   opacity: 1;
   top: 60px;
@@ -921,7 +1102,6 @@ export default {
 .mh-moment--tap-highlight:active {
   background-color: #c7c7c5;
 }
-
 .moment__wrapper {
   position: relative;
   font-size: 17px;
@@ -1158,7 +1338,6 @@ export default {
   background-size: contain;
   position: absolute;
   left: 0;
-  top: -414px;
 }
 
 .moment__refresh {
@@ -1184,5 +1363,87 @@ export default {
 .comment-wrapper__line {
   background-color: #fff;
   height: 16px;
+}
+
+.moment__video-wrapper {
+  width: 103px;
+  height: 181px;
+  background: url(../../assets/images/moments/wx_video_cover.png) no-repeat 0 0;
+  background-size: contain;
+}
+.video-wrapper__play {
+  height: 100%;
+  background-image: url(../../assets/images/moments/Fav_List_Video_Play_40x40.png);
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: center;
+}
+
+.video-wrapper__play:active {
+  background-image: url(../../assets/images/moments/Fav_List_Video_Play_HL_40x40.png);
+}
+
+.moment__share-wrapper {
+  background-color: #f3f3f5;
+}
+.moment__share-wrapper:active {
+  background-color: #ced2de;
+}
+.share-wrapper__content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.share-wrapper__content .content__share-hd {
+  margin-right: 5px;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.content__share-hd img {
+  width: 40px;
+  height: 40px;
+}
+
+.share-wrapper__content .content__share-bd {
+  flex: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  font-size: 13px;
+}
+
+.share-wrapper__content .content__share-bd p {
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-height: 20px;
+  height: 20px;
+}
+.content__share-bd .content__title {
+  vertical-align: top;
+}
+.content__share-bd .content__subtitle {
+  color: #737373;
+  font-size: 12px;
+  vertical-align: bottom;
+}
+.content__share-hd .content__play {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  background-image: url(../../assets/images/moments/GiftVideoPlayIcon_23x23.png);
+  background-repeat: no-repeat;
+  background-size: 23px 23px;
+  background-position: center;
 }
 </style>

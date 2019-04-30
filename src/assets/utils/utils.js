@@ -9,7 +9,7 @@ const utils = {
     Vue.prototype.backItem = backItem
   },
 
-  // 🔥对象是否为数组
+  // 🔥判断对象是否为数组
   // - [JavaScript 判断该对象是否为数组](http://www.runoob.com/w3cnote/javascript-check-arrayisobject.html)
   // - [JS中判断对象是不是数组的方法](https://www.cnblogs.com/heshan1992/p/6927690.html)
   objIsArray(obj) {
