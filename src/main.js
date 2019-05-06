@@ -138,6 +138,8 @@ new Vue({
 // - [cube-ui](https://github.com/didi/cube-ui/)
 // - [当 better-scroll 遇见 Vue](https://zhuanlan.zhihu.com/p/27407024)
 // - [IScroll 实践指南(上)](https://qbaty.iteye.com/blog/1221061)
+// - [ChinaMobilePhoneNumberRegex](https://github.com/VincentSit/ChinaMobilePhoneNumberRegex)
+// - [JSVerbalExpressions](https://github.com/VerbalExpressions/JSVerbalExpressions)
 /** 
  * 
  * {

@@ -1,13 +1,7 @@
 // 朋友圈
 <template>
-  <div
-    class="_full-container"
-    @touchstart="touchstartAction"
-  >
-    <div
-      class="_full-content"
-      id="ko"
-    >
+  <div class="_full-container" @touchstart="touchstartAction">
+    <div class="_full-content" id="ko">
       <!-- 导航栏 -->
       <!-- <NavigationBar
         title="朋友圈"
@@ -64,7 +58,8 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                >{{ moment.user.screen_name }}</span>
+                  >{{ moment.user.screen_name }}</span
+                >
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -79,14 +74,12 @@
                 >
                   {{ moment.text || "" }}
                 </p>
-                <p
-                  class="mh-moment__expand"
-                  v-if="moment.showUnfold"
-                >
+                <p class="mh-moment__expand" v-if="moment.showUnfold">
                   <span
                     class="mh-moment--tap-highlight"
                     @click="moment.unfold = !moment.unfold"
-                  >{{ moment.unfold ? "收起" : "全文" }}</span>
+                    >{{ moment.unfold ? "收起" : "全文" }}</span
+                  >
                 </p>
               </div>
 
@@ -107,27 +100,18 @@
                 ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div
-                class="moment__video-wrapper"
-                v-if="moment.type === 1"
-              >
+              <div class="moment__video-wrapper" v-if="moment.type === 1">
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div
-                class="moment__share-wrapper"
-                v-if="moment.type === 2"
-              >
+              <div class="moment__share-wrapper" v-if="moment.type === 2">
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -139,10 +123,7 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -162,7 +143,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                  }}</span>
+                }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -222,10 +203,7 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div
-            class="weui-loadmore"
-            ref="loadMore"
-          >
+          <div class="weui-loadmore" ref="loadMore">
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -256,6 +234,9 @@ import MomentProfile from "./MomentProfile";
 import { mapState } from "vuex";
 // 工具类
 import utils from "../../assets/utils/utils.js";
+// 表情类
+import Emoticons from "../../assets/js/emoticons/emoticons.js";
+
 export default {
   name: "moments",
   data() {
@@ -473,15 +454,15 @@ export default {
 
       console.log(
         "--- scrollTop " +
-        scrollTop +
-        " --- direction " +
-        this.direction +
-        " --- distance " +
-        distance +
-        " --- moveDistance " +
-        this.moveDistance +
-        " --- bottomReached " +
-        this.bottomReached
+          scrollTop +
+          " --- direction " +
+          this.direction +
+          " --- distance " +
+          distance +
+          " --- moveDistance " +
+          this.moveDistance +
+          " --- bottomReached " +
+          this.bottomReached
       );
     },
     // 🔥检查是否滚动到底部
@@ -919,6 +900,14 @@ export default {
             toUser =
               "回复" + "<span>" + comment.to_user.screen_name + "</span>";
           }
+
+          // 这里做正则匹配
+          let reg = /\[[^ \\[\]]+?\]/g;
+          let aaa = reg.exec(text);
+          let bbb = aaa || [];
+          console.log("+++aaa+++  " + bbb.length);
+          console.log(aaa);
+
           // 评论内容
           let commentHtml = fromUser + toUser + text;
           // 拓展属性
@@ -1217,6 +1206,7 @@ export default {
   /* 👉 🔥 Vue 的style绑定显示background-image
   *  - [本地](https://www.cnblogs.com/anns/p/8565033.html) 
   *  - [远程](https://blog.csdn.net/qq_34664239/article/details/79106570)
+  *  - [vue 动态加载图片src的解决办法](http://blog.csdn.net/Mr_YanYan/article/details/78783091)
   */
   /* background-image: url("http://ww4.sinaimg.cn/or360/dccb2f02gw1evo8ku5d1uj21kw7401ky.jpg"); */
   background-size: cover;

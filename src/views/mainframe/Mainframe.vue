@@ -147,6 +147,10 @@ export default {
 </script>
 
 <style scoped>
+.kkkk {
+  width: 100px;
+  height: 100px;
+}
 .mh-mainframe__mask {
   position: fixed;
   z-index: 4;
