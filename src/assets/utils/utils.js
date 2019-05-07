@@ -18,6 +18,13 @@ const utils = {
     } else {
       return Object.prototype.toString.call(obj) === '[object Array]'
     }
+  },
+
+  // 🔥数组去重
+  // - [JS数组去重的几种常见方法](https://www.cnblogs.com/baiyangyuanzi/p/6726258.html)
+  // - [JavaScript数组去重（12种方法，史上最全）](https://segmentfault.com/a/1190000016418021)
+  uniqueArray(arr) {
+    return Array.from(new Set(arr))
   }
 }
 

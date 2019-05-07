@@ -1,7 +1,13 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content" id="ko">
+  <div
+    class="_full-container"
+    @touchstart="touchstartAction"
+  >
+    <div
+      class="_full-content"
+      id="ko"
+    >
       <!-- 导航栏 -->
       <!-- <NavigationBar
         title="朋友圈"
@@ -58,8 +64,7 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                  >{{ moment.user.screen_name }}</span
-                >
+                >{{ moment.user.screen_name }}</span>
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -71,15 +76,18 @@
                   class="mh-moment__content"
                   :class="moment.unfold ? 'unfold' : 'fold'"
                   ref="content"
+                  v-html="moment.text"
                 >
-                  {{ moment.text || "" }}
+                  <!-- {{ moment.text || "" }} -->
                 </p>
-                <p class="mh-moment__expand" v-if="moment.showUnfold">
+                <p
+                  class="mh-moment__expand"
+                  v-if="moment.showUnfold"
+                >
                   <span
                     class="mh-moment--tap-highlight"
                     @click="moment.unfold = !moment.unfold"
-                    >{{ moment.unfold ? "收起" : "全文" }}</span
-                  >
+                  >{{ moment.unfold ? "收起" : "全文" }}</span>
                 </p>
               </div>
 
@@ -100,18 +108,27 @@
                 ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div class="moment__video-wrapper" v-if="moment.type === 1">
+              <div
+                class="moment__video-wrapper"
+                v-if="moment.type === 1"
+              >
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div class="moment__share-wrapper" v-if="moment.type === 2">
+              <div
+                class="moment__share-wrapper"
+                v-if="moment.type === 2"
+              >
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img :src="moment.shareInfo.thumbImage" alt="" />
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -123,7 +140,10 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img :src="moment.shareInfo.thumbImage" alt="" />
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -143,7 +163,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                }}</span>
+                  }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -203,7 +223,10 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div class="weui-loadmore" ref="loadMore">
+          <div
+            class="weui-loadmore"
+            ref="loadMore"
+          >
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -235,7 +258,7 @@ import { mapState } from "vuex";
 // 工具类
 import utils from "../../assets/utils/utils.js";
 // 表情类
-import Emoticons from "../../assets/js/emoticons/emoticons.js";
+import emoticons from "../../assets/js/emoticons/emoticons.js";
 
 export default {
   name: "moments",
@@ -422,7 +445,7 @@ export default {
         //   }
         // }
 
-        console.log("++++ 下拉过程中 ++++");
+        // console.log("++++ 下拉过程中 ++++");
       }
 
       // 如果滚动条已经在顶部了。就没必要做下拉刷新了,且会触发 onscroll 事件
@@ -452,18 +475,18 @@ export default {
         }
       }
 
-      console.log(
-        "--- scrollTop " +
-          scrollTop +
-          " --- direction " +
-          this.direction +
-          " --- distance " +
-          distance +
-          " --- moveDistance " +
-          this.moveDistance +
-          " --- bottomReached " +
-          this.bottomReached
-      );
+      // console.log(
+      //   "--- scrollTop " +
+      //   scrollTop +
+      //   " --- direction " +
+      //   this.direction +
+      //   " --- distance " +
+      //   distance +
+      //   " --- moveDistance " +
+      //   this.moveDistance +
+      //   " --- bottomReached " +
+      //   this.bottomReached
+      // );
     },
     // 🔥检查是否滚动到底部
     // - https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollHeight
@@ -522,9 +545,9 @@ export default {
       let sh = e.target.scrollHeight - 50;
       let st = e.target.scrollTop + e.target.clientHeight;
 
-      console.log("+++ start +++");
-      console.log("sh === " + sh);
-      console.log("st === " + st);
+      // console.log("+++ start +++");
+      // console.log("sh === " + sh);
+      // console.log("st === " + st);
       // console.log("touchState === " + this.touchSate);
 
       // 必须是touchEnd的情况下有效，且不是正在下拉刷新
@@ -805,6 +828,9 @@ export default {
         // 是否显示评论 一进来都不显示
         element.showCmt = false;
 
+        // 针对正文做处理
+        element.text = this.regexContent(element.text, 18);
+
         // 1.针对图片处理
         element.pic_infos = element.pic_infos || [];
         // 图片盒子的样式 <PS：只需要处理 四张图的场景即可，其他场景靠内部图片撑开>
@@ -901,12 +927,7 @@ export default {
               "回复" + "<span>" + comment.to_user.screen_name + "</span>";
           }
 
-          // 这里做正则匹配
-          let reg = /\[[^ \\[\]]+?\]/g;
-          let aaa = reg.exec(text);
-          let bbb = aaa || [];
-          console.log("+++aaa+++  " + bbb.length);
-          console.log(aaa);
+          text = this.regexContent(text, 18);
 
           // 评论内容
           let commentHtml = fromUser + toUser + text;
@@ -944,6 +965,111 @@ export default {
           moment.showUnfold = false;
         }
       }
+    },
+
+    // 对内容做正则处理
+    regexContent(text, fontSize) {
+      // 1 链接正则
+      // let regexLinkUrl = /(http[s]?:\/\/([\w-]+.)+([:\d+])?(\/[\w-\.\/\?%&=]*)?)/gi;
+      let regexLinkUrl = new RegExp(
+        "((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)",
+        "gi"
+      );
+      // 匹配到链接数据
+      let linkUrlResults = text.match(regexLinkUrl) || [];
+
+      // 2 🔥手机或电话正则
+      // - [一组匹配中国大陆手机号码的正则表达式](https://github.com/VincentSit/ChinaMobilePhoneNumberRegex)
+      // let regexPhoneNumber = /((((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147))\d{8})|((\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}))+?/g; // 这个也可以
+      let regexPhoneNumber = /((?:\+?86)?1(?:3\d{3}|5[^4\D]\d{2}|8\d{3}|7(?:[35678]\d{2}|4(?:0\d|1[0-2]|9\d))|9[189]\d{2}|66\d{2})\d{6})+?/g;
+      // 匹配到的电话号码
+      let phoneResults = text.match(regexPhoneNumber) || [];
+      // 数组去重
+      phoneResults = utils.uniqueArray(phoneResults);
+
+      // 3 匹配话题 #xxx#
+      let regexTopic = /#[^@#]+?#/g;
+      let topicResults = text.match(regexTopic) || [];
+      // 数组去重
+      topicResults = utils.uniqueArray(topicResults);
+
+      // 3 at @xxx
+      let regexAt = /@[-_a-zA-Z0-9\u4E00-\u9FA5]+/g;
+      let atResults = text.match(regexAt) || [];
+      // 数组去重
+      atResults = utils.uniqueArray(atResults);
+
+      // 4.表情正则 \[[^ \\[\]]+?\]    <PS: 先匹配@，再匹配表情，因为表情里面有 @3x @2x>
+      let regexEmoticon = /\[[^ \\[\]]+?\]/g;
+      // 匹配到表情数据
+      let emoticonResults = text.match(regexEmoticon) || [];
+      console.log("before");
+      console.log(emoticonResults);
+      // 数组去重
+      emoticonResults = utils.uniqueArray(emoticonResults);
+      console.log("after");
+      console.log(emoticonResults);
+      // 做资源拼接
+      // 匹配的数据
+      for (let i = 0; i < linkUrlResults.length; i++) {
+        // value
+        const value = linkUrlResults[i];
+        // 内容
+        let el = "<span>" + value + "</span>";
+        // 替换
+        let regex = new RegExp(value, "g");
+        text = text.replace(regex, el);
+      }
+
+      // 匹配的数据
+      for (let i = 0; i < phoneResults.length; i++) {
+        // value
+        const value = phoneResults[i];
+        // 内容
+        let el = "<span>" + value + "</span>";
+        // 替换
+        let regex = new RegExp(value, "g");
+        text = text.replace(regex, el);
+      }
+
+      // 匹配的数据
+      for (let i = 0; i < topicResults.length; i++) {
+        // value
+        const value = topicResults[i];
+        // 内容
+        let el = "<span>" + value + "</span>";
+        // 替换
+        let regex = new RegExp(value, "g");
+        text = text.replace(regex, el);
+      }
+
+      // 匹配的数据
+      for (let i = 0; i < atResults.length; i++) {
+        // value
+        const value = atResults[i];
+        // 内容
+        let el = "<span>" + value + "</span>";
+        // 替换
+        let regex = new RegExp(value, "g");
+        text = text.replace(regex, el);
+      }
+
+      // 数据处理
+      for (let i = 0; i < emoticonResults.length; i++) {
+        // 匹配到的key
+        const key = emoticonResults[i];
+        // 取出图片地址
+        let src = emoticons[key];
+        // 没有表情
+        if (!src) continue;
+        // 图片拼接
+        let pic = "<img src=" + "'" + src + "'" + " width='18' height='18'>";
+        // 替换
+        let regex = new RegExp(key, "g");
+        text = text.replace(regex, pic);
+      }
+
+      return text;
     }
   },
   // 定义一个过滤器
@@ -1173,9 +1299,17 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 20px;
+  line-height: 24px;
   font-size: 16px;
 }
+.mh-moment__content >>> img {
+  vertical-align: text-bottom;
+}
+
+.mh-moment__content >>> span {
+  color: #4380d1;
+}
+
 .mh-moment__content.fold {
   -webkit-line-clamp: 5;
 }
@@ -1286,7 +1420,7 @@ export default {
   font-size: 14px;
   color: black;
   padding: 6px 10px;
-  line-height: 18px;
+  line-height: 20px;
 }
 
 .comment-wrapper__attitudes::after {
@@ -1317,6 +1451,11 @@ export default {
 .comment-wrapper__comment:active {
   background-color: #ced2de;
 }
+
+.comment-wrapper__comment >>> img {
+  vertical-align: text-bottom;
+}
+
 .moment__profile {
   margin-top: -64px;
 }

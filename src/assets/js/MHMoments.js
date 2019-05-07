@@ -60,7 +60,7 @@ export default {
         {
           idstr: '3883144392991724',
           moment_idstr: '3883144392991722',
-          text: '你们俩矜持点，都热门评论了[笑cry][笑cry][笑cry]',
+          text: '你们俩矜持点，都热门评论了[笑cry][笑cry][笑cry][good][非表情]',
           created_at: 'Fri Sep 04 00:07:04 +0800 2015',
           from_user: {
             profile_image_url:
