@@ -6,7 +6,7 @@ import Contacts from './views/contacts/Contacts.vue'
 // 发现
 import Discover from './views/discover/Discover.vue'
 // 朋友圈
-import Moments from './views/discover/Moments.vue'
+import Moments from './views/discover/moments/Moments.vue'
 
 import Profile from './views/profile/Profile.vue'
 import AddFriends from './views/contacts/AddFriends.vue'

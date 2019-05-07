@@ -135,6 +135,8 @@ new Vue({
 
 // 👉
 
+// 👉 Vue.js 源码学习九 —— 过渡效果 transition 学习
+// - [Vue.js 源码学习九 —— 过渡效果 transition 学习](https://www.jianshu.com/p/f283b39aa212)
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
 // - [better-scroll](https://github.com/ustbhuangyi/better-scroll)

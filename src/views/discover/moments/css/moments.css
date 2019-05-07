@@ -1,0 +1,13 @@
+/* 点击高亮 */
+/* 点击高亮 */
+.mh-moment--tap-highlight {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  color: inherit;
+}
+
+.mh-moment--tap-highlight:active {
+  background-color: red;
+}
+
+/* https://www.cnblogs.com/ajaxlu/p/9086651.html */
+/* https://blog.csdn.net/weixin_39941429/article/details/80254724 */
