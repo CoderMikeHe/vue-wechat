@@ -633,7 +633,7 @@ export default {
     },
     {
       text:
-        '#9.3胜利日大阅兵# 兵哥哥们实在是太可爱惹！求主持人此刻心理阴影面积 [笑cry]你们要的视频在此→http://t.cn/RyAr6rx',
+        '#9.3胜利日大阅兵# 兵哥哥们实在是太可爱惹！#9.3胜利日大阅兵# 求主持人此刻心理阴影面积 [笑cry]你们要的视频在此→http://t.cn/RyAr6rx →http://t.cn/RyAr6rx',
       idstr: '3883026607726969',
       source: '',
       source_allowclick: 0,

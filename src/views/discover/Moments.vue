@@ -1,13 +1,7 @@
 // 朋友圈
 <template>
-  <div
-    class="_full-container"
-    @touchstart="touchstartAction"
-  >
-    <div
-      class="_full-content"
-      id="ko"
-    >
+  <div class="_full-container" @touchstart="touchstartAction">
+    <div class="_full-content" id="ko">
       <!-- 导航栏 -->
       <!-- <NavigationBar
         title="朋友圈"
@@ -64,7 +58,8 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                >{{ moment.user.screen_name }}</span>
+                  >{{ moment.user.screen_name }}</span
+                >
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -80,14 +75,12 @@
                 >
                   <!-- {{ moment.text || "" }} -->
                 </p>
-                <p
-                  class="mh-moment__expand"
-                  v-if="moment.showUnfold"
-                >
+                <p class="mh-moment__expand" v-if="moment.showUnfold">
                   <span
                     class="mh-moment--tap-highlight"
                     @click="moment.unfold = !moment.unfold"
-                  >{{ moment.unfold ? "收起" : "全文" }}</span>
+                    >{{ moment.unfold ? "收起" : "全文" }}</span
+                  >
                 </p>
               </div>
 
@@ -108,27 +101,18 @@
                 ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div
-                class="moment__video-wrapper"
-                v-if="moment.type === 1"
-              >
+              <div class="moment__video-wrapper" v-if="moment.type === 1">
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div
-                class="moment__share-wrapper"
-                v-if="moment.type === 2"
-              >
+              <div class="moment__share-wrapper" v-if="moment.type === 2">
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -140,10 +124,7 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -163,7 +144,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                  }}</span>
+                }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -223,10 +204,7 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div
-            class="weui-loadmore"
-            ref="loadMore"
-          >
+          <div class="weui-loadmore" ref="loadMore">
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -829,7 +807,7 @@ export default {
         element.showCmt = false;
 
         // 针对正文做处理
-        element.text = this.regexContent(element.text, 18);
+        element.text = this.regexContent(element.text);
 
         // 1.针对图片处理
         element.pic_infos = element.pic_infos || [];
@@ -927,7 +905,7 @@ export default {
               "回复" + "<span>" + comment.to_user.screen_name + "</span>";
           }
 
-          text = this.regexContent(text, 18);
+          text = this.regexContent(text);
 
           // 评论内容
           let commentHtml = fromUser + toUser + text;
@@ -968,7 +946,7 @@ export default {
     },
 
     // 对内容做正则处理
-    regexContent(text, fontSize) {
+    regexContent(text) {
       // 1 链接正则
       // let regexLinkUrl = /(http[s]?:\/\/([\w-]+.)+([:\d+])?(\/[\w-\.\/\?%&=]*)?)/gi;
       let regexLinkUrl = new RegExp(
@@ -977,6 +955,8 @@ export default {
       );
       // 匹配到链接数据
       let linkUrlResults = text.match(regexLinkUrl) || [];
+      // 数组去重
+      linkUrlResults = utils.uniqueArray(linkUrlResults);
 
       // 2 🔥手机或电话正则
       // - [一组匹配中国大陆手机号码的正则表达式](https://github.com/VincentSit/ChinaMobilePhoneNumberRegex)
@@ -1001,16 +981,11 @@ export default {
 
       // 4.表情正则 \[[^ \\[\]]+?\]    <PS: 先匹配@，再匹配表情，因为表情里面有 @3x @2x>
       let regexEmoticon = /\[[^ \\[\]]+?\]/g;
-      // 匹配到表情数据
+      // 匹配到表情数据 PS 由于表情是[xxx]，所以不需要去重
       let emoticonResults = text.match(regexEmoticon) || [];
-      console.log("before");
-      console.log(emoticonResults);
-      // 数组去重
-      emoticonResults = utils.uniqueArray(emoticonResults);
-      console.log("after");
-      console.log(emoticonResults);
+
       // 做资源拼接
-      // 匹配的数据
+      // 匹配的链接数据
       for (let i = 0; i < linkUrlResults.length; i++) {
         // value
         const value = linkUrlResults[i];
@@ -1018,10 +993,12 @@ export default {
         let el = "<span>" + value + "</span>";
         // 替换
         let regex = new RegExp(value, "g");
+        //
+        console.log("链接  " + regex);
         text = text.replace(regex, el);
       }
 
-      // 匹配的数据
+      // 匹配的电话号码数据
       for (let i = 0; i < phoneResults.length; i++) {
         // value
         const value = phoneResults[i];
@@ -1032,7 +1009,7 @@ export default {
         text = text.replace(regex, el);
       }
 
-      // 匹配的数据
+      // 匹配的话题数据
       for (let i = 0; i < topicResults.length; i++) {
         // value
         const value = topicResults[i];
@@ -1043,7 +1020,7 @@ export default {
         text = text.replace(regex, el);
       }
 
-      // 匹配的数据
+      // 匹配的@数据
       for (let i = 0; i < atResults.length; i++) {
         // value
         const value = atResults[i];
@@ -1054,7 +1031,7 @@ export default {
         text = text.replace(regex, el);
       }
 
-      // 数据处理
+      // 匹配的表情
       for (let i = 0; i < emoticonResults.length; i++) {
         // 匹配到的key
         const key = emoticonResults[i];
@@ -1065,8 +1042,7 @@ export default {
         // 图片拼接
         let pic = "<img src=" + "'" + src + "'" + " width='18' height='18'>";
         // 替换
-        let regex = new RegExp(key, "g");
-        text = text.replace(regex, pic);
+        text = text.replace(key, pic);
       }
 
       return text;
@@ -1308,6 +1284,10 @@ export default {
 
 .mh-moment__content >>> span {
   color: #4380d1;
+}
+
+.mh-moment__content >>> span:active {
+  background-color: #c7c7c5;
 }
 
 .mh-moment__content.fold {
