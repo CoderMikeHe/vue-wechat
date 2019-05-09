@@ -133,10 +133,35 @@ new Vue({
 // - [小技巧css解决移动端ios不兼容position:fixed属性，无需插件](https://blog.csdn.net/liu__hua/article/details/40106595)
 // - [移动端整体布局-解决ios下fixed定位抖动的问题](https://blog.csdn.net/cengjingcanghai123/article/details/51511116)
 
-// 👉
+// 👉数组去重
+// - [JS数组去重的几种常见方法](https://www.cnblogs.com/baiyangyuanzi/p/6726258.html)
+// - [JavaScript数组去重（12种方法，史上最全）](https://segmentfault.com/a/1190000016418021)
+
+// 👉行内元素和块状元素
+// - [https://blog.csdn.net/cc18868876837/article/details/78060347](常用的块级元素（block）、行内元素（inline）以及行内块元素（inline-block）的解析)
+// - [Html中行内元素有哪些？块级元素有哪些？](https://www.cnblogs.com/Jackie0714/p/4923639.html)
+// - [HTML哪些是块级元素，哪些是行内元素](https://www.cnblogs.com/yxm440/p/7667539.html)
 
 // 👉 Vue.js 源码学习九 —— 过渡效果 transition 学习
 // - [Vue.js 源码学习九 —— 过渡效果 transition 学习](https://www.jianshu.com/p/f283b39aa212)
+
+// 👉 JS正则表达式
+// - [JS正则表达式详解](http://www.cnblogs.com/moqiutao/p/6513628.html)
+// - [JS正则表达式完整教程](http://www.cnblogs.com/guaidianqiao/p/7615228.html)
+// - [JS正则表达式](https://www.runoob.com/regexp/regexp-rule.html)
+// - [JS正则表达式](https://www.jianshu.com/p/b88e19474ab3)
+// - [js中的正则表达式入门](https://www.cnblogs.com/chenmeng0818/p/6370819.html)
+
+// 👉 web页面emoji表情
+// - [web页面如何显示emoji表情呢？](https://segmentfault.com/q/1010000004356514)
+// - [umoji](https://github.com/channg/umoji)
+// - [emoji](https://github.com/node-modules/emoji)
+
+// 👉 数组嵌套对象响应式
+// - [vue如何修改数组中对象的值？](https://segmentfault.com/q/1010000012375354)
+// - [vue 数组中嵌套的对象添加新属性--页面更新](https://www.jianshu.com/p/8f0e5bb13735)
+// - [vue 列表渲染](https://cn.vuejs.org/v2/guide/list.html)
+
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
 // - [better-scroll](https://github.com/ustbhuangyi/better-scroll)

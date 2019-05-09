@@ -6,17 +6,29 @@
       @click="coverDidClick"
     >
       <div class="top-wrapper__name">{{ user.screen_name }}</div>
-      <div class="top-wrapper__avatar" @click.stop="avatarDidClick">
-        <img :src="user.profile_image_url" alt="" />
+      <div
+        class="top-wrapper__avatar"
+        @click.stop="avatarDidClick"
+      >
+        <img
+          :src="user.profile_image_url"
+          alt=""
+        />
       </div>
     </div>
-    <div class="profile__bottom-wrapper" :style="{ height: bottomHeight }">
+    <div
+      class="profile__bottom-wrapper"
+      :style="{ height: bottomHeight }"
+    >
       <div
         class="bottom-wrapper__message"
         @click.stop="messageDidRead"
         v-if="unreadCount"
       >
-        <img class="message__avatar" :src="unreadUser.profile_image_url" />
+        <img
+          class="message__avatar"
+          :src="unreadUser.profile_image_url"
+        />
         <p class="message__content">{{ unreadMessage }}</p>
       </div>
     </div>
@@ -43,7 +55,7 @@ export default {
       }
     };
   },
-  created() {},
+  created() { },
   methods: {
     // 头像被点击
     avatarDidClick() {
@@ -84,7 +96,7 @@ export default {
 <style scoped>
 .profile__top-wrapper {
   width: 100%;
-  background: url(../../assets/images/moments/Kris.png) no-repeat 0 0;
+  background: url(~@/assets/images/moments/Kris.png) no-repeat 0 0;
   background-size: contain;
   position: relative;
 }
@@ -121,7 +133,7 @@ export default {
   height: 40px;
   background-color: rgb(56, 57, 57);
   border-radius: 6px;
-  background-image: url("../../assets/images/moments/wx_albumTimeLineTipArrow_15x15.png");
+  background-image: url("~@/assets/images/moments/wx_albumTimeLineTipArrow_15x15.png");
   background-repeat: no-repeat;
   background-size: 15px 15px;
   background-position: 155px center;
@@ -142,7 +154,7 @@ export default {
 }
 .bottom-wrapper__message:active {
   background-color: rgb(51, 52, 52);
-  background-image: url("../../assets/images/moments/wx_AlbumTimeLineTipArrowHL_15x15.png");
+  background-image: url("~@/assets/images/moments/wx_AlbumTimeLineTipArrowHL_15x15.png");
 }
 
 .message__avatar {

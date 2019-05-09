@@ -6,8 +6,402 @@
 }
 
 .mh-moment--tap-highlight:active {
-  background-color: red;
+  background-color: #c7c7c5;
+}
+/* 🔥 弹簧动效 https://www.w3cplus.com/animation/spring-animation-in-css.html */
+.fade-enter-active,
+.fade-leave-active {
+  width: 181px;
+  height: 40px;
+  transition: width 0.25s ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  width: 0;
+  height: 40px;
 }
 
-/* https://www.cnblogs.com/ajaxlu/p/9086651.html */
-/* https://blog.csdn.net/weixin_39941429/article/details/80254724 */
+/* 下拽回弹动画 */
+.moment__dropped {
+  transition: 0.25s;
+}
+
+.kkk {
+  opacity: 1;
+  top: 60px;
+  animation: rotale 1.25s linear infinite;
+  -webkit-animation: rotale 1.25s linear infinite;
+}
+@keyframes rotale {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.moment__wrapper {
+  position: relative;
+  font-size: 17px;
+  height: 100%;
+  width: 100%;
+  /*
+  https://segmentfault.com/q/1010000012872663 
+  和你的页面布局有关。
+正常情况下滚动条是属于 html 的，页面撑开可以正常获取document.documentElement.scrollTop。
+在滚动条属于 html 或 body 的情况下document.body.scrollTop || document.documentElement.scrollTop能正常拿到相应值。
+
+如果都为0，那说明：
+
+当前滚动条位置就是在顶部。
+没有产生滚动。
+你当前的滚动条不再属于 html 或者 body。
+其它我没想到的= =。 
+
+*/
+  overflow: scroll;
+  background-color: #fff;
+}
+
+/* 单条说说--Start */
+.mh-moment {
+  padding: 10px 20px 0;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: flex-start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+
+  background-color: #fff;
+  font-size: 16px;
+}
+
+.mh-moment::after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  color: #d8d8d8;
+  background-color: #d8d8d8;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  z-index: 2;
+}
+
+.mh-moment__hd img {
+  margin-right: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+}
+
+.mh-moment__bd {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.mh-moment__name {
+  color: #5b6a91;
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 6px;
+}
+
+.moment__content-wrapper {
+  padding-bottom: 10px;
+}
+.mh-moment__content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  font-size: 16px;
+}
+.mh-moment__content >>> img {
+  vertical-align: text-bottom;
+}
+
+.mh-moment__content >>> span {
+  color: #4380d1;
+}
+
+.mh-moment__content >>> span:active {
+  background-color: #c7c7c5;
+}
+
+.mh-moment__content.fold {
+  -webkit-line-clamp: 5;
+}
+
+.mh-moment__content.unfold {
+  -webkit-line-clamp: 100;
+}
+
+/* 全文/收齐 */
+.mh-moment__expand {
+  color: #5b6a91;
+  padding-top: 10px;
+}
+
+.mh-moment__pictures {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.mh-moment__pic {
+  width: 86px;
+  height: 86px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  /* 👉 🔥 Vue 的style绑定显示background-image
+  *  - [本地](https://www.cnblogs.com/anns/p/8565033.html) 
+  *  - [远程](https://blog.csdn.net/qq_34664239/article/details/79106570)
+  *  - [vue 动态加载图片src的解决办法](http://blog.csdn.net/Mr_YanYan/article/details/78783091)
+  */
+  /* background-image: url("http://ww4.sinaimg.cn/or360/dccb2f02gw1evo8ku5d1uj21kw7401ky.jpg"); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.moment__location-wrapper {
+  padding-top: 5px;
+  color: #5b6a91;
+  font-size: 14px;
+}
+
+.mh-moment__more-wrapper {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+
+  height: 41px;
+}
+
+.more-wrapper__operation {
+  position: absolute;
+  right: 30px;
+}
+
+.mh-moment__time {
+  color: #b2b2b2;
+  font-size: 14px;
+}
+.mh-moment__more {
+  background-image: url('~@/assets/images/moments/wx_albumOperateMore_25x25.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  color: inherit;
+}
+.mh-moment__more:active {
+  background-image: url('~@/assets/images/moments/wx_albumOperateMoreHL_25x25.png');
+}
+
+/* 评论盒子 */
+.moment__comment-wrapper {
+  position: relative;
+  background-color: #f3f3f5;
+}
+
+/* 向上三角形 */
+.moment__comment-wrapper::before {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  content: '';
+  border-width: 0 6px 6px;
+  border-color: transparent transparent #f3f3f5 transparent;
+  border-style: solid;
+  z-index: 2;
+}
+
+/* 点赞 */
+.comment-wrapper__attitudes,
+.comment-wrapper__comment {
+  position: relative;
+  font-size: 14px;
+  color: black;
+  padding: 6px 10px;
+  line-height: 20px;
+}
+
+.comment-wrapper__attitudes::after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  color: rgb(236, 236, 236);
+  background-color: rgb(236, 236, 236);
+  z-index: 2;
+}
+
+/* https://cn.vuejs.org/v2/api/#v-html */
+.comment-wrapper__attitudes >>> span {
+  color: #5b6a91;
+  font-weight: 500;
+}
+.comment-wrapper__attitudes >>> span:active {
+  background-color: #c7c7c5;
+}
+.comment-wrapper__attitudes >>> img {
+  vertical-align: text-top;
+}
+
+/* 问题： 父元素有 active ，子元素 也有active 会同时响应 */
+.comment-wrapper__comment:active {
+  background-color: #ced2de;
+}
+
+.comment-wrapper__comment >>> img {
+  vertical-align: text-bottom;
+}
+
+.moment__profile {
+  margin-top: -64px;
+}
+.moment__background {
+  width: 100%;
+  height: 100%;
+  background: url(~@/assets/images/moments/wx_around-friends_bg_320x568.png)
+    no-repeat 0 0;
+  background-size: contain;
+  position: absolute;
+  left: 0;
+}
+
+.moment__refresh {
+  position: absolute;
+  opacity: 0;
+  left: 20px;
+  top: -30px;
+  z-index: 4;
+  width: 30px;
+  height: 30px;
+  background: url(~@/assets/images/moments/wx_album_refresh.png) no-repeat 0 0;
+  background-size: contain;
+}
+.comment-wrapper__comment >>> span {
+  color: #5b6a91;
+  font-weight: 500;
+}
+.comment-wrapper__comment >>> span:active {
+  background-color: #c7c7c7;
+}
+
+.comment-wrapper__line {
+  background-color: #fff;
+  height: 16px;
+}
+
+.moment__video-wrapper {
+  width: 103px;
+  height: 181px;
+  background: url(~@/assets/images/moments/wx_video_cover.png) no-repeat 0 0;
+  background-size: contain;
+}
+.video-wrapper__play {
+  height: 100%;
+  /* 🔥 1s学会如何在css、html中使用alias相对路径
+   * - [1s学会如何在css、html中使用alias相对路径](https://juejin.im/post/5a6e98b2f265da3e261c36f7)
+   */
+  background-image: url(~@/assets/images/moments/Fav_List_Video_Play_40x40.png);
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: center;
+}
+
+.video-wrapper__play:active {
+  background-image: url(~@/assets/images/moments/Fav_List_Video_Play_HL_40x40.png);
+}
+
+.moment__share-wrapper {
+  background-color: #f3f3f5;
+}
+.moment__share-wrapper:active {
+  background-color: #ced2de;
+}
+.share-wrapper__content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.share-wrapper__content .content__share-hd {
+  margin-right: 5px;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.content__share-hd img {
+  width: 40px;
+  height: 40px;
+}
+
+.share-wrapper__content .content__share-bd {
+  flex: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  font-size: 13px;
+}
+
+.share-wrapper__content .content__share-bd p {
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-height: 20px;
+  height: 20px;
+}
+.content__share-bd .content__title {
+  vertical-align: top;
+}
+.content__share-bd .content__subtitle {
+  color: #737373;
+  font-size: 12px;
+  vertical-align: bottom;
+}
+.content__share-hd .content__play {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  background-image: url(~@/assets/images/moments/GiftVideoPlayIcon_23x23.png);
+  background-repeat: no-repeat;
+  background-size: 23px 23px;
+  background-position: center;
+}

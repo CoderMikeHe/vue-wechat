@@ -9,7 +9,7 @@
       >
         <img
           v-if="show"
-          src="../../assets/images/moments/wx_albumLikeHL_20x20.png"
+          src="@/assets/images/moments/wx_albumLikeHL_20x20.png"
           class="mh-more__ani-pic"
         />
       </transition>
@@ -88,7 +88,7 @@ export default {
   overflow: hidden;
 }
 .mh-more__thumb {
-  background-image: url("../../assets/images/moments/wx_albumLike_20x20.png");
+  background-image: url("~@/assets/images/moments/wx_albumLike_20x20.png");
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-position: 18px center;
@@ -104,7 +104,7 @@ export default {
 }
 .mh-more__thumb:active {
   background-color: black;
-  background-image: url("../../assets/images/moments/wx_albumLikeHL_20x20.png");
+  background-image: url("~@/assets/images/moments/wx_albumLikeHL_20x20.png");
 }
 
 .mh-more__ani-pic {
@@ -116,7 +116,7 @@ export default {
 }
 
 .mh-more__comment {
-  background-image: url("../../assets/images/moments/wx_albumCommentSingleA_20x20.png");
+  background-image: url("~@/assets/images/moments/wx_albumCommentSingleA_20x20.png");
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-position: 18px center;
@@ -132,11 +132,11 @@ export default {
 }
 .mh-more__comment:active {
   background-color: black;
-  background-image: url("../../assets/images/moments/wx_albumCommentSingleAHL_20x20.png");
+  background-image: url("~@/assets/images/moments/wx_albumCommentSingleAHL_20x20.png");
 }
 
 .mh-more__line {
-  background-image: url("../../assets/images/moments/wx_albumCommentLine_0x24.png");
+  background-image: url("~@/assets/images/moments/wx_albumCommentLine_0x24.png");
   background-repeat: no-repeat;
   background-size: 1px 24px;
   width: 1px;
