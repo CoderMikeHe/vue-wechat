@@ -17,7 +17,7 @@
               alt
               width="64px"
               height="64px"
-            >
+            />
           </div>
           <div class="mh-contact-info__info-detail">
             <h1 style="font-weight:bold;font-size:20px">吴亦凡</h1>
@@ -33,46 +33,48 @@
             src="@/assets/images/common/tableview_arrow_8x13.png"
             width="8px"
             height="13px"
-          >
+          />
         </div>
       </section>
 
       <section class="mh-contact-info">
-        <div class="mh-contact-info__cell _mh-tap-highlight mh-contact-info__cell-moments">
+        <div
+          class="mh-contact-info__cell _mh-tap-highlight mh-contact-info__cell-moments"
+        >
           <p class="mh-contact-info__cell-title">朋友圈</p>
           <div class="mh-contact-info__cell-pics">
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
               class="mh-contact-info__cell-pic"
-            >
+            />
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
               class="mh-contact-info__cell-pic"
-            >
+            />
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
               class="mh-contact-info__cell-pic"
-            >
+            />
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
               class="mh-contact-info__cell-pic"
-            >
+            />
             <img
               src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
               alt
               class="mh-contact-info__cell-pic"
-            >
+            />
           </div>
           <img
             class="mh-right-arrow"
             src="@/assets/images/common/tableview_arrow_8x13.png"
             width="8px"
             height="13px"
-          >
+          />
         </div>
         <div class="mh-contact-info__cell _mh-tap-highlight">
           <p class="mh-contact-info__cell-title">更多信息</p>
@@ -81,7 +83,7 @@
             src="@/assets/images/common/tableview_arrow_8x13.png"
             width="8px"
             height="13px"
-          >
+          />
         </div>
       </section>
 
@@ -91,12 +93,10 @@
             <span class="iconfont icon-contact-info-message">&nbsp;</span>发消息
           </p>
         </div>
-        <div
-          class="mh-contact-info__cell"
-          @click="chat"
-        >
+        <div class="mh-contact-info__cell" @click="chat">
           <p class="mh-contact-info__cell-center-title">
-            <span class="iconfont icon-contact-info-video">&nbsp;</span>音视频通话
+            <span class="iconfont icon-contact-info-video">&nbsp;</span
+            >音视频通话
           </p>
         </div>
       </section>
@@ -120,12 +120,16 @@ export default {
   name: "contact-info",
   created() {
     this.configItems();
+
+    // 获取用户
+    console.log(this.$route);
   },
   data() {
     return {
       moreItem: moreItem,
       showActionSheet: false, // 显示ActionSheet,
-      items: []
+      items: [],
+      userInfo: {}
     };
   },
   methods: {

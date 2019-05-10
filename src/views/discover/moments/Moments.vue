@@ -1,7 +1,13 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content" id="ko">
+  <div
+    class="_full-container"
+    @touchstart="touchstartAction"
+  >
+    <div
+      class="_full-content"
+      id="ko"
+    >
       <!-- 导航栏 -->
       <!-- <NavigationBar
         title="朋友圈"
@@ -58,8 +64,7 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                  >{{ moment.user.screen_name }}</span
-                >
+                >{{ moment.user.screen_name }}</span>
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -75,12 +80,14 @@
                 >
                   <!-- {{ moment.text || "" }} -->
                 </p>
-                <p class="mh-moment__expand" v-if="moment.showUnfold">
+                <p
+                  class="mh-moment__expand"
+                  v-if="moment.showUnfold"
+                >
                   <span
                     class="mh-moment--tap-highlight"
                     @click="moment.unfold = !moment.unfold"
-                    >{{ moment.unfold ? "收起" : "全文" }}</span
-                  >
+                  >{{ moment.unfold ? "收起" : "全文" }}</span>
                 </p>
               </div>
 
@@ -101,18 +108,27 @@
                 ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div class="moment__video-wrapper" v-if="moment.type === 1">
+              <div
+                class="moment__video-wrapper"
+                v-if="moment.type === 1"
+              >
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div class="moment__share-wrapper" v-if="moment.type === 2">
+              <div
+                class="moment__share-wrapper"
+                v-if="moment.type === 2"
+              >
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img :src="moment.shareInfo.thumbImage" alt="" />
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -124,7 +140,10 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img :src="moment.shareInfo.thumbImage" alt="" />
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -144,7 +163,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                }}</span>
+                  }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -181,7 +200,7 @@
                 <div
                   class="comment-wrapper__attitudes"
                   v-html="moment.attitudesHtml"
-                  @click="xxoo($event)"
+                  @click="attitudesItemDidClick(index, $event)"
                   v-if="moment.attitudes_list.length > 0"
                 ></div>
                 <!-- 评论列表 -->
@@ -204,7 +223,10 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div class="weui-loadmore" ref="loadMore">
+          <div
+            class="weui-loadmore"
+            ref="loadMore"
+          >
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -257,17 +279,15 @@ export default {
       // coverItems
       coverItems: [],
       shwoCover: false,
-
+      attitudesIcon:
+        "<img src=" +
+        require("@/assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
+        " width='15' height='15'>",
       // 全文或收起
       expanded: false,
 
       // 当前显示的moment
       tempMoment: {},
-      // 点赞列表爱心
-      attitudesIcon:
-        "<img src=" +
-        require("@/assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
-        " width='15' height='15'>",
       // 要删除的评论数据的索引 {section , row}
       delCmtIndexPath: {},
       rotes: false,
@@ -311,9 +331,8 @@ export default {
   },
   created() {
     console.log("++++++ 重新创建 ++++++");
-
     // 配置action-sheet item
-    this.configItems();
+    this.configActionSheetItems();
     // 🔥 数组拼接另一个数组
     // 👉 - [js数组拼接的四种方法]https://blog.csdn.net/cristina_song/article/details/82805444
     let temps = this.handleWebDatas(MHMoments.moments);
@@ -347,7 +366,6 @@ export default {
 
       this.startY = t.clientY;
       let scrollTop = document.getElementById("drag").scrollTop;
-      console.log("startDrag ====  " + scrollTop);
       // 记录一下起始 st
       this.startScrollTop = scrollTop;
 
@@ -546,7 +564,7 @@ export default {
       this.showActionSheet = true;
     },
     // 配置 actionsheet items
-    configItems() {
+    configActionSheetItems() {
       const takePhoto = new ActionSheetItem({
         title: "拍摄",
         subtitle: "照片或视频"
@@ -561,7 +579,6 @@ export default {
       const changeCover = new ActionSheetItem({
         title: "更换相册封面"
       });
-
       // 引用数组
       this.moreItems = [takePhoto, album];
       this.delItems = [del];
@@ -626,20 +643,49 @@ export default {
     },
     // 这里监听冒泡
     touchstartAction() {
-      console.log("tarsss");
       this.tempMoment.showCmt = false;
     },
-    xxoo(e) {
-      console.log(e);
-      console.log(e.target.nodeName);
-      console.log(e.target.getAttribute("key"));
-    },
+
     action() {
       console.log("----shhshshhs----");
     },
     // 跳转到用户信息
     skipToContactInfo(moment) {
       this.$router.push("/contacts/contact-info");
+    },
+
+    // 👉🔥vue在v-html中绑定事件
+    // https://blog.csdn.net/fangdengfu123/article/details/84992278
+    // https://blog.csdn.net/qq_25075279/article/details/84646782
+    // https://blog.csdn.net/qq_31393401/article/details/81017912
+    // 点赞列表用户被点击
+    attitudesItemDidClick(section, event) {
+      // 点击html中的某个span
+      if (event.target.nodeName === "SPAN") {
+        let dataKeyJson = event.target.getAttribute("data-key");
+        let dataKeyObj = JSON.parse(dataKeyJson);
+        // 判断是否点击了用户
+        if (dataKeyObj[helper.userInfoKey]) {
+          let idstr = dataKeyObj[helper.userInfoKey];
+          // 找到用户
+          let moment = this.moments[section];
+          // find
+          moment.attitudes_list.some((item, i) => {
+            if (idstr === this.user.idstr) {
+              // 从数组中删除
+              moment.attitudes_list.splice(i, 1);
+              return true;
+            }
+          });
+
+
+
+          // 跳转到用户信息
+          this.$router.push("/contacts/contact-info");
+        }
+
+        // 判断是否点击了电话号码
+      }
     },
 
     // 评论列表中item的点击事件
@@ -669,9 +715,16 @@ export default {
         }
         return;
       }
-
+      // 点击html中的某个span
       if (event.target.nodeName === "SPAN") {
-        console.log("commeee");
+        let dataKeyJson = event.target.getAttribute("data-key");
+        let dataKeyObj = JSON.parse(dataKeyJson);
+        // 判断是否点击了用户
+        if (dataKeyObj[helper.userInfoKey]) {
+          // 找到用户
+          // 跳转到用户信息
+          this.$router.push("/contacts/contact-info");
+        }
       }
     },
     // 点赞
@@ -688,7 +741,6 @@ export default {
           if (item.idstr === this.user.idstr) {
             // 从数组中删除
             moment.attitudes_list.splice(i, 1);
-            console.log(" +++++ come hear  baby ++++");
             return true;
           }
         });
@@ -697,22 +749,30 @@ export default {
         moment.attitudes_count += 1;
         moment.attitudes_list.push(this.user);
       }
-
       // 数据处理
       if (moment.attitudes_list.length === 0) {
         // 没有点赞数据
         moment.attitudesHtml = this.attitudesIcon;
       } else {
+        // 拼接要携带的数据
+        let userInfo = {};
+        userInfo[helper.userInfoKey] = this.user.idstr;
+        // 对象转字符串
+        let dataKey = JSON.stringify(userInfo);
         // 有点赞数据
         if (thumb === 0) {
           // 取消点赞
           // 先拼接一个,
           moment.attitudesHtml = moment.attitudesHtml + ",";
-          // &nbsp;&nbsp;<span>UI中国</span>,&nbsp;&nbsp;<span>photoshop资源库</span>,&nbsp;&nbsp;<span>Lightroom资源库</span>,&nbsp;&nbsp;<span>Mike-乱港三千-Mr_元先森</span>,
-
           // 删除
           let regExpStr =
-            "&nbsp;&nbsp;" + "<span>" + this.user.screen_name + "</span>" + ",";
+            "&nbsp;&nbsp;" +
+            "<span data-key=" +
+            dataKey +
+            ">" +
+            this.user.screen_name +
+            "</span>" +
+            ",";
           let regExp = new RegExp(regExpStr);
           moment.attitudesHtml = moment.attitudesHtml.replace(regExp, "");
           // 删除,
@@ -720,9 +780,6 @@ export default {
             0,
             moment.attitudesHtml.length - 1
           );
-          console.log("取消点赞");
-          console.log(moment.attitudesHtml);
-          console.log(moment);
         } else {
           // 点赞
           if (moment.attitudes_list.length > 1) {
@@ -732,14 +789,13 @@ export default {
           moment.attitudesHtml =
             moment.attitudesHtml +
             "&nbsp;&nbsp;" +
-            "<span>" +
+            "<span data-key=" +
+            dataKey +
+            ">" +
             this.user.screen_name +
             "</span>";
         }
       }
-
-      console.log("点赞数据列表");
-      console.log(moment);
     },
     // 评论
     commentAction(moment) {
@@ -878,11 +934,6 @@ export default {
     MomentOperationMore,
     MomentProfile
   }
-
-  // 🔥👉vue在v-html中绑定事件
-  // https://blog.csdn.net/fangdengfu123/article/details/84992278
-  // https://blog.csdn.net/qq_25075279/article/details/84646782
-  // https://blog.csdn.net/qq_31393401/article/details/81017912
 };
 </script>
 

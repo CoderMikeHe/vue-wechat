@@ -12,6 +12,15 @@ let attitudesIcon =
 export default {
   // 专门用来处理 朋友圈的业务逻辑
 
+  // 用于v-html中绑定数据的key
+  linkUrlKey: 'linkUrlKey',
+  /// 电话号码key
+  phoneNumberKey: 'phoneNumberKey',
+  /// 位置key
+  locationNameKey: 'locationNameKey',
+  /// 用户信息key
+  userInfoKey: 'userInfoKey',
+
   // 微信事件格式化
   dateFormat(srcDate) {
     // 转成时间戳 秒 "Tue Apr 09 18:50:03 +0800 2018"
@@ -156,11 +165,7 @@ export default {
     let temps = []
     if (!utils.objIsArray(ms)) return temps
 
-    ms.forEach((element, iii) => {
-      if (iii === 0) {
-        console.log('数据快报')
-        console.log(element)
-      }
+    ms.forEach(element => {
       // 增加辅助属性
       // 全文/收起 <默认让其全部展开，以便获取到文本的最大高度>
       element.unfold = true
@@ -234,9 +239,19 @@ export default {
       for (let i = 0; i < len1; i++) {
         // 取出user
         const user = element.attitudes_list[i]
+        // 拼接要携带的数据
+        let userInfo = {}
+        userInfo[this.userInfoKey] = user.idstr
+        // 对象转字符串
+        let dataKey = JSON.stringify(userInfo)
         // 拼接数据
         let screenNameHtml =
-          '&nbsp;&nbsp;' + '<span>' + user.screen_name + '</span>'
+          '&nbsp;&nbsp;' +
+          '<span data-key=' +
+          dataKey +
+          '>' +
+          user.screen_name +
+          '</span>'
         // 添加数据
         attitudes.push(screenNameHtml)
       }
@@ -255,12 +270,35 @@ export default {
         const comment = element.comments_list[i]
         // 评论内容
         let text = '：' + comment.text
+
+        // 拼接要携带的数据
+        let fromUserInfo = {}
+        fromUserInfo[this.userInfoKey] = comment.from_user.idstr
+        // 对象转字符串
+        let dataKey = JSON.stringify(fromUserInfo)
         // 来源
-        let fromUser = '<span>' + comment.from_user.screen_name + '</span>'
+        let fromUser =
+          '<span style="color:#5b6a91; font-weight: 500;" data-key=' +
+          dataKey +
+          '>' +
+          comment.from_user.screen_name +
+          '</span>'
+
         // 是否有toUser
         let toUser = ''
         if (comment.to_user) {
-          toUser = '回复' + '<span>' + comment.to_user.screen_name + '</span>'
+          // 拼接要携带的数据
+          let toUserInfo = {}
+          toUserInfo[this.userInfoKey] = comment.to_user.idstr
+          // 对象转字符串
+          let dataKey = JSON.stringify(toUserInfo)
+          toUser =
+            '回复' +
+            '<span style="color:#5b6a91; font-weight: 500;" data-key=' +
+            dataKey +
+            '>' +
+            comment.to_user.screen_name +
+            '</span>'
         }
         text = this.regexContent(text)
         // 评论内容

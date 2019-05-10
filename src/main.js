@@ -170,6 +170,9 @@ new Vue({
 // - [IScroll 实践指南(上)](https://qbaty.iteye.com/blog/1221061)
 // - [ChinaMobilePhoneNumberRegex](https://github.com/VincentSit/ChinaMobilePhoneNumberRegex)
 // - [JSVerbalExpressions](https://github.com/VerbalExpressions/JSVerbalExpressions)
+
+// https://github.com/SunshineBrother/JHBlog
+
 /** 
  * 
  * {

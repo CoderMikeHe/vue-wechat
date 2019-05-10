@@ -16,7 +16,7 @@ export default {
           profile_image_url:
             'http://tp4.sinaimg.cn/1448595507/50/22871434059/1',
           avatar_large: 'http://tp4.sinaimg.cn/1448595507/180/22871434059/1',
-          idstr: '1448595507 ',
+          idstr: '1448595507',
           screen_name: 'UI中国'
         },
         {
