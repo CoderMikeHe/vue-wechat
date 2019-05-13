@@ -113,8 +113,15 @@ export default {
     for (let i = 0; i < phoneResults.length; i++) {
       // value
       const value = phoneResults[i]
+      console.log('电话号码： ' + value)
+
+      // 拼接要携带的数据
+      let info = {}
+      info[this.phoneNumberKey] = value
+      // 对象转字符串
+      let dataKey = JSON.stringify(info)
       // 内容
-      let el = '<span>' + value + '</span>'
+      let el = '<span data-key=' + dataKey + '>' + value + '</span>'
       // 替换
       let regex = new RegExp(value, 'g')
       text = text.replace(regex, el)

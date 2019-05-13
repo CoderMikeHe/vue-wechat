@@ -8,22 +8,25 @@
       @right-click="rightItemClick"
       style="background-color:#FFF"
     ></NavigationBar>
+
     <div class="_full-content _content-padding-top44">
       <section class="mh-contact-info">
         <div class="mh-contact-info__info">
           <div class="mh-contact-info__info-icon">
             <img
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg"
+              :src="userInfo.profile_image_url"
               alt
               width="64px"
               height="64px"
             />
           </div>
           <div class="mh-contact-info__info-detail">
-            <h1 style="font-weight:bold;font-size:20px">吴亦凡</h1>
-            <p style="color:#7f7f7f">昵称：Kris_Wu</p>
-            <p style="color:#7f7f7f">微信号：kris_wu</p>
-            <p style="color:#7f7f7f">地区：加拿大</p>
+            <h1 style="font-weight:bold;font-size:20px">
+              {{ userInfo.screen_name }}
+            </h1>
+            <p style="color:#7f7f7f">昵称：{{ userInfo.screen_name }}</p>
+            <p style="color:#7f7f7f">微信号：{{ userInfo.idstr }}</p>
+            <p style="color:#7f7f7f">地区：广东 深圳</p>
           </div>
         </div>
         <div class="mh-contact-info__cell _mh-tap-highlight">
@@ -112,7 +115,7 @@
 </template>
 
 <script>
-import MHBarButtonItem, { moreItem } from "../../assets/js/MHBarButtonItem.js";
+import { moreItem } from "../../assets/js/MHBarButtonItem.js";
 import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
@@ -120,9 +123,9 @@ export default {
   name: "contact-info",
   created() {
     this.configItems();
-
     // 获取用户
     console.log(this.$route);
+    this.userInfo = this.$route.params;
   },
   data() {
     return {
@@ -134,6 +137,7 @@ export default {
   },
   methods: {
     rightItemClick(index) {
+      console.log(index);
       this.$router.push("/contacts/contact-info/data-setting");
     },
     // 聊天

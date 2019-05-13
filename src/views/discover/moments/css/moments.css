@@ -310,7 +310,6 @@
 }
 .comment-wrapper__comment >>> span {
   color: #4380d1;
-  font-weight: 500;
 }
 .comment-wrapper__comment >>> span:active {
   background-color: #c7c7c7;

@@ -1,13 +1,7 @@
 // 朋友圈
 <template>
-  <div
-    class="_full-container"
-    @touchstart="touchstartAction"
-  >
-    <div
-      class="_full-content"
-      id="ko"
-    >
+  <div class="_full-container" @touchstart="touchstartAction">
+    <div class="_full-content" id="ko">
       <!-- 导航栏 -->
       <!-- <NavigationBar
         title="朋友圈"
@@ -64,7 +58,8 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                >{{ moment.user.screen_name }}</span>
+                  >{{ moment.user.screen_name }}</span
+                >
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -77,17 +72,16 @@
                   :class="moment.unfold ? 'unfold' : 'fold'"
                   ref="content"
                   v-html="moment.textHtml"
+                  @click="contentDidClick(index, $event)"
                 >
                   <!-- {{ moment.text || "" }} -->
                 </p>
-                <p
-                  class="mh-moment__expand"
-                  v-if="moment.showUnfold"
-                >
+                <p class="mh-moment__expand" v-if="moment.showUnfold">
                   <span
                     class="mh-moment--tap-highlight"
                     @click="moment.unfold = !moment.unfold"
-                  >{{ moment.unfold ? "收起" : "全文" }}</span>
+                    >{{ moment.unfold ? "收起" : "全文" }}</span
+                  >
                 </p>
               </div>
 
@@ -108,27 +102,18 @@
                 ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div
-                class="moment__video-wrapper"
-                v-if="moment.type === 1"
-              >
+              <div class="moment__video-wrapper" v-if="moment.type === 1">
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div
-                class="moment__share-wrapper"
-                v-if="moment.type === 2"
-              >
+              <div class="moment__share-wrapper" v-if="moment.type === 2">
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -140,10 +125,7 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -163,7 +145,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                  }}</span>
+                }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -223,10 +205,7 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div
-            class="weui-loadmore"
-            ref="loadMore"
-          >
+          <div class="weui-loadmore" ref="loadMore">
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -270,6 +249,8 @@ export default {
       items: [],
       // 显示ActionSheet
       showActionSheet: false,
+      // actionSheetTitle
+      actionSheetTitle: "",
       // 更多items
       moreItems: [],
       showMore: false,
@@ -279,6 +260,8 @@ export default {
       // coverItems
       coverItems: [],
       shwoCover: false,
+      // 电话号码items
+      showPhoneNumber: false,
       attitudesIcon:
         "<img src=" +
         require("@/assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
@@ -593,6 +576,8 @@ export default {
         this.showMore = false;
         this.showDel = false;
         this.shwoCover = false;
+        this.showPhoneNumber = false;
+        this.actionSheetTitle = "";
         this.delCmtIndexPath = {};
         return;
       }
@@ -602,6 +587,10 @@ export default {
         // 调用删除评论事件
         this.deleteComment(this.delCmtIndexPath);
         this.delCmtIndexPath = {};
+      }
+      if (this.showPhoneNumber) {
+        this.showPhoneNumber = false;
+        this.actionSheetTitle = "";
       }
     },
     // 删除评论数据
@@ -670,28 +659,25 @@ export default {
           // 找到用户
           let moment = this.moments[section];
           // find
-          moment.attitudes_list.some((item, i) => {
-            if (idstr === this.user.idstr) {
-              // 从数组中删除
-              moment.attitudes_list.splice(i, 1);
+          moment.attitudes_list.some(item => {
+            if (idstr === item.idstr) {
+              // 找到了,则跳转到用户信息
+              this.$router.push({
+                name: "contact-info",
+                params: item
+              });
               return true;
             }
           });
-
-
-
-          // 跳转到用户信息
-          this.$router.push("/contacts/contact-info");
         }
-
-        // 判断是否点击了电话号码
       }
     },
 
     // 评论列表中item的点击事件
     commentItemDidClick(section, row, event) {
-      console.log(event);
-      console.log(event.target.nodeName);
+      let moment = this.moments[section];
+      let comment = moment.comments_list[row];
+
       if (event.target.nodeName === "DIV") {
         // 单纯的点击某个评论列表
         // 取出moment
@@ -715,18 +701,85 @@ export default {
         }
         return;
       }
-      // 点击html中的某个span
+      // 点击v-html中的某个span
       if (event.target.nodeName === "SPAN") {
         let dataKeyJson = event.target.getAttribute("data-key");
         let dataKeyObj = JSON.parse(dataKeyJson);
         // 判断是否点击了用户
         if (dataKeyObj[helper.userInfoKey]) {
+          let idstr = dataKeyObj[helper.userInfoKey];
           // 找到用户
+          let user = {};
+          if (comment.from_user.idstr === idstr) {
+            user = comment.from_user;
+          } else if (comment.to_user.idstr === idstr) {
+            user = comment.to_user;
+          } else {
+            // 这种情况就是 点击 @xxx 这里随便伪造一个 哈哈
+            user.idstr = "89757";
+            user.profile_image_url =
+              "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg";
+            user.screen_name = idstr;
+          }
           // 跳转到用户信息
-          this.$router.push("/contacts/contact-info");
+          this.$router.push({
+            name: "contact-info",
+            params: user
+          });
         }
       }
     },
+
+    // 微信正文点击事件
+    contentDidClick(section, event) {
+      // 点击v-html中的某个span
+      if (event.target.nodeName === "SPAN") {
+        let dataKeyJson = event.target.getAttribute("data-key");
+        let dataKeyObj = JSON.parse(dataKeyJson);
+        console.log(dataKeyObj);
+        // 判断是否点击了用户
+        if (dataKeyObj[helper.userInfoKey]) {
+          let idstr = dataKeyObj[helper.userInfoKey];
+          // 跳转到用户信息
+          let user = {};
+          // 这种情况就是 点击 @xxx 这里随便伪造一个 哈哈
+          user.idstr = "89757";
+          user.profile_image_url =
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553016104583&di=45244cedc3d47c3c1fd7261869dc23da&imgtype=0&src=http%3A%2F%2Fimg1.touxiang.cn%2Fuploads%2F20140122%2F22-074744_465.jpg";
+          user.screen_name = idstr;
+          this.$router.push({
+            name: "contact-info",
+            params: user
+          });
+        }
+        // 常规处理
+        this.handleContentOrCommentRichText(dataKeyObj);
+      }
+    },
+
+    // 正文+评论 富文本事件处理
+    handleContentOrCommentRichText(dataKeyObj) {
+      // 判断是否点击了电话号码
+      if (dataKeyObj[helper.phoneNumberKey]) {
+        // 取出电话号码
+        let phoneNumber = dataKeyObj[helper.phoneNumberKey];
+        // 弹出框
+        this.actionSheetTitle = phoneNumber + "可能是一个电话号码，你可以";
+        const call = new ActionSheetItem({
+          title: "呼叫"
+        });
+        const copy = new ActionSheetItem({
+          title: "复制号码"
+        });
+        const add = new ActionSheetItem({
+          title: "添加到手机通讯录"
+        });
+        this.items = [call, copy, add];
+        this.showActionSheet = true;
+        this.showPhoneNumber = true;
+      }
+    },
+
     // 点赞
     thumbAction(moment, thumb) {
       moment.showCmt = false;
