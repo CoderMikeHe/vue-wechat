@@ -20,6 +20,8 @@ export default {
   locationNameKey: 'locationNameKey',
   /// 用户信息key
   userInfoKey: 'userInfoKey',
+  /// 话题key
+  topicKey: 'topicKey',
 
   // 微信事件格式化
   dateFormat(srcDate) {
@@ -100,8 +102,13 @@ export default {
     for (let i = 0; i < linkUrlResults.length; i++) {
       // value
       const value = linkUrlResults[i]
+      // 拼接要携带的数据
+      let info = {}
+      info[this.linkUrlKey] = value
+      // 对象转字符串
+      let dataKey = JSON.stringify(info)
       // 内容
-      let el = '<span>' + value + '</span>'
+      let el = '<span data-key=' + dataKey + '>' + value + '</span>'
       // 替换
       let regex = new RegExp(value, 'g')
       //
@@ -113,8 +120,6 @@ export default {
     for (let i = 0; i < phoneResults.length; i++) {
       // value
       const value = phoneResults[i]
-      console.log('电话号码： ' + value)
-
       // 拼接要携带的数据
       let info = {}
       info[this.phoneNumberKey] = value
@@ -131,8 +136,16 @@ export default {
     for (let i = 0; i < topicResults.length; i++) {
       // value
       const value = topicResults[i]
+      // 截取出话题内容
+      let topic = value.slice(1, value.length - 1)
+      console.log('topic = ' + topic)
+      // 拼接要携带的数据
+      let info = {}
+      info[this.topicKey] = topic
+      // 对象转字符串
+      let dataKey = JSON.stringify(info)
       // 内容
-      let el = '<span>' + value + '</span>'
+      let el = '<span data-key=' + dataKey + '>' + value + '</span>'
       // 替换
       let regex = new RegExp(value, 'g')
       text = text.replace(regex, el)
@@ -142,8 +155,15 @@ export default {
     for (let i = 0; i < atResults.length; i++) {
       // value
       const value = atResults[i]
+      // 截取出话题内容
+      let userInfo = value.slice(1)
+      // 拼接要携带的数据
+      let info = {}
+      info[this.userInfoKey] = userInfo
+      // 对象转字符串
+      let dataKey = JSON.stringify(info)
       // 内容
-      let el = '<span>' + value + '</span>'
+      let el = '<span data-key=' + dataKey + '>' + value + '</span>'
       // 替换
       let regex = new RegExp(value, 'g')
       text = text.replace(regex, el)

@@ -29,7 +29,10 @@
             <p style="color:#7f7f7f">地区：广东 深圳</p>
           </div>
         </div>
-        <div class="mh-contact-info__cell _mh-tap-highlight">
+        <div
+          class="mh-contact-info__cell _mh-tap-highlight"
+          v-if="this.userInfo.idstr !== this.user.idstr"
+        >
           <p class="mh-contact-info__cell-title">设置备注和标签</p>
           <img
             class="mh-right-arrow"
@@ -115,6 +118,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { moreItem } from "../../assets/js/MHBarButtonItem.js";
 import actionSheet, {
   ActionSheetItem
@@ -163,6 +167,12 @@ export default {
   },
   components: {
     actionSheet
+  },
+  computed: {
+    ...mapState({
+      // 当前用户
+      user: state => state.user
+    })
   }
 };
 </script>

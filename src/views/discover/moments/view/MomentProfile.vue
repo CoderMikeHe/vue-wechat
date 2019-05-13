@@ -6,29 +6,17 @@
       @click="coverDidClick"
     >
       <div class="top-wrapper__name">{{ user.screen_name }}</div>
-      <div
-        class="top-wrapper__avatar"
-        @click.stop="avatarDidClick"
-      >
-        <img
-          :src="user.profile_image_url"
-          alt=""
-        />
+      <div class="top-wrapper__avatar" @click.stop="avatarDidClick">
+        <img :src="user.profile_image_url" alt="" />
       </div>
     </div>
-    <div
-      class="profile__bottom-wrapper"
-      :style="{ height: bottomHeight }"
-    >
+    <div class="profile__bottom-wrapper" :style="{ height: bottomHeight }">
       <div
         class="bottom-wrapper__message"
         @click.stop="messageDidRead"
         v-if="unreadCount"
       >
-        <img
-          class="message__avatar"
-          :src="unreadUser.profile_image_url"
-        />
+        <img class="message__avatar" :src="unreadUser.profile_image_url" />
         <p class="message__content">{{ unreadMessage }}</p>
       </div>
     </div>
@@ -55,12 +43,14 @@ export default {
       }
     };
   },
-  created() { },
+  created() {},
   methods: {
     // 头像被点击
     avatarDidClick() {
-      //
-      console.log("头像被点击了");
+      this.$router.push({
+        name: "contact-info",
+        params: this.user
+      });
     },
     // 封面被点击
     coverDidClick() {

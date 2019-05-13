@@ -7,6 +7,9 @@ import Contacts from './views/contacts/Contacts.vue'
 import Discover from './views/discover/Discover.vue'
 // 朋友圈
 import Moments from './views/discover/moments/Moments.vue'
+// 朋友圈富文本点击事件
+const MomentsOther = resolve =>
+  require(['./views/discover/other/MomentsOther.vue'], resolve)
 
 import Profile from './views/profile/Profile.vue'
 import AddFriends from './views/contacts/AddFriends.vue'
@@ -123,6 +126,11 @@ export default new Router({
       path: '/discover/moments',
       name: 'moments', // 朋友圈
       component: Moments
+    },
+    {
+      path: '/moments/moments-other',
+      name: 'moments-other', // 朋友圈其他
+      component: MomentsOther
     },
     // {
     //   path: '/profile',

@@ -638,11 +638,16 @@ export default {
     action() {
       console.log("----shhshshhs----");
     },
+
     // 跳转到用户信息
     skipToContactInfo(moment) {
-      this.$router.push("/contacts/contact-info");
+      let user = moment.user;
+      // 找到了,则跳转到用户信息
+      this.$router.push({
+        name: "contact-info",
+        params: user
+      });
     },
-
     // 👉🔥vue在v-html中绑定事件
     // https://blog.csdn.net/fangdengfu123/article/details/84992278
     // https://blog.csdn.net/qq_25075279/article/details/84646782
@@ -672,7 +677,6 @@ export default {
         }
       }
     },
-
     // 评论列表中item的点击事件
     commentItemDidClick(section, row, event) {
       let moment = this.moments[section];
@@ -712,7 +716,7 @@ export default {
           let user = {};
           if (comment.from_user.idstr === idstr) {
             user = comment.from_user;
-          } else if (comment.to_user.idstr === idstr) {
+          } else if (comment.to_user && comment.to_user.idstr === idstr) {
             user = comment.to_user;
           } else {
             // 这种情况就是 点击 @xxx 这里随便伪造一个 哈哈
@@ -727,9 +731,10 @@ export default {
             params: user
           });
         }
+        // 常规处理
+        this.handleContentOrCommentRichText(dataKeyObj);
       }
     },
-
     // 微信正文点击事件
     contentDidClick(section, event) {
       // 点击v-html中的某个span
@@ -777,6 +782,19 @@ export default {
         this.items = [call, copy, add];
         this.showActionSheet = true;
         this.showPhoneNumber = true;
+      }
+
+      // 链接/话题
+      if (dataKeyObj[helper.linkUrlKey] || dataKeyObj[helper.topicKey]) {
+        let value =
+          dataKeyObj[helper.linkUrlKey] || dataKeyObj[helper.topicKey];
+        console.log(value);
+        this.$router.push({
+          name: "moments-other",
+          params: {
+            value: value
+          }
+        });
       }
     },
 
