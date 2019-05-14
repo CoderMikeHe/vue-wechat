@@ -162,6 +162,14 @@ new Vue({
 // - [vue 数组中嵌套的对象添加新属性--页面更新](https://www.jianshu.com/p/8f0e5bb13735)
 // - [vue 列表渲染](https://cn.vuejs.org/v2/guide/list.html)
 
+// 👉 JS 长按实现方案
+// - [HTML5-长按事件](https://blog.csdn.net/yqj234/article/details/51923626)
+// - [Js实现长按事件](https://www.jianshu.com/p/884ed3939f0c)
+// - [javascript长按事件实现方式](https://www.cnblogs.com/wulishun111/p/8857073.html)
+// - [移动端长按事件](https://www.cnblogs.com/imsomnus/p/6429074.html)
+// - [Js实现移动端长按事件](https://www.jianshu.com/p/11bb9629aa09)
+
+
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
 // - [better-scroll](https://github.com/ustbhuangyi/better-scroll)
@@ -171,6 +179,8 @@ new Vue({
 // - [ChinaMobilePhoneNumberRegex](https://github.com/VincentSit/ChinaMobilePhoneNumberRegex)
 // - [JSVerbalExpressions](https://github.com/VerbalExpressions/JSVerbalExpressions)
 // - [精致的下拉刷新和上拉加载 js框架](https://github.com/mescroll/mescroll)
+// - [zepto](https://github.com/madrobby/zepto)
+// - [专注于移动端的fullPage.js](https://github.com/yanhaijing/zepto.fullpage)
 // https://github.com/SunshineBrother/JHBlog
 
 /** 

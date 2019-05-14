@@ -6,18 +6,25 @@
       <!-- <NavigationBar
         title="朋友圈"
         :left-item="backItem"
-        :right-item="moreItem"
+        :right-item="cameraItem"
         @left-click="$router.back()"
-        @right-click="rightItemClick"
+        @right-click="cameraItemDidClick"
+        style="background-color:rgba(237, 237, 237, 0)"
       ></NavigationBar> -->
       <!-- 背景页 -->
-
       <!-- refreBall -->
       <div
         class="moment__refresh"
         :style="refreshStyle"
         :class="{ kkk: topStatus === 'loading' }"
       ></div>
+      <!-- 照相机 -->
+      <img
+        class="moment__camera"
+        src="@/assets/images/moments/wx_moments_camera_face.png"
+        alt=""
+        @click="cameraItemDidClick"
+      />
       <!-- 单条说说 -->
       <div
         class="moment__wrapper"
@@ -50,6 +57,10 @@
                 :src="moment.user.profile_image_url"
                 alt
                 @click="skipToContactInfo(moment)"
+                @touchstart="avatarTouchStart(moment, $event)"
+                @touchmove="avatarTouchMove"
+                @touchend="avatarTouchEnd(moment)"
+                @touchcancel="avatarTouchEnd(moment)"
               />
             </div>
             <!-- 身体 -->
@@ -223,7 +234,7 @@
 </template>
 
 <script>
-import MHBarButtonItem, { moreItem } from "assets/js/MHBarButtonItem.js";
+import { cameraItem } from "assets/js/MHBarButtonItem.js";
 import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
@@ -242,7 +253,7 @@ export default {
   name: "moments",
   data() {
     return {
-      moreItem: moreItem,
+      cameraItem: cameraItem,
 
       moments: [],
       // actionSheet 的数据源
@@ -252,8 +263,8 @@ export default {
       // actionSheetTitle
       actionSheetTitle: "",
       // 更多items
-      moreItems: [],
-      showMore: false,
+      cameraItems: [],
+      showCamera: false,
       // delItems
       delItems: [],
       showDel: false,
@@ -262,6 +273,8 @@ export default {
       shwoCover: false,
       // 电话号码items
       showPhoneNumber: false,
+      // 长按头像的items
+      showAvatar: false,
       attitudesIcon:
         "<img src=" +
         require("@/assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
@@ -306,7 +319,9 @@ export default {
       tempStartY: 0,
       currentY: 0,
       // page
-      page: 1
+      page: 1,
+      // 定时器
+      timeOutEvent: 0
     };
   },
   destroyed() {
@@ -332,6 +347,37 @@ export default {
     this.topMethod();
   },
   methods: {
+    // 头像长按/点击事件
+    avatarTouchStart(m, e) {
+      // 阻止掉页面的默认事件
+      e.preventDefault();
+      let timeOutEvent = setTimeout(() => {
+        this.timeOutEvent = 0;
+        const permission = new ActionSheetItem({
+          title: "设置权限"
+        });
+        const complain = new ActionSheetItem({
+          title: "投诉"
+        });
+        this.items = [permission, complain];
+        this.showActionSheet = true;
+        this.showAvatar = true;
+      }, 500);
+      this.timeOutEvent = timeOutEvent;
+    },
+    avatarTouchMove() {
+      clearTimeout(this.timeOutEvent);
+      this.timeOutEvent = 0;
+    },
+    avatarTouchEnd(m) {
+      clearTimeout(this.timeOutEvent);
+      if (this.timeOutEvent !== 0) {
+        // 点击事件
+        this.skipToContactInfo(m);
+      }
+      return false;
+    },
+
     // https://blog.csdn.net/qq_34439125/article/details/85602508
     // https://www.jianshu.com/p/0fed94bb1239
     // https://www.cnblogs.com/qq120848369/p/6651096.html
@@ -541,9 +587,9 @@ export default {
     },
 
     // 导航栏有按钮点击事件
-    rightItemClick() {
-      this.items = this.moreItems;
-      this.showMore = true;
+    cameraItemDidClick() {
+      this.items = this.cameraItems;
+      this.showCamera = true;
       this.showActionSheet = true;
     },
     // 配置 actionsheet items
@@ -563,7 +609,7 @@ export default {
         title: "更换相册封面"
       });
       // 引用数组
-      this.moreItems = [takePhoto, album];
+      this.cameraItems = [takePhoto, album];
       this.delItems = [del];
       this.coverItems = [changeCover];
     },
@@ -573,10 +619,11 @@ export default {
       if (index === 0) {
         // 取消按钮
         this.items = [];
-        this.showMore = false;
+        this.showCamera = false;
         this.showDel = false;
         this.shwoCover = false;
         this.showPhoneNumber = false;
+        this.showAvatar = false;
         this.actionSheetTitle = "";
         this.delCmtIndexPath = {};
         return;

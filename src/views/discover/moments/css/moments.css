@@ -21,6 +21,21 @@
   height: 40px;
 }
 
+/* 照相机 */
+.moment__camera {
+  position: absolute;
+  right: 10px;
+  top: 9.5px;
+  /* 图片等比例显示 */
+  max-width: 25px;
+  max-height: 25px;
+  width: auto;
+  height: auto;
+  z-index: 2;
+}
+
+
+
 /* 下拽回弹动画 */
 .moment__dropped {
   transition: 0.25s;

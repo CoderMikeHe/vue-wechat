@@ -14,3 +14,5 @@ export const backItem = new MHBarButtonItem('', 'nav_bar_back_arrow', 1);
 export const moreItem = new MHBarButtonItem('', 'nav_bar_more', 1);
 // 添加按钮
 export const addItem = new MHBarButtonItem("", "nav_bar_add", 1);
+// 朋友圈照相机按钮
+export const cameraItem = new MHBarButtonItem("", "wx_moments_camera_line", 1);

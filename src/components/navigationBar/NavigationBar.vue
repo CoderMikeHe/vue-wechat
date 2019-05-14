@@ -9,12 +9,12 @@
       <!-- 面板内部元素 -->
       <div
         class="mh-button-item is-left"
-        v-for="(item,index) in getLeftItems"
+        v-for="(item, index) in getLeftItems"
         @click="leftItemDidClicked(index)"
         :key="index"
       >
         <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
-        <img class="mh-image-item" :src="imageSrc[item.imageSrc]" alt>
+        <img class="mh-image-item" :src="imageSrc[item.imageSrc]" alt />
       </div>
     </div>
     <!-- 右面版 -->
@@ -22,12 +22,12 @@
       <!-- 面板内部元素 -->
       <div
         class="mh-button-item is-right"
-        v-for="(item,index) in getRightItems"
+        v-for="(item, index) in getRightItems"
         @click="rightItemDidClicked(index)"
         :key="index"
       >
         <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
-        <img class="mh-image-item" v-else :src="imageSrc[item.imageSrc]" alt>
+        <img class="mh-image-item" v-else :src="imageSrc[item.imageSrc]" alt />
       </div>
     </div>
     <!-- 分割线 -->
@@ -58,7 +58,8 @@ export default {
         nav_bar_back_arrow: require("../../assets/images/navBar/nav_bar_back_arrow.png"),
         nav_bar_add: require("../../assets/images/navBar/nav_bar_add.png"),
         nav_bar_addfriends: require("../../assets/images/navBar/nav_bar_addfriends.png"),
-        nav_bar_more: require("../../assets/images/navBar/nav_bar_more.png")
+        nav_bar_more: require("../../assets/images/navBar/nav_bar_more.png"),
+        wx_moments_camera_line: require("../../assets/images/moments/wx_moments_camera_line.png")
       }
     };
   },
