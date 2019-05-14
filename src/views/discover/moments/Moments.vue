@@ -3,14 +3,16 @@
   <div class="_full-container" @touchstart="touchstartAction">
     <div class="_full-content" id="ko">
       <!-- 导航栏 -->
-      <!-- <NavigationBar
+
+      <NavigationBar
         title="朋友圈"
         :left-item="backItem"
         :right-item="cameraItem"
         @left-click="$router.back()"
         @right-click="cameraItemDidClick"
-        style="background-color:rgba(237, 237, 237, 0)"
-      ></NavigationBar> -->
+        :style="navStyle"
+      ></NavigationBar>
+
       <!-- 背景页 -->
       <!-- refreBall -->
       <div
@@ -253,8 +255,8 @@ export default {
   name: "moments",
   data() {
     return {
+      zzz: false,
       cameraItem: cameraItem,
-
       moments: [],
       // actionSheet 的数据源
       items: [],
@@ -321,7 +323,8 @@ export default {
       // page
       page: 1,
       // 定时器
-      timeOutEvent: 0
+      timeOutEvent: 0,
+      lastOpacity: 0
     };
   },
   destroyed() {
@@ -582,6 +585,15 @@ export default {
         this.bottomMethod();
       }
 
+      this.zzz = scrollTop >= 278;
+
+      let opacity = (scrollTop - 278) / 40 + 0;
+      opacity = Math.min(Math.max(0, opacity), 1);
+      if (this.lastOpacity !== opacity) {
+        this.lastOpacity = opacity;
+      }
+
+      console.log(scrollTop);
       // lastRefreshTop
       this.lastRefreshTop = scrollTop;
     },
@@ -1039,6 +1051,10 @@ export default {
         opacity: opacity,
         transform: transform
       };
+    },
+    // 导航栏动态样式
+    navStyle() {
+      return { opacity: this.lastOpacity };
     },
 
     ...mapState({

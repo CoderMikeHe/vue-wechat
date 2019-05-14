@@ -7,27 +7,30 @@
     <!-- 左面板 -->
     <div class="mh-left-panel">
       <!-- 面板内部元素 -->
-      <div
-        class="mh-button-item is-left"
-        v-for="(item, index) in getLeftItems"
-        @click="leftItemDidClicked(index)"
-        :key="index"
-      >
-        <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
-        <img class="mh-image-item" :src="imageSrc[item.imageSrc]" alt />
+      <div class="mh-button-item is-left"
+           v-for="(item, index) in getLeftItems"
+           @click="leftItemDidClicked(index)"
+           :key="index">
+        <a class="mh-text-item"
+           v-if="item.type === 0">{{ item.title }}</a>
+        <img class="mh-image-item"
+             :src="imageSrc[item.imageSrc]"
+             alt />
       </div>
     </div>
     <!-- 右面版 -->
     <div class="mh-right-panel">
       <!-- 面板内部元素 -->
-      <div
-        class="mh-button-item is-right"
-        v-for="(item, index) in getRightItems"
-        @click="rightItemDidClicked(index)"
-        :key="index"
-      >
-        <a class="mh-text-item" v-if="item.type === 0">{{ item.title }}</a>
-        <img class="mh-image-item" v-else :src="imageSrc[item.imageSrc]" alt />
+      <div class="mh-button-item is-right"
+           v-for="(item, index) in getRightItems"
+           @click="rightItemDidClicked(index)"
+           :key="index">
+        <a class="mh-text-item"
+           v-if="item.type === 0">{{ item.title }}</a>
+        <img class="mh-image-item"
+             v-else
+             :src="imageSrc[item.imageSrc]"
+             alt />
       </div>
     </div>
     <!-- 分割线 -->
@@ -36,7 +39,7 @@
 </template>
 
 <script>
-import MHBarButtonItem from "../../assets/js/MHBarButtonItem.js";
+import MHBarButtonItem from '../../assets/js/MHBarButtonItem.js'
 export default {
   props: {
     /// 导航栏标题，必须字符串
@@ -55,47 +58,47 @@ export default {
     return {
       // 项目中需要用在导航栏的的所有图片资源
       imageSrc: {
-        nav_bar_back_arrow: require("../../assets/images/navBar/nav_bar_back_arrow.png"),
-        nav_bar_add: require("../../assets/images/navBar/nav_bar_add.png"),
-        nav_bar_addfriends: require("../../assets/images/navBar/nav_bar_addfriends.png"),
-        nav_bar_more: require("../../assets/images/navBar/nav_bar_more.png"),
-        wx_moments_camera_line: require("../../assets/images/moments/wx_moments_camera_line.png")
+        nav_bar_black_back_arrow: require('../../assets/images/navBar/nav_bar_black_back_arrow.png'),
+        nav_bar_add: require('../../assets/images/navBar/nav_bar_add.png'),
+        nav_bar_addfriends: require('../../assets/images/navBar/nav_bar_addfriends.png'),
+        nav_bar_more: require('../../assets/images/navBar/nav_bar_more.png'),
+        wx_moments_camera_line: require('../../assets/images/moments/wx_moments_camera_line.png')
       }
-    };
+    }
   },
   created() {},
   methods: {
     // 左边按钮被点击 从左到右 0，1，2...
     leftItemDidClicked(index) {
-      this.$emit("left-click", index);
+      this.$emit('left-click', index)
     },
 
     // 右边按钮被点击 从右到左 0，1，2...
     rightItemDidClicked(index) {
-      this.$emit("right-click", index);
+      this.$emit('right-click', index)
     }
   },
   computed: {
     getLeftItems() {
-      let items = [];
+      let items = []
       if (this.leftItems && this.leftItems.length !== 0) {
-        items = items.concat(this.leftItems);
+        items = items.concat(this.leftItems)
       } else if (this.leftItem) {
-        items.push(this.leftItem);
+        items.push(this.leftItem)
       }
-      return items;
+      return items
     },
     getRightItems() {
-      let items = [];
+      let items = []
       if (this.rightItems && this.rightItems.length !== 0) {
-        items = items.concat(this.rightItems);
+        items = items.concat(this.rightItems)
       } else if (this.rightItem) {
-        items.push(this.rightItem);
+        items.push(this.rightItem)
       }
-      return items;
+      return items
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -107,14 +110,14 @@ export default {
   height: 44px;
   background-color: #ededed;
   /* 适当增加z-index，因为fixed总是相对窗口的层级 */
-  z-index: 3;
+  z-index: 4;
 }
 
 .mh-nav-bar .mh-title {
   position: absolute;
   left: 40px;
   right: 40px;
-  color: #000;
+  color: rgba(0, 0, 0, 1);
   text-align: center;
   font-size: 17px;
   font-weight: 600;

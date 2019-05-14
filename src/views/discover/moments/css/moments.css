@@ -34,7 +34,15 @@
   z-index: 2;
 }
 
-
+.faded-enter-active,
+.faded-leave-active {
+  opacity: 0.5;
+  transition: opacity 0.25s ease-in-out;
+}
+.faded-enter,
+.faded-leave-to {
+  opacity: 0;
+}
 
 /* 下拽回弹动画 */
 .moment__dropped {
