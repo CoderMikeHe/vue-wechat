@@ -20,7 +20,7 @@ export default {
   name: 'app',
   data() {
     return {
-      backItem: new MHBarButtonItem(
+      blackBackItem: new MHBarButtonItem(
         '返回',
         './assets/images/navBar/nav_bar_black_back_arrow.png',
         1

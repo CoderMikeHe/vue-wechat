@@ -1,7 +1,7 @@
 // 个人信息
 <template>
   <div class="_full-container">
-    <NavigationBar title="个人信息" :left-item="backItem" @left-click="$router.back()"></NavigationBar>
+    <NavigationBar title="个人信息" :left-item="blackBackItem" @left-click="$router.back()"></NavigationBar>
     <div class="_full-content _content-padding-top44">
       <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
         <common :group="group" :section="section" @did-select-row="didSelectRow"></common>

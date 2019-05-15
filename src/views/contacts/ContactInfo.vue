@@ -2,7 +2,7 @@
 <template>
   <div class="_full-container">
     <NavigationBar
-      :left-item="backItem"
+      :left-item="blackBackItem"
       :right-item="moreItem"
       @left-click="$router.back()"
       @right-click="rightItemClick"

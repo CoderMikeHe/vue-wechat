@@ -195,6 +195,7 @@ export default {
     ms.forEach(element => {
       // 增加辅助属性
       // 全文/收起 <默认让其全部展开，以便获取到文本的最大高度>
+      // unfold 0: 全部展示； 1：大于5行小于8行，显示5行； 2：大于8行，显示1行
       element.unfold = true
       // 是否显示 全文/收起
       element.showUnfold = false

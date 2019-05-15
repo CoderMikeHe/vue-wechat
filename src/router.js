@@ -5,11 +5,14 @@ import MainFrame from './views/mainframe/Mainframe.vue'
 import Contacts from './views/contacts/Contacts.vue'
 // 发现
 import Discover from './views/discover/Discover.vue'
-// 朋友圈
+// 发现-朋友圈
 import Moments from './views/discover/moments/Moments.vue'
-// 朋友圈富文本点击事件
+// 发现-朋友圈-富文本
 const MomentsOther = resolve =>
   require(['./views/discover/other/MomentsOther.vue'], resolve)
+// 发现-朋友圈-全文
+const MomentsFullText = resolve =>
+require(['./views/discover/fullText/MomentsFullText.vue'], resolve)
 
 import Profile from './views/profile/Profile.vue'
 import AddFriends from './views/contacts/AddFriends.vue'
@@ -131,6 +134,11 @@ export default new Router({
       path: '/moments/moments-other',
       name: 'moments-other', // 朋友圈其他
       component: MomentsOther
+    },
+    {
+      path: '/moments/moments-full-text',
+      name: 'moments-full-text', // 朋友圈全文
+      component: MomentsFullText
     },
     // {
     //   path: '/profile',

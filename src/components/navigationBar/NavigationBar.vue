@@ -7,30 +7,42 @@
     <!-- 左面板 -->
     <div class="mh-left-panel">
       <!-- 面板内部元素 -->
-      <div class="mh-button-item is-left"
-           v-for="(item, index) in getLeftItems"
-           @click="leftItemDidClicked(index)"
-           :key="index">
-        <a class="mh-text-item"
-           v-if="item.type === 0">{{ item.title }}</a>
-        <img class="mh-image-item"
-             :src="imageSrc[item.imageSrc]"
-             alt />
+      <div
+        class="mh-button-item is-left"
+        v-for="(item, index) in getLeftItems"
+        @click="leftItemDidClicked(index)"
+        :key="index"
+      >
+        <a
+          class="mh-text-item"
+          v-if="item.type === 0"
+        >{{ item.title }}</a>
+        <img
+          class="mh-image-item"
+          :src="imageSrc[item.imageSrc]"
+          alt
+        />
       </div>
     </div>
     <!-- 右面版 -->
     <div class="mh-right-panel">
       <!-- 面板内部元素 -->
-      <div class="mh-button-item is-right"
-           v-for="(item, index) in getRightItems"
-           @click="rightItemDidClicked(index)"
-           :key="index">
-        <a class="mh-text-item"
-           v-if="item.type === 0">{{ item.title }}</a>
-        <img class="mh-image-item"
-             v-else
-             :src="imageSrc[item.imageSrc]"
-             alt />
+      <div
+        class="mh-button-item is-right"
+        v-for="(item, index) in getRightItems"
+        @click="rightItemDidClicked(index)"
+        :key="index"
+      >
+        <a
+          class="mh-text-item"
+          v-if="item.type === 0"
+        >{{ item.title }}</a>
+        <img
+          class="mh-image-item"
+          v-else
+          :src="imageSrc[item.imageSrc]"
+          alt
+        />
       </div>
     </div>
     <!-- 分割线 -->
@@ -59,14 +71,16 @@ export default {
       // 项目中需要用在导航栏的的所有图片资源
       imageSrc: {
         nav_bar_black_back_arrow: require('../../assets/images/navBar/nav_bar_black_back_arrow.png'),
+        nav_bar_white_back_arrow: require('../../assets/images/navBar/nav_bar_white_back_arrow.png'),
         nav_bar_add: require('../../assets/images/navBar/nav_bar_add.png'),
         nav_bar_addfriends: require('../../assets/images/navBar/nav_bar_addfriends.png'),
         nav_bar_more: require('../../assets/images/navBar/nav_bar_more.png'),
-        wx_moments_camera_line: require('../../assets/images/moments/wx_moments_camera_line.png')
+        wx_moments_camera_line: require('../../assets/images/moments/wx_moments_camera_line.png'),
+        wx_moments_camera_face: require('../../assets/images/moments/wx_moments_camera_face.png')
       }
     }
   },
-  created() {},
+  created() { },
   methods: {
     // 左边按钮被点击 从左到右 0，1，2...
     leftItemDidClicked(index) {

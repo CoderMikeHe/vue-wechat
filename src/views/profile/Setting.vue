@@ -4,7 +4,7 @@
   <div class="_full-content _content-padding-top44">
     <NavigationBar
       title="设置"
-      :left-item="backItem"
+      :left-item="blackBackItem"
       @left-click="$router.back()"
     ></NavigationBar>
     <div

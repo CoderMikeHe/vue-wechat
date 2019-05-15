@@ -3,30 +3,28 @@
   <div class="_full-container" @touchstart="touchstartAction">
     <div class="_full-content" id="ko">
       <!-- 导航栏 -->
-
       <NavigationBar
         title="朋友圈"
-        :left-item="backItem"
-        :right-item="cameraItem"
+        :left-item="blackBackItem"
+        :right-item="cameraLineItem"
         @left-click="$router.back()"
         @right-click="cameraItemDidClick"
         :style="navStyle"
       ></NavigationBar>
-
-      <!-- 背景页 -->
+      <NavigationBar
+        :left-item="whiteBackItem"
+        :right-item="cameraFaceItem"
+        @left-click="$router.back()"
+        @right-click="cameraItemDidClick"
+        :style="transparentNavStyle"
+      ></NavigationBar>
       <!-- refreBall -->
       <div
         class="moment__refresh"
         :style="refreshStyle"
         :class="{ kkk: topStatus === 'loading' }"
       ></div>
-      <!-- 照相机 -->
-      <img
-        class="moment__camera"
-        src="@/assets/images/moments/wx_moments_camera_face.png"
-        alt=""
-        @click="cameraItemDidClick"
-      />
+
       <!-- 单条说说 -->
       <div
         class="moment__wrapper"
@@ -82,7 +80,10 @@
               >
                 <p
                   class="mh-moment__content"
-                  :class="moment.unfold ? 'unfold' : 'fold'"
+                  :class="{
+                    unfold1: moment.unfold === 1,
+                    unfold2: moment.unfold === 2
+                  }"
                   ref="content"
                   v-html="moment.textHtml"
                   @click="contentDidClick(index, $event)"
@@ -92,7 +93,11 @@
                 <p class="mh-moment__expand" v-if="moment.showUnfold">
                   <span
                     class="mh-moment--tap-highlight"
-                    @click="moment.unfold = !moment.unfold"
+                    @click="
+                      moment.unfold === 1
+                        ? (moment.unfold = 0)
+                        : (moment.unfold = 1)
+                    "
                     >{{ moment.unfold ? "收起" : "全文" }}</span
                   >
                 </p>
@@ -236,7 +241,11 @@
 </template>
 
 <script>
-import { cameraItem } from "assets/js/MHBarButtonItem.js";
+import {
+  cameraLineItem,
+  cameraFaceItem,
+  whiteBackItem
+} from "assets/js/MHBarButtonItem.js";
 import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
@@ -251,12 +260,15 @@ import { mapState } from "vuex";
 import utils from "../../../assets/utils/utils.js";
 // helper
 import helper from "./js/momentsHelper.js";
+import { config } from "bluebird";
 export default {
   name: "moments",
   data() {
     return {
       zzz: false,
-      cameraItem: cameraItem,
+      cameraLineItem,
+      cameraFaceItem,
+      whiteBackItem,
       moments: [],
       // actionSheet 的数据源
       items: [],
@@ -796,11 +808,20 @@ export default {
     },
     // 微信正文点击事件
     contentDidClick(section, event) {
+      let moment = this.moments[section];
+      if (moment.unfold === 2) {
+        // 超过八行的，点击啥都给我跳全文
+        this.$router.push({
+          name: "moments-full-text",
+          params: {}
+        });
+        return;
+      }
+
       // 点击v-html中的某个span
       if (event.target.nodeName === "SPAN") {
         let dataKeyJson = event.target.getAttribute("data-key");
         let dataKeyObj = JSON.parse(dataKeyJson);
-        console.log(dataKeyObj);
         // 判断是否点击了用户
         if (dataKeyObj[helper.userInfoKey]) {
           let idstr = dataKeyObj[helper.userInfoKey];
@@ -979,7 +1000,9 @@ export default {
 
     // 处理dom数据 start 起始索引
     handleDomDatas(start) {
+      // 容错处理
       if (this.$refs.content === undefined) return;
+
       // 获取DOM元素列表
       this.$refs.content;
       let length = this.$refs.content.length;
@@ -988,16 +1011,22 @@ export default {
         const element = this.$refs.content[i];
         // 取出数据
         const moment = this.moments[i];
+        // 获取样式
+        let style = window.getComputedStyle(element);
         // 获取文本内容高度
-        let contentH = window
-          .getComputedStyle(element)
-          .height.replace("px", "");
-        // 判断
-        if (contentH > 5 * 24) {
-          moment.unfold = false;
+        let contentH = style.height.replace("px", "");
+        // 行高
+        let lineHeight = style["line-height"].replace("px", "");
+        // 判断 超过八行，则显示一行
+        // unfold 0: 全部展示； 1：大于5行小于8行，显示5行； 2：大于8行，显示1行
+        if (contentH > 8 * lineHeight) {
+          moment.unfold = 2;
+          moment.showUnfold = false;
+        } else if (contentH > 5 * lineHeight) {
+          moment.unfold = 1;
           moment.showUnfold = true;
         } else {
-          moment.unfold = true;
+          moment.unfold = 0;
           moment.showUnfold = false;
         }
       }
@@ -1052,9 +1081,16 @@ export default {
         transform: transform
       };
     },
-    // 导航栏动态样式
+    // 实心导航栏样式
     navStyle() {
       return { opacity: this.lastOpacity };
+    },
+    // 透明度导航栏样式
+    transparentNavStyle() {
+      return {
+        opacity: 1 - this.lastOpacity,
+        backgroundColor: "rgba(237,237,237,0)"
+      };
     },
 
     ...mapState({

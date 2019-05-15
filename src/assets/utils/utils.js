@@ -1,12 +1,12 @@
 // 全局工具类  （变量 or Methods）
 
 // 导航栏返回按钮
-import { backItem } from '../js/MHBarButtonItem'
+import { blackBackItem } from '../js/MHBarButtonItem'
 
 const utils = {
   install(Vue) {
     // 导航栏返回按钮
-    Vue.prototype.backItem = backItem
+    Vue.prototype.blackBackItem = blackBackItem
   },
 
   // 🔥判断对象是否为数组
