@@ -21,7 +21,6 @@
   height: 40px;
 }
 
-
 /* 下拽回弹动画 */
 .moment__dropped {
   transition: 0.25s;
@@ -61,7 +60,8 @@
 其它我没想到的= =。 
 
 */
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background-color: #fff;
 }
 
@@ -75,7 +75,6 @@
   -webkit-box-align: flex-start;
   -webkit-align-items: flex-start;
   align-items: flex-start;
-
   background-color: #fff;
   font-size: 16px;
 }
@@ -107,6 +106,7 @@
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
+  overflow: hidden;
 }
 
 .mh-moment__name {
@@ -152,7 +152,6 @@
 .mh-moment__content.unfold2:active {
   background-color: #ced2de;
 }
-
 
 /* 全文/收齐 */
 .mh-moment__expand {
