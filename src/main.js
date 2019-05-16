@@ -34,6 +34,11 @@ Vue.use(NavigationBar)
 import utils from 'assets/utils/utils'
 Vue.use(utils)
 
+import VuePreview from 'vue-preview'
+Vue.use(VuePreview);
+console.log(VuePreview);
+
+
 // 配置偏好设置
 import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
 MHPreferenceSettingHelper.initialize()
@@ -180,6 +185,10 @@ new Vue({
 // - [JSVerbalExpressions](https://github.com/VerbalExpressions/JSVerbalExpressions)
 // - [精致的下拉刷新和上拉加载 js框架](https://github.com/mescroll/mescroll)
 // - [zepto](https://github.com/madrobby/zepto)
+// - [vue-preview](https://github.com/LS1231/vue-preview)
+// - [PhotoSwipe](https://github.com/dimsemenov/PhotoSwipe)
+// - [viewerjs](https://github.com/fengyuanchen/viewerjs)
+// - [vue点击图片预览放大（可旋转、翻转、缩放、上下切换、键盘操作viewerjs](https://blog.csdn.net/guozhangqiang/article/details/82251893)
 // - [专注于移动端的fullPage.js](https://github.com/yanhaijing/zepto.fullpage)
 // https://github.com/SunshineBrother/JHBlog
 

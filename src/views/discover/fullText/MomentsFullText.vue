@@ -6,6 +6,7 @@
       title="全文"
     ></NavigationBar>
     <div class="_full-content _content-padding-top44">
+      <!-- 正文wrapper -->
       <div :style="style">
         <p
           class="mh-moment__content"
