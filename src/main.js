@@ -175,6 +175,7 @@ new Vue({
 // - [Js实现移动端长按事件](https://www.jianshu.com/p/11bb9629aa09)
 
 
+
 /// --------🔥 Third Lib 🔥-------------
 // - [vue-lazyload)](https://github.com/hilongjw/vue-lazyload)
 // - [better-scroll](https://github.com/ustbhuangyi/better-scroll)
@@ -190,6 +191,7 @@ new Vue({
 // - [viewerjs](https://github.com/fengyuanchen/viewerjs)
 // - [vue点击图片预览放大（可旋转、翻转、缩放、上下切换、键盘操作viewerjs](https://blog.csdn.net/guozhangqiang/article/details/82251893)
 // - [专注于移动端的fullPage.js](https://github.com/yanhaijing/zepto.fullpage)
+// - [强烈推荐优秀的Vue UI组件库](https://www.jianshu.com/p/398a3b2e535f)
 // https://github.com/SunshineBrother/JHBlog
 
 /** 
