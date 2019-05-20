@@ -34,9 +34,9 @@ Vue.use(NavigationBar)
 import utils from 'assets/utils/utils'
 Vue.use(utils)
 
-import VuePreview from 'vue-preview'
-Vue.use(VuePreview);
-console.log(VuePreview);
+// import VuePreview from 'vue-preview'
+// Vue.use(VuePreview);
+// console.log(VuePreview);
 
 
 // 配置偏好设置

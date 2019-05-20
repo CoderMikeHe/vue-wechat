@@ -2,7 +2,7 @@
 <template>
   <div class="_full-container" @touchstart="touchstartAction">
     <div class="_full-content" id="ko">
-      <!-- 导航栏 -->
+      <!-- 导航栏透明 -->
       <NavigationBar
         title="朋友圈"
         :left-item="blackBackItem"
@@ -12,6 +12,7 @@
         @scroll-to-top="scrollToTop"
         :style="navStyle"
       ></NavigationBar>
+      <!-- 导航栏不透明 -->
       <NavigationBar
         :left-item="whiteBackItem"
         :right-item="cameraFaceItem"
@@ -311,14 +312,17 @@ export default {
       delCmtIndexPath: {},
       rotes: false,
       startY: "", //保存touch时的Y坐标
-      moveDistance: 0, //保存向下滑动的距离
-      // 开始滑动到结束后状态的变化 0:下拉即可刷新 1:释放即可刷新 2:加载中
-      refreshState: 0,
+      translate: 0, //保存向下滑动的距离
       duration: 0, //动画持续时间，0就是没有动画
+      // 刷新控件隐藏的位置
+      refreshHiddenValue: -30,
+      // 刷新控件最终显示的位置
+      refreshShowValue: 60,
       // 下拉刷新临界点
       topDistance: 40,
       // touchState 触摸状态(0 touchend ; 1 touchstart ; 2 touchend)
       touchSate: 0,
+
       // 最后一次topValue
       lastRefreshTop: 0,
       // startScrollTop
@@ -431,7 +435,7 @@ export default {
 
       this.rotes = false;
       this.duration = 0; // 关闭动画
-      this.moveDistance = 0; // 滑动距离归0
+      this.translate = 0; // 滑动距离归0
       let t = e.targetTouches[0]; // 获得开始Y坐标
 
       this.startY = t.clientY;
@@ -447,6 +451,7 @@ export default {
       if (this.topStatus !== "loading") {
         this.topStatus = "pull";
         this.topDropped = false;
+        this.lastRefreshTop = 0;
       }
       if (this.bottomStatus !== "loading") {
         this.bottomStatus = "pull";
@@ -479,17 +484,17 @@ export default {
           distance = 0;
         }
         // 不管下拉刷新状态，这个distance长期有效
-        this.moveDistance = distance;
+        this.translate = distance;
         // 如果当前正在刷新
         if (this.topStatus !== "loading") {
           // 如果大于临界点，释放即可刷新 的状态
-          if (this.moveDistance > this.topDistance) {
+          if (this.translate > this.topDistance) {
             // 减少计算型属性的计算
             if (this.topStatus !== "drop") {
               // 释放即可刷新
               this.topStatus = "drop";
               // 拖拽过程中 一旦某一次有超过了临界点
-              this.lastRefreshTop = 60;
+              this.lastRefreshTop = this.refreshShowValue;
             }
           } else {
             // 减少计算型属性的计算
@@ -499,17 +504,6 @@ export default {
             }
           }
         }
-
-        // 正在刷新 后面就不用区分状态了
-        // if (this.refreshState === 2) {
-        //   this.lastRefreshTop = 0;
-        //   return;
-        // } else {
-        //   if (distance > this.topDistance) {
-        //     this.lastRefreshTop = 60;
-        //   }
-        // }
-
         // console.log("++++ 下拉过程中 ++++");
       }
 
@@ -535,7 +529,7 @@ export default {
           // 主要是阻止 OnScroll事件
           e.preventDefault();
           e.stopPropagation();
-          this.moveDistance = distance;
+          this.translate = distance;
           // 阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
         }
       }
@@ -547,8 +541,8 @@ export default {
       //   this.direction +
       //   " --- distance " +
       //   distance +
-      //   " --- moveDistance " +
-      //   this.moveDistance +
+      //   " --- translate " +
+      //   this.translate +
       //   " --- bottomReached " +
       //   this.bottomReached
       // );
@@ -569,7 +563,7 @@ export default {
         this.direction === "down" &&
         scrollTop === 0 &&
         this.topStatus !== "loading" &&
-        this.moveDistance > 0
+        this.translate > 0
       ) {
         this.topDropped = true;
         if (this.topStatus === "drop") {
@@ -579,13 +573,12 @@ export default {
           this.topStatus = "pull";
         }
       }
-
       // 只要到达了上拉控件到达了底部，就给我刷新
       if (
         this.direction === "up" &&
         this.bottomReached &&
         this.bottomStatus !== "loading" &&
-        this.moveDistance < 0
+        this.translate < 0
       ) {
         this.bottomDropped = true;
         this.bottomReached = false;
@@ -593,13 +586,16 @@ export default {
         // 上拉加载事件
         this.bottomMethod();
       }
-
       // 清空
       this.direction = "";
       // 微信结束了拖拽，都得归0处理
-      this.moveDistance = 0;
-      // 结束drag
-      this.lastRefreshTop = 0;
+      this.translate = 0;
+      // 这里需要做个容错处理，loading状态下，只认刷新控件的 scrollTop
+      if (this.topStatus === "loading") {
+        this.lastRefreshTop = scrollTop;
+      } else {
+        this.lastRefreshTop = 0;
+      }
     },
 
     // 一旦 scrollTop >0 就会触发onscroll
@@ -631,6 +627,7 @@ export default {
       if (this.lastOpacity !== opacity) {
         this.lastOpacity = opacity;
       }
+
       // lastRefreshTop
       this.lastRefreshTop = scrollTop;
     },
@@ -990,7 +987,7 @@ export default {
     topMethod() {
       setTimeout(() => {
         this.topStatus = "";
-        this.moveDistance = 0;
+        this.translate = 0;
       }, 5000);
     },
     // 上拉加载事件
@@ -1071,29 +1068,36 @@ export default {
   computed: {
     //
     transform() {
-      return { transform: `translate3d(0,${this.moveDistance}px, 0)` };
+      return { transform: `translate3d(0,${this.translate}px, 0)` };
     },
 
     // 刷新ball样式处理
     refreshStyle() {
       // 控制刷新小球的状态
-      var cy = this.moveDistance;
-      let opacity = cy > this.topDistance ? 1 : 0;
-      let top = -30;
+      var translate = this.translate;
+      let opacity = translate > this.topDistance ? 1 : 0;
+      let top = this.refreshHiddenValue;
       let transform = "";
       let duration = "0.2s";
       let property = "";
+
       // 正在刷新
       if (this.topStatus === "loading") {
-        // 正在刷新的过程中，小球可以根据页面滚动而滚动
-        top = Math.max(-30, 60 - this.lastRefreshTop);
+        // 正在刷新的过程中，小球可以根据页面滚动而滚动，且不需要动画
+        top = Math.max(
+          this.refreshHiddenValue,
+          this.refreshShowValue - this.lastRefreshTop
+        );
         opacity = 1;
-        transform = "";
+        duration = ""; // 去掉过渡动画
       } else {
-        // 正在touchmove, 只控制显示or隐藏，不做top处理
+        // 正在touchmove, 只控制旋转和显示or隐藏，不做top处理
         if (this.touchSate === 2) {
-          top = cy > this.topDistance ? 60 : this.lastRefreshTop;
-          transform = "rotate(" + -cy * 3 + "deg)";
+          top =
+            translate > this.topDistance
+              ? this.refreshShowValue
+              : this.lastRefreshTop;
+          transform = "rotate(" + -translate * 3 + "deg)";
           property = "top,opacity";
         } else if (this.touchSate === 0) {
           property = "top,opacity";
@@ -1119,7 +1123,6 @@ export default {
         backgroundColor: "rgba(237,237,237,0)"
       };
     },
-
     ...mapState({
       // 当前用户
       user: state => state.user

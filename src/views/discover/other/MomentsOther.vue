@@ -6,53 +6,91 @@
       title="富文本事件"
     ></NavigationBar>
     <div class="_full-content _content-padding-top44">
-      <h1 class="other__title">点击内容：👉{{ value }}</h1>
-      <div>
-        <h5>Gallery one</h5>
-        <div>
-          <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-        </div>
-      </div>
+      <!-- <h1 class="other__title">点击内容：👉{{ value }}</h1> -->
+      <img
+        class="previewer-demo-img"
+        v-for="(item, index) in list"
+        :key="index"
+        :src="item.src"
+        width="100"
+        @click="show(index)"
+      />
+      <previewer
+        :list="list"
+        ref="previewer"
+        :options="options"
+        @on-index-change="logIndexChange"
+      ></previewer>
     </div>
   </div>
 </template>
 
 <script>
+import previewer from "components/previewer/Previewer";
 export default {
   name: "moments-other",
+  components: {
+    previewer
+  },
   data() {
     return {
-      slide1: [
+      list: [
         {
-          src:
-            "https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_b.jpg",
           msrc:
-            "https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg",
-          alt: "picture1",
-          title: "Image Caption 1",
-          w: 600,
+            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
+          w: 800,
           h: 400
         },
         {
-          src:
-            "https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_b.jpg",
           msrc:
-            "https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_m.jpg",
-          alt: "picture2",
-          title: "Image Caption 2",
+            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
           w: 1200,
           h: 900
+        },
+        {
+          msrc:
+            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwwcynw2j20p00b4js9.jpg",
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
         }
       ],
-      value: ""
+      options: {
+        getThumbBoundsFn(index) {
+          // find thumbnail element
+          let thumbnail = document.querySelectorAll(".previewer-demo-img")[
+            index
+          ];
+          // get window scroll Y
+          let pageYScroll =
+            window.pageYOffset || document.documentElement.scrollTop;
+
+          console.log(window.pageYOffset);
+          console.log(document.documentElement.scrollTop);
+
+          // optionally get horizontal scroll
+          // get position of element relative to viewport
+          let rect = thumbnail.getBoundingClientRect();
+          // w = width
+          return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+          // Good guide on how to get element coordinates:
+          // http://javascript.info/tutorial/coordinates
+        }
+      }
     };
   },
   created() {
     this.value = this.$route.params.value;
   },
   methods: {
-    handleClose() {
-      console.log("close event");
+    logIndexChange(arg) {
+      console.log(arg);
+    },
+    show(index) {
+      this.$refs.previewer.show(index);
     }
   }
 };
