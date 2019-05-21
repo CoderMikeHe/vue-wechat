@@ -338,5 +338,21 @@ export default {
       temps.push(element)
     })
     return temps
+  },
+
+  // 配置图片浏览器数据源
+  configPreviewerList(pics) {
+    // 数据处理
+    let temps = []
+    if (!utils.objIsArray(pics)) return temps
+    pics.forEach(pic => {
+      let item = {}
+      item.src = pic.large.url
+      item.msrc = pic.bmiddle.url
+      item.w = pic.large.width * 1
+      item.h = pic.large.height * 1
+      temps.push(item);
+    });
+    return temps;
   }
 }

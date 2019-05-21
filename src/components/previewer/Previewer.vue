@@ -163,6 +163,7 @@ export default {
       });
 
       this.photoswipe.init();
+
       this.photoswipe.listen("close", () => {
         this.$emit("on-close");
       });
@@ -171,6 +172,18 @@ export default {
           currentIndex: this.photoswipe.getCurrentIndex()
         });
       });
+
+      // Opening zoom in animation starting
+      this.photoswipe.listen('initialZoomIn', function() { });
+
+      // Opening zoom in animation finished
+      this.photoswipe.listen('initialZoomInEnd', function() { });
+
+      // Closing zoom out animation started
+      this.photoswipe.listen('initialZoomOut', function() { });
+
+      // Closing zoom out animation finished
+      this.photoswipe.listen('initialZoomOutEnd', function() { });
     },
     show(index) {
       this.init(index);

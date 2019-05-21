@@ -1,7 +1,13 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content" id="ko">
+  <div
+    class="_full-container"
+    @touchstart="touchstartAction"
+  >
+    <div
+      class="_full-content"
+      id="ko"
+    >
       <!-- 导航栏透明 -->
       <NavigationBar
         title="朋友圈"
@@ -27,7 +33,6 @@
         :style="refreshStyle"
         :class="{ kkk: topStatus === 'loading' }"
       ></div>
-
       <!-- 单条说说 -->
       <div
         class="moment__wrapper"
@@ -72,8 +77,7 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                  >{{ moment.user.screen_name }}</span
-                >
+                >{{ moment.user.screen_name }}</span>
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -93,7 +97,10 @@
                 >
                   <!-- {{ moment.text || "" }} -->
                 </p>
-                <p class="mh-moment__expand" v-if="moment.showUnfold">
+                <p
+                  class="mh-moment__expand"
+                  v-if="moment.showUnfold"
+                >
                   <span
                     class="mh-moment--tap-highlight"
                     @click="
@@ -101,8 +108,7 @@
                         ? (moment.unfold = 0)
                         : (moment.unfold = 1)
                     "
-                    >{{ moment.unfold ? "收起" : "全文" }}</span
-                  >
+                  >{{ moment.unfold ? "收起" : "全文" }}</span>
                 </p>
               </div>
 
@@ -115,35 +121,36 @@
                     (moment.type === undefined || moment.type === 0)
                 "
               >
-                <!-- <div
+                <div
                   class="mh-moment__pic"
                   v-for="(pic, idx) in moment.pic_infos"
                   :key="idx"
                   :style="pic.picStyle"
-                ></div> -->
-                <img
-                  src=""
-                  alt=""
-                  class="preview-img  mh-moment__pic"
-                  v-for="(pic, idx) in moment.pic_infos"
-                  :key="idx"
-                  :style="pic.picStyle"
-                  @click="show(idx)"
-                />
+                  @click="picDidClick(index, idx, $event)"
+                ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div class="moment__video-wrapper" v-if="moment.type === 1">
+              <div
+                class="moment__video-wrapper"
+                v-if="moment.type === 1"
+              >
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div class="moment__share-wrapper" v-if="moment.type === 2">
+              <div
+                class="moment__share-wrapper"
+                v-if="moment.type === 2"
+              >
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img :src="moment.shareInfo.thumbImage" alt="" />
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -155,7 +162,10 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img :src="moment.shareInfo.thumbImage" alt="" />
+                    <img
+                      :src="moment.shareInfo.thumbImage"
+                      alt=""
+                    />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -175,7 +185,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                }}</span>
+                  }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -235,7 +245,10 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div class="weui-loadmore" ref="loadMore">
+          <div
+            class="weui-loadmore"
+            ref="loadMore"
+          >
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
           </div>
@@ -248,6 +261,15 @@
         @did-click-item="didClickItem"
         :items="items"
       ></actionSheet>
+
+      <!-- previewer -->
+
+      <previewer
+        :list="list"
+        ref="previewer"
+        :options="options"
+        @on-index-change="logIndexChange"
+      ></previewer>
     </div>
   </div>
 </template>
@@ -272,6 +294,8 @@ import { mapState } from "vuex";
 import utils from "../../../assets/utils/utils.js";
 // helper
 import helper from "./js/momentsHelper.js";
+// 图片预览
+import previewer from "components/previewer/Previewer";
 export default {
   name: "moments",
   data() {
@@ -349,7 +373,9 @@ export default {
       page: 1,
       // 定时器
       timeOutEvent: 0,
-      lastOpacity: 0
+      lastOpacity: 0,
+      list: [], // 图片浏览器资源
+      options: {} // 图片浏览器配置
     };
   },
   destroyed() {
@@ -378,9 +404,47 @@ export default {
     console.log(this.$preview);
   },
   methods: {
-    show(idx) {
-      console.log(idx);
-      console.log(this.$preview);
+    // 九宫格图片被点击了
+    picDidClick(section, row, event) {
+
+      console.log(event.target);
+
+      let el = event.target;
+      let parentElement = el.parentElement;
+      // 取出 moment
+      let moment = this.moments[section];
+      // 数据源
+      this.list = helper.configPreviewerList(moment.pic_infos);
+      console.log(this.list);
+      // 配置
+      let options = {
+        // showHideOpacity:true,
+        getThumbBoundsFn(index) {
+          // find thumbnail element
+          let thumbnail = parentElement.children[index];
+          // get window scroll Y
+          let pageYScroll =
+            window.pageYOffset || document.documentElement.scrollTop;
+          // optionally get horizontal scroll
+          // get position of element relative to viewport
+          let rect = thumbnail.getBoundingClientRect();
+          console.log(rect);
+          // w = width
+          return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+          // Good guide on how to get element coordinates:
+          // http://javascript.info/tutorial/coordinates
+        }
+      };
+      this.options = options;
+
+      // Fixed Bug : 先让dom更新，然后show
+      this.$nextTick(() => {
+        // 弹出浏览器
+        this.$refs.previewer.show(row);
+      });
+    },
+    logIndexChange(index) {
+      console.log(index);
     },
     // 滚动到顶部
     scrollToTop() {
@@ -1132,7 +1196,8 @@ export default {
   components: {
     actionSheet,
     MomentOperationMore,
-    MomentProfile
+    MomentProfile,
+    previewer
   }
 };
 </script>
