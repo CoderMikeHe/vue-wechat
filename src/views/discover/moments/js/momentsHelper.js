@@ -348,7 +348,8 @@ export default {
     pics.forEach(pic => {
       let item = {}
       item.src = pic.large.url
-      item.msrc = pic.bmiddle.url
+      // 这里由于图片的大小比例不一致，导致只能取pic.large
+      item.msrc = pic.large.url
       item.w = pic.large.width * 1
       item.h = pic.large.height * 1
       temps.push(item);

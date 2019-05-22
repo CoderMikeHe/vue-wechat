@@ -1,11 +1,10 @@
-// 图片浏览器
+// 图片浏览器 // - []()
 <template>
   <!-- Root element of PhotoSwipe. Must have class pswp. -->
   <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
     <!-- Background of PhotoSwipe. 
 		 It's a separate element as animating opacity is faster than rgba(). -->
     <div class="pswp__bg"></div>
-
     <!-- Slides wrapper with overflow:hidden. -->
     <div class="pswp__scroll-wrap">
       <!-- Container that holds slides. 
@@ -75,6 +74,15 @@
           <div class="pswp__caption__center"></div>
         </div>
       </div>
+      <!-- 指示器 -->
+      <div
+        class="vux-indicator vux-indicator-center"
+        v-show="showDots && length > 1"
+      >
+        <a href="javascript:void(0)" v-for="key in length" :key="key">
+          <i class="vux-icon-dot" :class="{ active: key - 1 === current }"></i>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -86,6 +94,11 @@ import objectAssign from "object-assign";
 
 export default {
   name: "previewer",
+  data() {
+    return {
+      current: 0
+    };
+  },
   computed: {
     imgs() {
       return this.list.map(one => {
@@ -98,6 +111,9 @@ export default {
         }
         return one;
       });
+    },
+    length() {
+      return this.imgs.length;
     }
   },
   watch: {
@@ -123,6 +139,7 @@ export default {
   },
   methods: {
     init(index) {
+      this.current = index;
       const self = this;
       const showItem = this.imgs[index];
       if (!showItem.w || !showItem.h || showItem.w < 5 || showItem.h < 5) {
@@ -143,7 +160,13 @@ export default {
         {
           history: false,
           shareEl: false,
+          counterEl: false,
+          arrowEl: false,
+          closeEl: false,
+          captionEl: false,
+          fullscreenEl: false,
           tapToClose: true,
+          zoomEl: false,
           index: index
         },
         this.options
@@ -151,6 +174,7 @@ export default {
       this.photoswipe = new PhotoSwipe(this.$el, UI, this.imgs, options);
 
       this.photoswipe.listen("gettingData", function(index, item) {
+        console.log("gettingData");
         if (!item.w || !item.h || item.w < 1 || item.h < 1) {
           const img = new Image();
           img.onload = function() {
@@ -167,23 +191,13 @@ export default {
       this.photoswipe.listen("close", () => {
         this.$emit("on-close");
       });
-      this.photoswipe.listen("afterChange", (a, b) => {
+      this.photoswipe.listen("afterChange", () => {
+        let index = this.photoswipe.getCurrentIndex();
+        this.current = index;
         this.$emit("on-index-change", {
-          currentIndex: this.photoswipe.getCurrentIndex()
+          currentIndex: index
         });
       });
-
-      // Opening zoom in animation starting
-      this.photoswipe.listen('initialZoomIn', function() { });
-
-      // Opening zoom in animation finished
-      this.photoswipe.listen('initialZoomInEnd', function() { });
-
-      // Closing zoom out animation started
-      this.photoswipe.listen('initialZoomOut', function() { });
-
-      // Closing zoom out animation finished
-      this.photoswipe.listen('initialZoomOutEnd', function() { });
     },
     show(index) {
       this.init(index);
@@ -211,9 +225,9 @@ export default {
       type: Array,
       required: true
     },
-    index: {
-      type: Number,
-      default: 0
+    showDots: {
+      type: Boolean,
+      default: true
     },
     options: {
       type: Object,
@@ -227,3 +241,34 @@ export default {
 
 <style src="photoswipe/dist/photoswipe.css"></style>
 <style src="photoswipe/dist/default-skin/default-skin.css"></style>
+<style scoped>
+.vux-indicator {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+}
+
+.vux-indicator-center {
+  right: 50%;
+  -webkit-transform: translateX(50%);
+  transform: translateX(50%);
+}
+
+.vux-indicator > a {
+  float: left;
+  margin-left: 6px;
+}
+
+.vux-indicator > a > .vux-icon-dot {
+  display: inline-block;
+  vertical-align: middle;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: gray;
+}
+
+.vux-indicator > a > .vux-icon-dot.active {
+  background-color: #fff;
+}
+</style>

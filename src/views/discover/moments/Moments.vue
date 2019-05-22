@@ -1,13 +1,7 @@
 // 朋友圈
 <template>
-  <div
-    class="_full-container"
-    @touchstart="touchstartAction"
-  >
-    <div
-      class="_full-content"
-      id="ko"
-    >
+  <div class="_full-container" @touchstart="touchstartAction">
+    <div class="_full-content" id="ko">
       <!-- 导航栏透明 -->
       <NavigationBar
         title="朋友圈"
@@ -77,7 +71,8 @@
                 <span
                   class="mh-moment--tap-highlight"
                   @click="skipToContactInfo(moment)"
-                >{{ moment.user.screen_name }}</span>
+                  >{{ moment.user.screen_name }}</span
+                >
               </div>
               <!-- 正文 -->
               <!-- 🔥 这里必须得用 v-show 因为我们设置了 ref，必须的渲染出来 ，否则会导致 this.$refs.content.length不对 -->
@@ -97,10 +92,7 @@
                 >
                   <!-- {{ moment.text || "" }} -->
                 </p>
-                <p
-                  class="mh-moment__expand"
-                  v-if="moment.showUnfold"
-                >
+                <p class="mh-moment__expand" v-if="moment.showUnfold">
                   <span
                     class="mh-moment--tap-highlight"
                     @click="
@@ -108,7 +100,8 @@
                         ? (moment.unfold = 0)
                         : (moment.unfold = 1)
                     "
-                  >{{ moment.unfold ? "收起" : "全文" }}</span>
+                    >{{ moment.unfold ? "收起" : "全文" }}</span
+                  >
                 </p>
               </div>
 
@@ -130,27 +123,18 @@
                 ></div>
               </div>
               <!-- 视频 type === 1 -->
-              <div
-                class="moment__video-wrapper"
-                v-if="moment.type === 1"
-              >
+              <div class="moment__video-wrapper" v-if="moment.type === 1">
                 <div class="video-wrapper__play"></div>
               </div>
               <!-- 分享 type === 2 -->
-              <div
-                class="moment__share-wrapper"
-                v-if="moment.type === 2"
-              >
+              <div class="moment__share-wrapper" v-if="moment.type === 2">
                 <!-- shareInfoType === 0网页 -->
                 <div
                   class="share-wrapper__content"
                   v-if="moment.shareInfo.shareInfoType === 0"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                   </div>
                   <div class="content__share-bd">
                     {{ moment.shareInfo.title }}
@@ -162,10 +146,7 @@
                   v-if="moment.shareInfo.shareInfoType === 1"
                 >
                   <div class="content__share-hd">
-                    <img
-                      :src="moment.shareInfo.thumbImage"
-                      alt=""
-                    />
+                    <img :src="moment.shareInfo.thumbImage" alt="" />
                     <div class="content__play"></div>
                   </div>
                   <div class="content__share-bd">
@@ -185,7 +166,7 @@
               >
                 <span class="mh-moment--tap-highlight">{{
                   moment.location
-                  }}</span>
+                }}</span>
               </div>
 
               <!-- 时间/来源/更多 -->
@@ -245,12 +226,15 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div
-            class="weui-loadmore"
-            ref="loadMore"
-          >
-            <i class="weui-loading"></i>
-            <span class="weui-loadmore__tips">&nbsp;正在加载...</span>
+          <div class="weui-loadmore">
+            <i class="weui-loading" v-show="!bottomAllLoaded"></i>
+            <span class="weui-loadmore__tips"
+              >{{
+                bottomAllLoaded
+                  ? "别拉了，劳资也是有底线的..."
+                  : "&nbsp;正在加载..."
+              }}
+            </span>
           </div>
         </div>
       </div>
@@ -364,6 +348,8 @@ export default {
       bottomStatus: "",
       // 底部控件是否处于 drop状态
       bottomDropped: false,
+      // 是否已经加载完毕
+      bottomAllLoaded: false,
 
       // tempSt
       tempStartScrollTop: 0,
@@ -406,19 +392,16 @@ export default {
   methods: {
     // 九宫格图片被点击了
     picDidClick(section, row, event) {
-
-      console.log(event.target);
-
       let el = event.target;
       let parentElement = el.parentElement;
       // 取出 moment
       let moment = this.moments[section];
       // 数据源
       this.list = helper.configPreviewerList(moment.pic_infos);
-      console.log(this.list);
       // 配置
       let options = {
-        // showHideOpacity:true,
+        // -[FAQ](https://photoswipe.com/documentation/faq.html)
+        showHideOpacity: true,
         getThumbBoundsFn(index) {
           // find thumbnail element
           let thumbnail = parentElement.children[index];
@@ -642,7 +625,8 @@ export default {
         this.direction === "up" &&
         this.bottomReached &&
         this.bottomStatus !== "loading" &&
-        this.translate < 0
+        this.translate < 0 &&
+        !this.bottomAllLoaded
       ) {
         this.bottomDropped = true;
         this.bottomReached = false;
@@ -676,7 +660,12 @@ export default {
       // console.log("touchState === " + this.touchSate);
 
       // 必须是touchEnd的情况下有效，且不是正在下拉刷新
-      if (st >= sh && this.touchSate === 0 && this.bottomStatus !== "loading") {
+      if (
+        st >= sh &&
+        this.touchSate === 0 &&
+        this.bottomStatus !== "loading" &&
+        !this.bottomAllLoaded
+      ) {
         console.log("+++ OnScroll上拉加载事件 +++");
         this.bottomStatus = "loading";
         // 上拉加载事件
@@ -1052,6 +1041,8 @@ export default {
       setTimeout(() => {
         this.topStatus = "";
         this.translate = 0;
+        // this.page = 1;
+        this.bottomAllLoaded = false;
       }, 5000);
     },
     // 上拉加载事件
@@ -1072,6 +1063,9 @@ export default {
           temps = this.handleWebDatas(MHMoments3.moments);
         } else if (page === 4) {
           temps = this.handleWebDatas(MHMoments4.moments);
+
+          // 假设到了 4页 就无法上拉加载了
+          this.bottomAllLoaded = true;
         }
         this.moments.push(...temps);
         // dom更新
@@ -1130,12 +1124,12 @@ export default {
     }
   },
   computed: {
-    //
+    // 滚动列表的动态样式
     transform() {
       return { transform: `translate3d(0,${this.translate}px, 0)` };
     },
 
-    // 刷新ball样式处理
+    // 刷新控件ball样式处理
     refreshStyle() {
       // 控制刷新小球的状态
       var translate = this.translate;
@@ -1144,8 +1138,6 @@ export default {
       let transform = "";
       let duration = "0.2s";
       let property = "";
-
-      // 正在刷新
       if (this.topStatus === "loading") {
         // 正在刷新的过程中，小球可以根据页面滚动而滚动，且不需要动画
         top = Math.max(
