@@ -91,6 +91,7 @@
 import MHBarButtonItem, { addItem } from "../../assets/js/MHBarButtonItem.js";
 export default {
   name: "mainframe",
+  components: {},
   data() {
     return {
       // 添加按钮
@@ -101,7 +102,7 @@ export default {
   created() {
     console.log("我被嗲啊啊 ");
   },
-  components: {},
+
   methods: {
     ahk() {
       var el = document.getElementById("xo");
@@ -125,23 +126,26 @@ export default {
     menuItemDidClicked(index) {
       console.log(index);
       switch (index) {
-      case 0: // 发起群聊
-        this.$router.push("/test");
-        break;
-      case 1: // 添加朋友
-        // this.$router.push("/test");
-        // console.log("mlgb");
-        break;
-      case 2: // 扫一扫
-        break;
-      case 3: // 收付款
-        this.$router.push("/test");
-        break;
+        case 0: // 发起群聊
+          this.$router.push("/test");
+          break;
+        case 1: // 添加朋友
+          // this.$router.push("/test");
+          // console.log("mlgb");
+          break;
+        case 2: // 扫一扫
+          break;
+        case 3: // 收付款
+          this.$router.push("/test");
+          break;
 
-      default:
-        break;
+        default:
+          break;
       }
     }
+  },
+  activated() {
+    console.log("Mainframe -- ");
   }
 };
 </script>

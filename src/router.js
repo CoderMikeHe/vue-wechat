@@ -55,30 +55,49 @@ export default new Router({
     },
     {
       path: '/homepage',
+      // [vue-router] Named Route 'Homepage' has a default child route. When navigating to this named route (:to="{name: 'Homepage'"), the default child route will not be rendered. Remove the name from this route and use the name of the default child route for named links instead.
+      // name: 'Homepage',
       component: Homepage,
+      meta: {
+        // 父路由支持keepAlive 子路由页必须支持keeepAlive，不然失效
+        keepAlive: true
+      },
       children: [
         {
           path: 'mainframe',
           name: 'mainframe',
-          component: MainFrame
+          component: MainFrame,
+          meta: {
+            keepAlive: true
+          },
         },
         {
           path: 'contacts',
           name: 'contacts',
-          component: Contacts
+          component: Contacts,
+          meta: {
+            keepAlive: true
+          },
         },
         {
           path: 'discover',
           name: 'discover',
-          component: Discover
+          component: Discover,
+          meta: {
+            keepAlive: true
+          },
         },
         {
           path: 'profile',
           name: 'profile',
-          component: Profile
+          component: Profile,
+          meta: {
+            keepAlive: true
+          },
         },
         { path: '', redirect: '/homepage/mainframe' }
-      ]
+      ],
+      
     },
     {
       path: '/current-login',
@@ -128,7 +147,10 @@ export default new Router({
     {
       path: '/discover/moments',
       name: 'moments', // 朋友圈
-      component: Moments
+      component: Moments,
+      meta: {
+        keepAlive: true  // 此组件需要缓存
+      }
     },
     {
       path: '/moments/moments-other',
@@ -159,6 +181,9 @@ export default new Router({
       path: '/profile/setting',
       name: 'setting', // 设置
       component: Setting,
+      meta: {
+        keepAlive: true  // 此组件需要缓存
+      },
       children: [
         {
           path: 'switch-account',
@@ -188,15 +213,5 @@ export default new Router({
   // 👉 vue-router scrollBehavior无效的问题
   // [如果加了transition动画，scrollBehavior无效](https://github.com/vuejs/vue-router/issues/675)
   //
-  scrollBehavior(to, from, savedPosition) {
-    // return 期望滚动到哪个的位置
-    console.log('scrollBehavior -- to ', to)
-    console.log('scrollBehavior -- from ', from)
-    console.log('scrollBehavior -- savedPosition ', savedPosition)
-    // if (savedPosition) {
-    //   console.log('8888888')
-    //   // savedPosition is only available for popstate navigations.
-    //   return savedPosition
-    // }
-  }
+  // scrollBehavior(to, from, savedPosition) {}
 })

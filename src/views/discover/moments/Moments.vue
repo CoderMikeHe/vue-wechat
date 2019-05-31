@@ -30,6 +30,7 @@
       <!-- 单条说说 -->
       <div
         class="moment__wrapper"
+        ref="momentWrapper"
         id="drag"
         @touchstart="startDrag"
         @touchmove="onDrag"
@@ -37,7 +38,8 @@
         @touchcancel="stopDrag"
         @scroll.passive="onScroll($event)"
       >
-        <div class="moment__background"></div>
+        <!-- 背景页：需要有数据方可显示 -->
+        <div class="moment__background" v-show="moments.length"></div>
         <div
           id="drag-inner"
           :style="transform"
@@ -226,7 +228,7 @@
             </div>
           </div>
           <!-- 上拉加载刷新控件 -->
-          <div class="weui-loadmore">
+          <div class="weui-loadmore" v-show="moments.length">
             <i class="weui-loading" v-show="!bottomAllLoaded"></i>
             <span class="weui-loadmore__tips"
               >{{
@@ -247,7 +249,6 @@
       ></actionSheet>
 
       <!-- previewer -->
-
       <previewer
         :list="list"
         ref="previewer"
@@ -267,15 +268,15 @@ import {
 import actionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
-import MHMoments from "../../../assets/js/MHMoments.js";
-import MHMoments2 from "../../../assets/js/MHMoments2.js";
-import MHMoments3 from "../../../assets/js/MHMoments3.js";
-import MHMoments4 from "../../../assets/js/MHMoments4.js";
+import MHMoments1 from "@/assets/js/MHMoments1.js";
+import MHMoments2 from "@/assets/js/MHMoments2.js";
+import MHMoments3 from "@/assets/js/MHMoments3.js";
+import MHMoments4 from "@/assets/js/MHMoments4.js";
 import MomentOperationMore from "./view/MomentOperationMore";
 import MomentProfile from "./view/MomentProfile";
 import { mapState } from "vuex";
 // 工具类
-import utils from "../../../assets/utils/utils.js";
+import utils from "@/assets/utils/utils.js";
 // helper
 import helper from "./js/momentsHelper.js";
 // 图片预览
@@ -348,8 +349,8 @@ export default {
       bottomStatus: "",
       // 底部控件是否处于 drop状态
       bottomDropped: false,
-      // 是否已经加载完毕
-      bottomAllLoaded: false,
+      // 是否已经加载完毕,必须的有数据
+      bottomAllLoaded: true,
 
       // tempSt
       tempStartScrollTop: 0,
@@ -361,33 +362,34 @@ export default {
       timeOutEvent: 0,
       lastOpacity: 0,
       list: [], // 图片浏览器资源
-      options: {} // 图片浏览器配置
+      options: {}, // 图片浏览器配置
+
+      // 承载朋友圈的容器
+      momentWrapperEl: null
     };
   },
   destroyed() {
     console.log("++++++ 我已牺牲 ++++++");
   },
   created() {
-    console.log("++++++ 重新创建 ++++++");
+    console.log("++++++ created ++++++");
     // 配置action-sheet item
     this.configActionSheetItems();
-    // 🔥 数组拼接另一个数组
-    // 👉 - [js数组拼接的四种方法]https://blog.csdn.net/cristina_song/article/details/82805444
-    let temps = this.handleWebDatas(MHMoments.moments);
-    // 🔥 尽量用 push 来拼接数组，而不是concat
-    // 👉 - [数组更新检测](https://cn.vuejs.org/v2/guide/list.html)
-    this.moments.push(...temps); // es6 写法
-  },
-  mounted() {
-    // 处理dom数据
-    this.handleDomDatas(0);
     // 开始刷新
     this.topStatus = "loading";
     // 调用一次请求数据
     this.topMethod();
-
-    console.log("😁虾");
-    console.log(this.$preview);
+  },
+  mounted() {
+    console.log("++++++ mounted ++++++");
+    // 获取滚动容器
+    this.momentWrapperEl = this.$refs.momentWrapper;
+  },
+  activated() {
+    console.log("++++++ activated ++++++");
+  },
+  deactivated() {
+    console.log("朋友圈deactivated");
   },
   methods: {
     // 九宫格图片被点击了
@@ -438,6 +440,11 @@ export default {
         top: 0,
         behavior: "smooth"
       });
+
+      // 开始刷新
+      this.topStatus = "loading";
+      // 调用一次请求数据
+      this.topMethod();
     },
     // 头像长按/点击事件
     avatarTouchStart(m, e) {
@@ -1039,18 +1046,27 @@ export default {
     // 下拉刷新事件
     topMethod() {
       setTimeout(() => {
+        // 🔥 数组拼接另一个数组
+        // 👉 - [js数组拼接的四种方法]https://blog.csdn.net/cristina_song/article/details/82805444
+        let temps = this.handleWebDatas(MHMoments1.moments);
+        // 🔥 尽量用 push 来拼接数组，而不是concat
+        // 👉 - [数组更新检测](https://cn.vuejs.org/v2/guide/list.html)
+        this.moments.push(...temps); // es6 写法
+        // dom更新
+        this.$nextTick(() => {
+          this.handleDomDatas(0);
+        });
         this.topStatus = "";
         this.translate = 0;
-        // this.page = 1;
-        this.bottomAllLoaded = false;
-      }, 5000);
+        this.page = 1;
+        this.bottomAllLoaded = temps.length === 0;
+      }, 1500);
     },
     // 上拉加载事件
     bottomMethod() {
       let page = this.page + 1;
       // 模拟一下网络请求数据
       setTimeout(() => {
-        console.log("++++ 上拉加载事件 ++++ " + page);
         this.page = page;
         this.bottomStatus = "";
         // 记录一一下起始索引
@@ -1063,7 +1079,6 @@ export default {
           temps = this.handleWebDatas(MHMoments3.moments);
         } else if (page === 4) {
           temps = this.handleWebDatas(MHMoments4.moments);
-
           // 假设到了 4页 就无法上拉加载了
           this.bottomAllLoaded = true;
         }
@@ -1072,7 +1087,7 @@ export default {
         this.$nextTick(() => {
           this.handleDomDatas(start);
         });
-      }, 2500);
+      }, 1500);
     },
 
     // 数据web处理
@@ -1184,12 +1199,78 @@ export default {
       user: state => state.user
     })
   },
-  watch: {},
+  watch: {
+    $route(val, oldval) {
+      console.log("++++++ $route ++++++");
+    }
+  },
   components: {
     actionSheet,
     MomentOperationMore,
     MomentProfile,
     previewer
+  },
+
+  // - [导航守卫](https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB)
+  beforeRouteEnter(to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+    next(vm => {
+      // 通过 `vm` 访问组件实例
+      let scrollTop = sessionStorage.getItem("$$momentWrapperEl") || 0;
+      if (from.name === "discover") {
+        // 取出时间
+        let t1 = sessionStorage.getItem("$$momentCurrentTime");
+        if (t1) {
+          let d = new Date();
+          let t2 = d.getTime();
+          // 计算差值 秒
+          let sec = (t2 - t1 * 1) / 1000;
+          // 1.1 超过30s, 重新请求第一页数据
+          // 1.2 30s之内, 不请求数据，且滚动到指定位置
+          if (sec > 30) {
+            scrollTop = 0;
+            if (vm.topStatus !== "loading") {
+              // 排除掉 created 的请求
+              // 开始刷新
+              vm.topStatus = "loading";
+              // 调用一次请求数据
+              vm.topMethod();
+            }
+          }
+          console.log("sec", sec);
+        } else {
+          // 娶不到缓存时间
+          scrollTop = 0;
+        }
+      }
+      // 设置到指定位置
+      vm.momentWrapperEl.scrollTop = scrollTop * 1;
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    // 朋友圈：不管前进还是后退，你都得记录滚动条位置
+    let scrollTop = this.momentWrapperEl.scrollTop + "";
+    console.log(scrollTop);
+    // 存到sessionStorage
+    sessionStorage.setItem("$$momentWrapperEl", scrollTop);
+    if (to.name === "discover") {
+      // 朋友圈 -> 发现 ： 记录当前时间
+      let d = new Date();
+      let t = d.getTime() + "";
+      sessionStorage.setItem("$$momentCurrentTime", t);
+    }
+    next();
   }
 };
 </script>

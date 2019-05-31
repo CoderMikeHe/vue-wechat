@@ -78,7 +78,11 @@ export default {
     this.configItems();
   },
   mounted() {
+    console.log("---___---");
     console.log(this.$route.name + "  👉  " + window.history.length);
+  },
+  activated() {
+    console.log("---XXX---");
   },
   methods: {
     // 配置数据

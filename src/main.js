@@ -54,8 +54,8 @@ MHPreferenceSettingHelper.initialize()
 // 记录样式
 router.afterEach((to, from) => {
   // ...
-  console.log('afterEach-to', to)
-  console.log('afterEach-from', from)
+  // console.log('afterEach-to', to)
+  // console.log('afterEach-from', from)
 })
 
 new Vue({
