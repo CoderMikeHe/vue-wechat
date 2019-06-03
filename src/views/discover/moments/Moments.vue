@@ -1,7 +1,7 @@
 // 朋友圈
 <template>
   <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content" id="ko">
+    <div class="_full-content">
       <!-- 导航栏透明 -->
       <NavigationBar
         title="朋友圈"
@@ -25,13 +25,12 @@
       <div
         class="moment__refresh"
         :style="refreshStyle"
-        :class="{ kkk: topStatus === 'loading' }"
+        :class="{ 'moment__refresh--loading': topStatus === 'loading' }"
       ></div>
       <!-- 单条说说 -->
       <div
         class="moment__wrapper"
         ref="momentWrapper"
-        id="drag"
         @touchstart="startDrag"
         @touchmove="onDrag"
         @touchend="stopDrag"
@@ -41,7 +40,6 @@
         <!-- 背景页：需要有数据方可显示 -->
         <div class="moment__background" v-show="moments.length"></div>
         <div
-          id="drag-inner"
           :style="transform"
           :class="{ moment__dropped: topDropped || bottomDropped }"
         >
@@ -176,7 +174,7 @@
                 <p class="mh-moment__time">
                   {{ moment.created_at | dateFormat }}
                 </p>
-                <transition name="fade">
+                <transition name="show-more">
                   <!-- $event 当在父级组件监听这个事件的时候，我们可以通过 $event 访问到被抛出的这个值 -->
                   <MomentOperationMore
                     class="more-wrapper__operation"
@@ -275,8 +273,6 @@ import MHMoments4 from "@/assets/js/MHMoments4.js";
 import MomentOperationMore from "./view/MomentOperationMore";
 import MomentProfile from "./view/MomentProfile";
 import { mapState } from "vuex";
-// 工具类
-import utils from "@/assets/utils/utils.js";
 // helper
 import helper from "./js/momentsHelper.js";
 // 图片预览
@@ -312,17 +308,13 @@ export default {
         "<img src=" +
         require("@/assets/images/moments/wx_albumInformationLikeHL_15x15.png") +
         " width='15' height='15'>",
-      // 全文或收起
-      expanded: false,
 
       // 当前显示的moment
       tempMoment: {},
       // 要删除的评论数据的索引 {section , row}
       delCmtIndexPath: {},
-      rotes: false,
       startY: "", //保存touch时的Y坐标
       translate: 0, //保存向下滑动的距离
-      duration: 0, //动画持续时间，0就是没有动画
       // 刷新控件隐藏的位置
       refreshHiddenValue: -30,
       // 刷新控件最终显示的位置
@@ -436,7 +428,7 @@ export default {
       // 🔥 web原生滚动
       // - [scrollTo](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/scrollTo)
       // - [scroll、scrollBy和 scrollTo三种方法定位滚动条位置，以及在vue中使用的注意事项](https://blog.csdn.net/github_39598787/article/details/80310997)
-      document.getElementById("drag").scrollTo({
+      this.momentWrapperEl.scrollTo({
         top: 0,
         behavior: "smooth"
       });
@@ -486,14 +478,11 @@ export default {
     // 开始拖拽
     startDrag(e) {
       this.touchSate = 1;
-
-      this.rotes = false;
-      this.duration = 0; // 关闭动画
       this.translate = 0; // 滑动距离归0
       let t = e.targetTouches[0]; // 获得开始Y坐标
 
       this.startY = t.clientY;
-      let scrollTop = document.getElementById("drag").scrollTop;
+      let scrollTop = this.momentWrapperEl.scrollTop;
       // 记录一下起始 st
       this.startScrollTop = scrollTop;
 
@@ -515,11 +504,9 @@ export default {
     // 正在拖拽
     onDrag(e) {
       this.touchSate = 2;
-      let scrollEventTarget = document.getElementById("drag");
-      let scrollTop = scrollEventTarget.scrollTop;
+      let scrollEventTarget = this.momentWrapperEl;
       let currentY = e.targetTouches[0].clientY;
       let currentScrollTop = scrollEventTarget.scrollTop;
-
       // 偏移距离
       let distance = (currentY - this.startY) / 2;
       // 上拉or下拉
@@ -558,7 +545,6 @@ export default {
             }
           }
         }
-        // console.log("++++ 下拉过程中 ++++");
       }
 
       // 如果滚动条已经在顶部了。就没必要做下拉刷新了,且会触发 onscroll 事件
@@ -587,31 +573,18 @@ export default {
           // 阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
         }
       }
-
-      // console.log(
-      //   "--- scrollTop " +
-      //   scrollTop +
-      //   " --- direction " +
-      //   this.direction +
-      //   " --- distance " +
-      //   distance +
-      //   " --- translate " +
-      //   this.translate +
-      //   " --- bottomReached " +
-      //   this.bottomReached
-      // );
     },
     // 🔥检查是否滚动到底部
     // - https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollHeight
     checkBottomReached() {
-      let scrollEventTarget = document.getElementById("drag");
+      let scrollEventTarget = this.momentWrapperEl;
       let a = scrollEventTarget.scrollTop + scrollEventTarget.clientHeight;
       let b = scrollEventTarget.scrollHeight;
       return a >= b;
     },
     // 结束拖拽
     stopDrag() {
-      let scrollTop = document.getElementById("drag").scrollTop;
+      let scrollTop = this.momentWrapperEl.scrollTop;
       this.touchSate = 0;
       if (
         this.direction === "down" &&
@@ -660,12 +633,6 @@ export default {
       // 这里假设 只要露出上拉加载的 80%就认为可以刷新
       let sh = e.target.scrollHeight - 50;
       let st = e.target.scrollTop + e.target.clientHeight;
-
-      // console.log("+++ start +++");
-      // console.log("sh === " + sh);
-      // console.log("st === " + st);
-      // console.log("touchState === " + this.touchSate);
-
       // 必须是touchEnd的情况下有效，且不是正在下拉刷新
       if (
         st >= sh &&
@@ -678,7 +645,6 @@ export default {
         // 上拉加载事件
         this.bottomMethod();
       }
-
       // 获取屏幕宽度
       let clientWidth = document.documentElement.clientWidth;
       let topOffset = clientWidth - 64 - 75;
@@ -687,7 +653,6 @@ export default {
       if (this.lastOpacity !== opacity) {
         this.lastOpacity = opacity;
       }
-
       // lastRefreshTop
       this.lastRefreshTop = scrollTop;
     },
@@ -1099,9 +1064,7 @@ export default {
     handleDomDatas(start) {
       // 容错处理
       if (this.$refs.content === undefined) return;
-
       // 获取DOM元素列表
-      this.$refs.content;
       let length = this.$refs.content.length;
       for (let i = start; i < length; i++) {
         // 取出元素

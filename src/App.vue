@@ -5,7 +5,9 @@
       :enter-active-class="enterAnimate"
       :leave-active-class="leaveAnimate"
     >
-      <!-- 按需加载路由：- [另辟蹊径：vue单页面，多路由，前进刷新，后退不刷新](https://segmentfault.com/a/1190000012083511) -->
+      <!-- 🔥按需加载路由：- [另辟蹊径：vue单页面，多路由，前进刷新，后退不刷新](https://segmentfault.com/a/1190000012083511) -->
+      <!-- - [vue-router 之 keep-alive](https://www.jianshu.com/p/0b0222954483) -->
+      <!-- - [<keep-alive>组件缓存问题](https://github.com/vuejs/vue-router/issues/811) -->
       <keep-alive>
         <!-- 这里是会被缓存的视图组件 -->
         <router-view v-if="$route.meta.keepAlive"></router-view>

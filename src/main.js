@@ -143,7 +143,7 @@ new Vue({
 // - [JavaScript数组去重（12种方法，史上最全）](https://segmentfault.com/a/1190000016418021)
 
 // 👉行内元素和块状元素
-// - [https://blog.csdn.net/cc18868876837/article/details/78060347](常用的块级元素（block）、行内元素（inline）以及行内块元素（inline-block）的解析)
+// - [常用的块级元素（block）、行内元素（inline）以及行内块元素（inline-block）的解析](https://blog.csdn.net/cc18868876837/article/details/78060347)
 // - [Html中行内元素有哪些？块级元素有哪些？](https://www.cnblogs.com/Jackie0714/p/4923639.html)
 // - [HTML哪些是块级元素，哪些是行内元素](https://www.cnblogs.com/yxm440/p/7667539.html)
 
@@ -173,6 +173,41 @@ new Vue({
 // - [javascript长按事件实现方式](https://www.cnblogs.com/wulishun111/p/8857073.html)
 // - [移动端长按事件](https://www.cnblogs.com/imsomnus/p/6429074.html)
 // - [Js实现移动端长按事件](https://www.jianshu.com/p/11bb9629aa09)
+
+//  👉 Vue事件
+// - [Vue2.0学习笔记：Vue事件修饰符的使用](https://www.cnblogs.com/xuqp/p/9406971.html)
+
+// 👉 vue路由高级语法糖
+// - [vue路由高级语法糖](https://www.cnblogs.com/lhl66/p/8665042.html)
+
+// 👉 localStorage & sessionStorage
+// - [JS 详解 Cookie、 LocalStorage 与 SessionStorage](https://www.cnblogs.com/minigrasshopper/p/8064367.html)
+// - [Window​.session​Storage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/sessionStorage)
+// - [HTML5 sessionStorage会话存储](https://www.cnblogs.com/polk6/p/5512979.html)
+
+// 👉 浅析CSS——元素重叠及position定位的z-index顺序
+// - [浅析CSS——元素重叠及position定位的z-index顺序](https://www.cnblogs.com/xcsn/p/4664404.html)
+
+// 👉 Body & Html 高度
+// - [关于html与body的高度问题](https://www.cnblogs.com/xiaoyuersdch/p/9156240.html)
+// - [Html设置html与body元素高度问题](https://www.cnblogs.com/qlqwjy/p/7284365.html)
+// - [CSS之BODY高度问题](https://www.jianchuankeji.com/blog/archives/462)
+
+// 👉 文本超过两行展示‘全文’
+// - [Vue 中文本内容超出规定行数后展开收起的处理](https://www.jianshu.com/p/09154ebf5f44)
+// - [判断文字数量超过2行 添加展开按钮 未超过两行则不显示按钮 溢出部分显示省略号](https://www.jianshu.com/p/9d76d4a75e6f)
+// - [H5超出文字显示“展开全部”按钮](https://segmentfault.com/q/1010000011700305?sort=created)
+
+// 👉 vue常用事件之v-on:click 以及事件对象，事件冒泡，事件默认行为
+// - [vue常用事件之v-on:click 以及事件对象，事件冒泡，事件默认行为](https://blog.csdn.net/qq_34645412/article/details/79100669)
+
+// 👉 get​Computed​Style
+// - [Window​.get​Computed​Style()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle)
+// - [JS使用getComputedStyle()方法获取CSS属性值](https://www.cnblogs.com/tongzhou/p/6432807.html)
+// - [原生JS getComputedStyle的方法解析](https://www.imooc.com/article/27812)
+
+// 👉 一字一句的搞懂vue-cli之vue webpack template配置
+// - [一字一句的搞懂vue-cli之vue webpack template配置](https://segmentfault.com/a/1190000012472099)
 
 
 

@@ -1,5 +1,4 @@
 /* 点击高亮 */
-/* 点击高亮 */
 .mh-moment--tap-highlight {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   color: inherit;
@@ -9,14 +8,14 @@
   background-color: #c7c7c5;
 }
 /* 🔥 弹簧动效 https://www.w3cplus.com/animation/spring-animation-in-css.html */
-.fade-enter-active,
-.fade-leave-active {
+.show-more-enter-active,
+.show-more-leave-active {
   width: 181px;
   height: 40px;
   transition: width 0.25s ease-in-out;
 }
-.fade-enter,
-.fade-leave-to {
+.show-more-enter,
+.show-more-leave-to {
   width: 0;
   height: 40px;
 }
@@ -26,13 +25,13 @@
   transition: 0.25s;
 }
 
-.kkk {
+.moment__refresh--loading {
   opacity: 1;
   top: 60px;
-  animation: rotale 1.25s linear infinite;
-  -webkit-animation: rotale 1.25s linear infinite;
+  animation: rotate 1.25s linear infinite;
+  -webkit-animation: rotate 1.25s linear infinite;
 }
-@keyframes rotale {
+@keyframes rotate {
   from {
     transform: rotate(0deg);
   }
@@ -49,17 +48,16 @@
   /*
   https://segmentfault.com/q/1010000012872663 
   和你的页面布局有关。
-正常情况下滚动条是属于 html 的，页面撑开可以正常获取document.documentElement.scrollTop。
-在滚动条属于 html 或 body 的情况下document.body.scrollTop || document.documentElement.scrollTop能正常拿到相应值。
+  正常情况下滚动条是属于 html 的，页面撑开可以正常获取document.documentElement.scrollTop。
+  在滚动条属于 html 或 body 的情况下document.body.scrollTop || document.documentElement.scrollTop能正常拿到相应值。
 
-如果都为0，那说明：
+  如果都为0，那说明：
 
-当前滚动条位置就是在顶部。
-没有产生滚动。
-你当前的滚动条不再属于 html 或者 body。
-其它我没想到的= =。 
-
-*/
+  当前滚动条位置就是在顶部。
+  没有产生滚动。
+  你当前的滚动条不再属于 html 或者 body。
+  其它我没想到的= =。 
+  */
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: #fff;

@@ -19,12 +19,26 @@
               <label class="mh-current-login__label">密码</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input
-                class="mh-current-login__input"
-                type="password"
-                placeholder="请填写QQ密码"
-                v-model="password"
-              />
+              <div class="mh-input__wrapper">
+                <input
+                  required="required"
+                  class="mh-input"
+                  type="password"
+                  placeholder="请填写QQ密码"
+                  v-model="password"
+                />
+                <a
+                  href="javascript:;"
+                  class="mh-input-clear"
+                  @click="clearAllPassword"
+                >
+                  <img
+                    src="@/assets/images/input/input_clear.png"
+                    class="mh-input-clear__clear"
+                    alt=""
+                  />
+                </a>
+              </div>
             </div>
           </div>
           <div
@@ -36,15 +50,30 @@
               <label class="mh-current-login__label">验证码</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input
-                class="mh-current-login__input"
-                type="text"
-                placeholder="请输入验证码"
-                v-model="captcha"
-              />
+              <div class="mh-input__wrapper input-captcha">
+                <input
+                  required="required"
+                  class="mh-input"
+                  type="tel"
+                  maxlength="6"
+                  placeholder="请输入验证码"
+                  v-model="captcha"
+                />
+                <a
+                  href="javascript:;"
+                  class="mh-input-clear"
+                  @click="clearAllCaptcha"
+                >
+                  <img
+                    src="@/assets/images/input/input_clear.png"
+                    class="mh-input-clear__clear"
+                    alt=""
+                  />
+                </a>
+              </div>
             </div>
             <div class="mh-current-login__cell-ft">
-              <button class="mh-current-login__btn">获取验证码</button>
+              <div class="captcha-btn">获取验证码</div>
             </div>
           </div>
         </transition>
@@ -116,13 +145,13 @@ export default {
   methods: {
     itemDidClick(idx) {
       switch (idx) {
-      case 0:
-        break;
-      case 1:
-        break;
-      default:
-        this.showActionSheet = true;
-        break;
+        case 0:
+          break;
+        case 1:
+          break;
+        default:
+          this.showActionSheet = true;
+          break;
       }
     },
     // 配置actionsheet items
@@ -142,17 +171,12 @@ export default {
     didClickItem(idx) {
       if (idx === 0) return;
       switch (idx) {
-      case 1:
-        console.log("history 2 " + window.history.length);
-        console.log(window.history);
-        this.$router.push("/current-login/other-login");
-        console.log("history 3 " + window.history.length);
-        console.log(window.history);
-        break;
-      case 2:
-        break;
-      default:
-        break;
+        case 1:
+          break;
+        case 2:
+          break;
+        default:
+          break;
       }
     },
     changeBtnDidClick() {
@@ -199,6 +223,13 @@ export default {
           console.log("导航完成");
         });
       }, 3000);
+    },
+    // 清除按钮事件
+    clearAllPassword() {
+      this.password = "";
+    },
+    clearAllCaptcha() {
+      this.captcha = "";
     }
   },
   computed: {
@@ -253,7 +284,7 @@ export default {
 }
 
 .mh-current-login__container {
-  background-color: #ffffff;
+  margin-top: 44px;
   font-size: 17px;
   overflow: hidden;
   position: relative;
@@ -273,9 +304,9 @@ export default {
 .mh-current-login__cell:after {
   content: " ";
   position: absolute;
-  left: 0;
+  left: 16px;
   bottom: 0;
-  right: 0;
+  right: 16px;
   height: 1px;
   border-bottom: 1px solid #d8d8d8;
   color: #d8d8d8;
@@ -283,7 +314,6 @@ export default {
   transform-origin: 0 100%;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  left: 16px;
   z-index: 2;
 }
 
@@ -315,34 +345,18 @@ export default {
   word-break: break-all;
 }
 
-.mh-current-login__input {
-  width: 100%;
-  border: 0;
-  outline: 0;
-  -webkit-appearance: none;
-  background-color: transparent;
-  font-size: inherit;
-  color: inherit;
-  height: 40px;
-  line-height: 40px;
-  -webkit-appearance: searchfield;
-  box-sizing: border-box;
-}
-
-.mh-current-login__input::-webkit-outer-spin-button,
-.mh-current-login__input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.input-captcha {
+  padding-right: 40px;
 }
 
 .mh-current-login__change-btn {
-  margin: 5px 16px;
+  margin: 10px 16px;
+  color: #5b6a91;
+  font-size: 15px;
 }
-.mh-current-login__change-btn span {
-  background-color: aqua;
-}
+
 .mh-current-login__login {
-  margin-top: 60px;
+  margin-top: 68px;
   padding: 0 16px;
 }
 
@@ -401,15 +415,25 @@ export default {
   background-color: #9ed99d;
 }
 
+/* 获取验证码 */
+.captcha-btn {
+  border: 1px solid #353535;
+  color: #353535;
+  background-color: transparent;
+  padding: 2px 5px;
+  font-size: 13px;
+  border-radius: 3px;
+}
+
 /* 底部更多列表 */
 .mh-current-login__more {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 10px;
-  color: blue;
+  color: #5b6a91;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -429,11 +453,9 @@ export default {
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: red;
+  background-color: #000;
   -webkit-transform: scale(0.5);
   -ms-transform: scale(0.5);
   transform: scale(0.5);
 }
-
-/* https://www.w3cplus.com/css/caret-color.html */
 </style>
