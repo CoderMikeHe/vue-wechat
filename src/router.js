@@ -33,10 +33,14 @@ import ContactInfo from './views/contacts/ContactInfo.vue'
 // 资料设置
 import DataSetting from './views/contacts/DataSetting.vue'
 
+// 登陆界面
+const Login = resolve => require(['./views/login/Login.vue'], resolve)
 // 当前账号登陆
 import CurrentLogin from './views/login/CurrentLogin.vue'
 // 其他账号登陆
 import OtherLogin from './views/login/OtherLogin.vue'
+// 语言选择
+import LanguagePicker from './views/login/languagePicker/LanguagePicker.vue';
 
 // 主页
 const Homepage = resolve => require(['./views/homepage/Homepage.vue'], resolve)
@@ -51,7 +55,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/homepage'
+      redirect: '/login'
     },
     {
       path: '/homepage',
@@ -105,9 +109,19 @@ export default new Router({
       component: CurrentLogin
     },
     {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
       path: '/test',
       name: 'test',
       component: Test
+    },
+    {
+      path: '/language-picker',
+      name: 'LanguagePicker',
+      component: LanguagePicker
     },
     {
       path: '/current-login/other-login',

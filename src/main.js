@@ -51,6 +51,7 @@ MHPreferenceSettingHelper.initialize()
 //   router.replace('/mainframe')
 // }
 
+
 // 记录样式
 router.afterEach((to, from) => {
   // ...

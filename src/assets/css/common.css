@@ -224,3 +224,29 @@ html {
   height: 100%;
   /* overflow: scroll; */
 }
+
+/* 🔥 👉 修改 input or textarea 的placeholder样式 */
+/*
+ *  - [修改input里placeholder颜色](https://blog.csdn.net/AmberWu/article/details/54909451 )
+ *  - [HTML input placeholder的样式设置](https://blog.csdn.net/qinjm8888/article/details/79047638)
+ */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #999;
+}
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #999;
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #999;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #999;
+}
