@@ -1,6 +1,13 @@
 <template>
   <div class="_full-container">
-    <div class="_full-content">
+    <div class="_full-content _content-padding-top44">
+      <!-- 导航栏 -->
+      <NavigationBar
+        :left-item="leftItem"
+        @left-click="navRightItemAction"
+        title="设置语言"
+      ></NavigationBar>
+      <!-- language -->
       <div class="weui-cells weui-cells_radio">
         <label
           class="weui-cell weui-check__label"
@@ -27,12 +34,15 @@
 </template>
 
 <script>
+import MHBarButtonItem from "@/assets/js/MHBarButtonItem.js";
 export default {
   name: "language-picker",
+  components: {},
   data() {
     return {
       languages: [],
-      language: "简体中文"
+      language: "简体中文",
+      leftItem: new MHBarButtonItem("取消", "", 0)
     };
   },
   created() {
@@ -69,6 +79,11 @@ export default {
         "Français"
       ];
       this.languages = titles;
+    },
+    navRightItemAction() {
+      //
+      console.log("language == " + this.language);
+      this.$emit("on-complete", this.language);
     }
   }
 };

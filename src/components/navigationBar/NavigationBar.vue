@@ -154,7 +154,7 @@ export default {
   /* 垂直居中 */
   line-height: 40px;
   color: #000;
-  font-size: 14px;
+  font-size: 16px;
 
   /* 设置文字不要换行 */
   text-overflow: ellipsis;
