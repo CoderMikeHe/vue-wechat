@@ -50,7 +50,7 @@ Vue.use(Router)
 
 // 路由只是匹配规则
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {

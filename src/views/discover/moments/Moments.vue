@@ -469,12 +469,18 @@ export default {
       return false;
     },
 
-    // https://blog.csdn.net/qq_34439125/article/details/85602508
-    // https://www.jianshu.com/p/0fed94bb1239
-    // https://www.cnblogs.com/qq120848369/p/6651096.html
-    // https://www.cnblogs.com/winyh/p/6714923.html
-    // https://www.cnblogs.com/fengfan/p/4506555.html
-    // https://developer.mozilla.org/zh-CN/docs/Web/API/Touch_events
+    // 🔥 touch事件
+    // - [Vue实现下拉刷新组件（简单明了）](https://blog.csdn.net/qq_34439125/article/details/85602508)
+    // - [基于vue封装的轻量级下拉刷新组件](https://www.jianshu.com/p/0fed94bb1239)
+    // - [JS+CSS实现的下拉刷新/上拉加载插件](https://www.cnblogs.com/qq120848369/p/6651096.html)
+    // - [JS移动客户端--触屏滑动事件](https://www.cnblogs.com/winyh/p/6714923.html)
+    // - [移动端 js touch事件](https://www.cnblogs.com/fengfan/p/4506555.html)
+    // - [Touch_events](https://developer.mozilla.org/zh-CN/docs/Web/API/Touch_events)
+    // - [Vue2.0 实战 之 上啦加载下拉刷新](https://blog.csdn.net/qq_16559905/article/details/70160807)
+    // - [Vue Scroller](https://github.com/wangdahoo/vue-scroller)
+    // - [简单灵活且强大的Vue下拉刷新组件](https://juejin.im/entry/59ace2c4518825243a78f1c3)
+    // - [vue 实现上拉加载下拉刷新（思路贼清晰）](https://blog.csdn.net/qq_28027903/article/details/80242714)
+
     // 开始拖拽
     startDrag(e) {
       this.touchSate = 1;

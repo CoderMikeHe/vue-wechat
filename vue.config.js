@@ -5,6 +5,10 @@ function resolve(dir) {
 
 module.exports = {
   lintOnSave: true,
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-wechat/'
+    : '/',
+  
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'))

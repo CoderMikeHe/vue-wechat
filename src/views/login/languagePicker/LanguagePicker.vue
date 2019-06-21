@@ -4,7 +4,9 @@
       <!-- 导航栏 -->
       <NavigationBar
         :left-item="leftItem"
-        @left-click="navRightItemAction"
+        @left-click="$router.back()"
+        :right-item="rightItem"
+        @right-click="navRightItemAction"
         title="设置语言"
       ></NavigationBar>
       <!-- language -->
@@ -42,13 +44,15 @@ export default {
     return {
       languages: [],
       language: "简体中文",
-      leftItem: new MHBarButtonItem("取消", "", 0)
+      // 点击完成,置为true
+      completed: false,
+      leftItem: new MHBarButtonItem("取消", "", 0),
+      rightItem: new MHBarButtonItem("完成", "", 0)
     };
   },
   created() {
+    console.log(this.$route.params);
     this.language = this.$route.params.language;
-    console.log(this.language);
-
     this.configTitles();
   },
   activated() {},
@@ -81,10 +85,21 @@ export default {
       this.languages = titles;
     },
     navRightItemAction() {
-      //
-      console.log("language == " + this.language);
-      this.$emit("on-complete", this.language);
+      this.completed = true;
+      // 返回
+      this.$router.back();
     }
+  },
+  // 导航守卫
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    if (this.completed) {
+      // 🔥 - [路由反向传参](https://www.cnblogs.com/buerjj/archive/2017/11/26/7900696.html)
+      to.params.language = this.language;
+    }
+    // 调用next
+    next();
   }
 };
 </script>

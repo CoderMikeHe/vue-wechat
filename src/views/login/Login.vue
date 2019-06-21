@@ -4,15 +4,25 @@
       <!-- 背景图片 -->
       <div class="background-image"></div>
       <!-- 语言按钮 -->
-      <a href="javascript:;" class="language" @click="skipToLanguageList"
-        >中文简体</a
-      >
-
+      <a href="javascript:;" class="language" @click="skipToLanguageList">{{
+        language
+      }}</a>
+      <!-- 登陆或注册 -->
       <div class="login-register">
         <!-- 登陆按钮 -->
-        <a href="javascript:;" class="mh-btn mh-btn_primary login">登录</a>
+        <a
+          href="javascript:;"
+          class="mh-btn mh-btn_primary login"
+          @click="login"
+          >登录</a
+        >
         <!-- 注册按钮 -->
-        <a href="javascript:;" class="mh-btn mh-btn_primary register">注册</a>
+        <a
+          href="javascript:;"
+          class="mh-btn mh-btn_primary register"
+          @click="register"
+          >注册</a
+        >
       </div>
     </div>
   </div>
@@ -23,17 +33,33 @@
 export default {
   name: "login",
   data() {
-    return {};
+    return {
+      language: "简体中文"
+    };
+  },
+  created() {
+    this.language = this.$route.params.language || "简体中文";
   },
   methods: {
+    // 跳转到语言选择列表
     skipToLanguageList() {
       this.$router.push({
         name: "LanguagePicker",
         params: {
-          language: "简体中文"
+          language: this.language
         }
       });
-    }
+    },
+
+    // 登陆
+    login() {
+      this.$router.push({
+        name: "other-login"
+      });
+    },
+
+    // 注册
+    register() {}
   }
 };
 </script>

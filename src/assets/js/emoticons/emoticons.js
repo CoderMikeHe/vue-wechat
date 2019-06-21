@@ -9,10 +9,11 @@ import Lxh from './lxh'
 
 // 图片表情的路径地址 (default + lxh)
 let emoticons = {}
+
 // 获取default
-fetchEmoticons(Default.emoticons, '/emoticons/default/', '@3x')
+fetchEmoticons(Default.emoticons, 'emoticons/default/', '@3x')
 // 获取浪小花
-fetchEmoticons(Lxh.emoticons, '/emoticons/lxh/', '@2x')
+fetchEmoticons(Lxh.emoticons, 'emoticons/lxh/', '@2x')
 // 获取表情
 function fetchEmoticons(emos, relativePath, scale) {
   // 取出default的数据
@@ -39,8 +40,17 @@ function fetchEmoticons(emos, relativePath, scale) {
       let spl = png.split('.')
       let fileName = spl[0]
       let suffix = spl[1]
+      
       // public 绝对路径
-      let path = relativePath + fileName + scale + '.' + suffix
+      // 🔥 public文件夹的资源文件引用，'/emoticons/default/d_aini@3x.png' 这样在开发调试是可以的，但是一旦打包（build）后，就找不到了
+      // - [Vue CLI 3 搭建的项目中路径相关问题](https://segmentfault.com/a/1190000016120011)
+      // - [vue-cli项目打包需要修改的路径问题](https://www.cnblogs.com/zly1022/p/10108548.html)
+      // - [[Vue CLI 3] public 目录没用吗](https://segmentfault.com/a/1190000016414534)
+      // - [vue-cli打包上线遇到各文件找不到问题](https://www.cnblogs.com/yszblog/p/10239712.html)
+      let path = process.env.BASE_URL + relativePath + fileName + scale + '.' + suffix
+
+      console.log('baseUrl ---  ' + process.env.BASE_URL);
+
       // 🔥 JS中给一个对象动态追加key
       // - [JS中给一个对象动态追加key](https://blog.csdn.net/wml00000/article/details/85334850)
       // - [JS--数组和字典](https://www.cnblogs.com/bigberg/p/9237856.html)
