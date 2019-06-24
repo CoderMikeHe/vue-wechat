@@ -1,42 +1,31 @@
 <template>
-  <div
-    class="_full-content  _content-padding-top44 _content-padding-bottom49"
-    id="xo"
-    @click="ahk"
-  >
+  <div class="_full-content  _content-padding-top44 _content-padding-bottom49">
     <NavigationBar
       :right-item="addItem"
       title="微信"
       @right-click="rightItemDidClicked"
     ></NavigationBar>
-    <h3 style="height: 44px">检点点0</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点0</h3>
-    <h3 style="height: 44px">检点点0</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点0</h3>
-    <h3 style="height: 44px">检点点0</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点</h3>
-    <h3 style="height: 44px">检点点0</h3>
-    <h3 style="height: 44px">检点点222222</h3>
+    <div class="content__wrapper">
+      <div
+        class="content__item"
+        v-for="(item, index) in dataSource"
+        :key="index"
+      >
+        <div class="item__hd">
+          <Avatars :srcs="item.avatars"></Avatars>
+        </div>
+        <div class="item__bd">
+          <div class="item__top">
+            <div class="item__name">{{ item.screen_name }}</div>
+            <div class="item__time">{{ item.createdAt }}</div>
+          </div>
+          <div class="item__bottom">
+            <div class="item__text">{{ item.text }}</div>
+            <!-- <div class="item__icon">2019/6/6</div> -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- mask -->
     <div
@@ -89,33 +78,34 @@
 // https://blog.csdn.net/qq_33236453/article/details/79110485
 // https://www.cnblogs.com/axl234/p/5899952.html
 import MHBarButtonItem, { addItem } from "../../assets/js/MHBarButtonItem.js";
+// 该模块的工具类
+import ViewModel from "./js/mainframe";
+// Avatars
+import Avatars from "./views/Avatars";
 export default {
   name: "mainframe",
-  components: {},
+  components: {
+    Avatars
+  },
   data() {
     return {
       // 添加按钮
       addItem: addItem,
-      showMenu: false
+      showMenu: false,
+      dataSource: []
     };
   },
   created() {
     console.log("我被嗲啊啊 ");
+    this.fetchRemoteData();
   },
 
   methods: {
-    ahk() {
-      var el = document.getElementById("xo");
-
-      console.log(
-        "el.scrollTop  ==== " + el.scrollTop + " ====== " + el.clientHeight
-      );
-      console.log(
-        "document.documentElement.scrollTop  ==== " +
-          document.documentElement.scrollTop
-      );
-      console.log("document.body.scrollTop  ==== " + document.body.scrollTop);
+    // 获取远程数据
+    fetchRemoteData() {
+      this.dataSource = ViewModel.fetchRemoteData();
     },
+    // 导航栏事件处理
     rightItemDidClicked(index) {
       this.showMenu = !this.showMenu;
       // this.$router.push("/contacts/contact-info");
@@ -244,5 +234,55 @@ export default {
   font-size: 16px;
   margin-right: 10px;
   margin-left: 16px;
+}
+
+.content__item {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  font-size: 16px;
+  padding: 10px 10px;
+  background-color: #fff;
+}
+
+.content__item::after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  color: #d8d8d8;
+  background-color: #d8d8d8;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  z-index: 2;
+}
+
+.item__bd {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  padding-left: 10px;
+}
+.item__top,
+.item__bottom {
+  height: 30px;
+  line-height: 30px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.item__text,
+.item__name {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
 }
 </style>
