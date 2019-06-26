@@ -31,10 +31,10 @@
     "babel-plugin-component": "^1.1.1",
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.2",
+    "eslint": "^6.0.1",
+    "eslint-plugin-vue": "^5.2.3",
     "fibers": "^4.0.1",
-    "sass": "^1.21.0",
+    "sass": "^1.22.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10"
   }

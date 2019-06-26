@@ -10,7 +10,7 @@
     @scroll.passive="onScroll($event)"
   >
     <!-- 小程序 -->
-    <div class="applet__wrapper">
+    <div class="applet__wrapper" :style="appletWrapperStyle">
       <div class="applet__content">
         <Applet></Applet>
       </div>
@@ -168,7 +168,8 @@ export default {
       // 阶段II临界点
       stage2Distance: 90,
       // 阶段III临界点
-      stage3Distance: 130
+      stage3Distance: 130,
+      scrollTop: 0
     };
   },
   created() {
@@ -195,21 +196,21 @@ export default {
     menuItemDidClicked(index) {
       console.log(index);
       switch (index) {
-        case 0: // 发起群聊
-          this.$router.push("/test");
-          break;
-        case 1: // 添加朋友
-          // this.$router.push("/test");
-          // console.log("mlgb");
-          break;
-        case 2: // 扫一扫
-          break;
-        case 3: // 收付款
-          this.$router.push("/test");
-          break;
+      case 0: // 发起群聊
+        this.$router.push("/test");
+        break;
+      case 1: // 添加朋友
+        // this.$router.push("/test");
+        // console.log("mlgb");
+        break;
+      case 2: // 扫一扫
+        break;
+      case 3: // 收付款
+        this.$router.push("/test");
+        break;
 
-        default:
-          break;
+      default:
+        break;
       }
     },
 
@@ -290,6 +291,7 @@ export default {
     },
     onScroll(event) {
       console.log("onscroll");
+      this.scrollTop = this.scrollView.scrollTop;
     }
   },
   activated() {
@@ -299,6 +301,12 @@ export default {
     // 滚动列表的动态样式
     transform() {
       return { transform: `translate3d(0, ${this.translate}px, 0)` };
+    },
+    appletWrapperStyle() {
+      let scrollTop = this.scrollTop;
+      console.log("---- ==== " + scrollTop);
+      let opacity = 1 - scrollTop / 600.0;
+      return { opacity: opacity < 0 ? 0 : opacity };
     },
     // 下拽容器样式
     droppedWrapperStyle() {
@@ -598,7 +606,7 @@ export default {
 }
 
 .dropped__dots .dot {
-  background-color: gray;
+  background-color: #b7b7b7;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -611,33 +619,24 @@ export default {
 
 .applet__wrapper {
   position: absolute;
+  opacity: 0.5;
   left: 0;
   right: 0;
   top: 0;
   height: 200%;
   background-color: rgba(79, 76, 103, 0.5);
   z-index: 4;
-  /* fallback */
-  background-color: #063053;
-  /* chrome 2+, safari 4+; multiple color stops */
-  background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    right top,
-    color-stop(0.32, #063053),
-    color-stop(0.66, #395873),
-    color-stop(0.83, rgba(0, 0, 0, 0.4))
-  );
-  /* chrome 10+, safari 5.1+ */
-  background-image: -webkit-linear-gradient(45deg, #063053, #395873, #5c7c99);
-  /* firefox; multiple color stops */
-  background-image: -moz-linear-gradient(45deg, #063053, #395873, #5c7c99);
-  /* ie10 */
-  background-image: -ms-linear-gradient(45deg, #063053 0%, #395873 100%);
-  /* opera 11.1 */
-  background-image: -o-linear-gradient(45deg, #063053, #395873);
   /* The "standard" */
-  background-image: linear-gradient(45deg, #063053, #395873);
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(39, 37, 57, 1),
+    rgba(56, 53, 76, 1),
+    rgba(56, 53, 76, 0.8),
+    rgba(68, 64, 90, 0.7),
+    rgba(68, 64, 90, 0.5),
+    rgba(86, 81, 110, 0.2),
+    rgba(86, 81, 110, 0.1)
+  );
 }
 
 .applet__content {
