@@ -50,12 +50,32 @@ export default {
     {
       avatars: [
         { 
+          profile_image_url: require('@/assets/images/mainframe/tencent_news.png')
+        }
+      ],
+      screen_name: '腾讯新闻',
+      created_at: 'Tue Apr 09 00:05:03 +0800 2019',
+      text: '工作996，生病ICU？关注：年轻人该如何奋斗'
+    },
+    {
+      avatars: [
+        { 
           profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
         }
       ],
       screen_name: 'UI中国',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
       text: '生死看淡，不服就干'
+    },
+    {
+      avatars: [
+        { 
+          profile_image_url: require('@/assets/images/mainframe/wechat_motion.png')
+        }
+      ],
+      screen_name: '微信运动',
+      created_at: 'Tue Apr 09 00:05:03 +0800 2019',
+      text: '[应用消息]'
     },
     {
       avatars: [
@@ -90,6 +110,16 @@ export default {
     {
       avatars: [
         { 
+          profile_image_url: require('@/assets/images/mainframe/wechat_game.png')
+        }
+      ],
+      screen_name: '微信游戏',
+      created_at: 'Tue Apr 09 00:05:03 +0800 2019',
+      text: '【订阅号消息】我的王者荣耀战报'
+    },
+    {
+      avatars: [
+        { 
           profile_image_url: 'http://tp2.sinaimg.cn/1401527553/50/5648353790/1' 
         }
       ],
@@ -120,6 +150,16 @@ export default {
     {
       avatars: [
         { 
+          profile_image_url: require('@/assets/images/mainframe/qq_safeguard.png')
+        }
+      ],
+      screen_name: 'QQ安全中心',
+      created_at: 'Tue Apr 09 00:05:03 +0800 2019',
+      text: '请接招：这里有份QQ防封秘籍！'
+    },
+    {
+      avatars: [
+        { 
           profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
         },
         { 
@@ -131,7 +171,17 @@ export default {
       ],
       screen_name: '三人行必有我师焉',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '你是年少的欢喜，喜欢的少年是你'
+      text: '人可何：你是年少的欢喜，喜欢的少年是你'
+    },
+    {
+      avatars: [
+        { 
+          profile_image_url: require('@/assets/images/mainframe/subscription_number.png')
+        }
+      ],
+      screen_name: '订阅号消息',
+      created_at: 'Tue Apr 09 00:05:03 +0800 2019',
+      text: '脚踝终结者：德鲁大叔 凯里.欧文'
     },
     {
       avatars: [
@@ -150,7 +200,7 @@ export default {
       ],
       screen_name: '春花、秋月、夏日、冬雪',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '纵然时间山南水北，你我人山人海，你来 所以我等'
+      text: '单人伍：纵然时间山南水北，你我人山人海，你来 所以我等'
     },
     {
       avatars: [
@@ -170,9 +220,9 @@ export default {
           profile_image_url: 'http://tp2.sinaimg.cn/3178541805/50/5718597241/1'
         }
       ],
-      screen_name: '深圳五虎(diao)将(si)',
+      screen_name: '深圳五虎（diao）将（si）',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '情深深，雨蒙蒙，车如流水马如龙'
+      text: '大成：情深深，雨蒙蒙，车如流水马如龙'
     },
     {
       avatars: [
@@ -197,7 +247,7 @@ export default {
       ],
       screen_name: '六六大顺',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '天苍苍，野茫茫，风吹草低见牛羊'
+      text: 'Miss_伍：天苍苍，野茫茫，风吹草低见牛羊'
     },
     {
       avatars: [
@@ -225,7 +275,7 @@ export default {
       ],
       screen_name: '七星高照',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '人不能低下高贵的头颅，但捡钱时例外'
+      text: 'Mike：人不能低下高贵的头颅，但捡钱时例外'
     },
     {
       avatars: [
@@ -256,7 +306,7 @@ export default {
       ],
       screen_name: '八面玲珑',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '八星八钻，走过路过别错过'
+      text: '露娜：八星八钻，走过路过别错过'
     },
     {
       avatars: [
@@ -290,7 +340,7 @@ export default {
       ],
       screen_name: '九九归一',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '一一得一，九九八十一'
+      text: '小书包：一一得一，九九八十一'
     }
   ]
 }

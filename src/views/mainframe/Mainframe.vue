@@ -1,27 +1,80 @@
 <template>
-  <div class="_full-content  _content-padding-top44 _content-padding-bottom49">
-    <NavigationBar
-      :right-item="addItem"
-      title="微信"
-      @right-click="rightItemDidClicked"
-    ></NavigationBar>
-    <div class="content__wrapper">
-      <div
-        class="content__item"
-        v-for="(item, index) in dataSource"
-        :key="index"
-      >
-        <div class="item__hd">
-          <Avatars :srcs="item.avatars"></Avatars>
+  <div
+    class="_full-content _content-padding-bottom49"
+    :class="{ '_content-padding-top44': !isRelative }"
+    ref="scrollView"
+    @touchstart="handleTouchStart"
+    @touchmove="handleTouchMove"
+    @touchend="handleTouchEnd"
+    @touchcancel="handleTouchEnd"
+    @scroll.passive="onScroll($event)"
+  >
+    <!-- 小程序 -->
+    <div class="applet__wrapper">
+      <div class="applet__content">
+        <Applet></Applet>
+      </div>
+    </div>
+    <!-- 顶部下拉点 -->
+    <div class="dropped__wrapper" :style="droppedWrapperStyle">
+      <div class="dropped__dots" :style="droppedDotsStyle">
+        <div class="dot" :style="leftDotStyle"></div>
+        <div class="dot" :style="centerDotStyle"></div>
+        <div class="dot" :style="rightDotStyle"></div>
+      </div>
+    </div>
+    <div
+      class="content__wrapper"
+      :style="transform"
+      :class="{ 'dropped-animation': topDropped }"
+    >
+      <NavigationBar
+        :right-item="addItem"
+        title="微信"
+        @right-click="rightItemDidClicked"
+        :class="{ relative: isRelative }"
+      ></NavigationBar>
+      <div class="content">
+        <div class="weui-search-bar" id="searchBar">
+          <form class="weui-search-bar__form">
+            <div class="weui-search-bar__box">
+              <i class="weui-icon-search"></i>
+              <input
+                type="search"
+                class="weui-search-bar__input"
+                id="searchInput"
+                placeholder="搜索"
+                required
+              />
+              <a
+                href="javascript:"
+                class="weui-icon-clear"
+                id="searchClear"
+              ></a>
+            </div>
+            <label class="weui-search-bar__label" id="searchText">
+              <i class="weui-icon-search"></i>
+              <span>搜索</span>
+            </label>
+          </form>
         </div>
-        <div class="item__bd">
-          <div class="item__top">
-            <div class="item__name">{{ item.screen_name }}</div>
-            <div class="item__time">{{ item.createdAt }}</div>
+        <div
+          class="content__item _mh-tap-highlight"
+          v-for="(item, index) in dataSource"
+          :key="index"
+        >
+          <div class="item__hd">
+            <Avatars :srcs="item.avatars"></Avatars>
           </div>
-          <div class="item__bottom">
-            <div class="item__text">{{ item.text }}</div>
-            <!-- <div class="item__icon">2019/6/6</div> -->
+          <div class="item__bd">
+            <div class="item__top">
+              <div class="item__name">{{ item.screen_name }}</div>
+              <div class="item__time">{{ item.createdAt }}</div>
+            </div>
+            <div class="item__bottom">
+              <div class="item__text">{{ item.text }}</div>
+              <!-- <div class="item__icon">2019/6/6</div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -82,24 +135,50 @@ import MHBarButtonItem, { addItem } from "../../assets/js/MHBarButtonItem.js";
 import ViewModel from "./js/mainframe";
 // Avatars
 import Avatars from "./views/Avatars";
+// Applet
+import Applet from "./views/Applet";
 export default {
   name: "mainframe",
   components: {
-    Avatars
+    Avatars,
+    Applet
   },
   data() {
     return {
       // 添加按钮
       addItem: addItem,
       showMenu: false,
-      dataSource: []
+      dataSource: [],
+      isRelative: true,
+      // 下拉刷新状态
+      topStatus: "",
+      topDropped: false,
+      // 移动方向 up：上拉 down：下拉
+      direction: "",
+      // 滚动的元素
+      scrollView: null,
+      // 保存向下滑动的距离
+      translate: 0,
+      // 刚开始滑动时的滚动条位置
+      startScrollTop: 0,
+      // 下拉刷新临界点
+      topDistance: 80,
+      // 阶段I临界点
+      stage1Distance: 60,
+      // 阶段II临界点
+      stage2Distance: 90,
+      // 阶段III临界点
+      stage3Distance: 130
     };
   },
   created() {
     console.log("我被嗲啊啊 ");
     this.fetchRemoteData();
   },
-
+  mounted() {
+    // scrollView
+    this.scrollView = this.$refs.scrollView;
+  },
   methods: {
     // 获取远程数据
     fetchRemoteData() {
@@ -132,18 +211,190 @@ export default {
         default:
           break;
       }
+    },
+
+    topMethod() {
+      console.log("我被出发了");
+    },
+
+    // 开始拖拽
+    handleTouchStart(event) {
+      console.log("handleTouchStart");
+      // 获得开始Y坐标
+      this.startY = event.targetTouches[0].clientY;
+      // 滑动距离归0
+      this.translate = 0;
+      // 记录一下滚动条位置
+      this.startScrollTop = this.scrollView.scrollTop;
+      if (this.topStatus !== "loading") {
+        this.topStatus = "pull";
+        this.topDropped = false;
+      }
+    },
+    kkkk(event) {
+      console.log("kkkk");
+
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    // 正在拖拽
+    handleTouchMove(event) {
+      console.log("handleTouchMove");
+      // 滚动条当前位置
+      let currentScrollTop = this.scrollView.scrollTop;
+      // 当前触摸点Y
+      let currentY = event.targetTouches[0].clientY;
+      // 偏移距离
+      let distance = (currentY - this.startY) / 2;
+      // 上拉or下拉
+      this.direction = distance > 0 ? "down" : "up";
+      // 判断处理
+      if (currentScrollTop === 0 && this.direction === "down") {
+        // 阻止默认事件，在微信浏览器中尤为有用，至于为什么，你去试就知道了。
+        // 组织掉 onscroll 默认事件
+        event.preventDefault();
+        event.stopPropagation();
+        // 容错处理：从已经下滑一段距离向下拖拽，会导致 move 距离很大，当到达临界点的时候，突然掉下来 影响用户体验
+        if (this.startScrollTop !== 0 && currentScrollTop === 0) {
+          this.startY = currentY;
+          this.startScrollTop = 0;
+          distance = 0;
+        }
+        // 不管下拉刷新状态，这个distance长期有效
+        this.translate = distance;
+        this.topStatus = this.translate >= this.topDistance ? "drop" : "pull";
+      }
+    },
+    // 结束拖拽
+    handleTouchEnd() {
+      console.log("handleTouchEnd");
+      let scrollTop = this.scrollView.scrollTop;
+      if (
+        this.direction === "down" &&
+        scrollTop === 0 &&
+        this.topStatus !== "loading" &&
+        this.translate > 0
+      ) {
+        this.topDropped = true;
+        if (this.topStatus === "drop") {
+          this.topStatus = "loading";
+          this.topMethod();
+          this.translate = 80;
+        } else {
+          this.topStatus = "pull";
+          this.translate = 0;
+        }
+      }
+      // 清空
+      this.direction = "";
+    },
+    onScroll(event) {
+      console.log("onscroll");
     }
   },
   activated() {
     console.log("Mainframe -- ");
+  },
+  computed: {
+    // 滚动列表的动态样式
+    transform() {
+      return { transform: `translate3d(0, ${this.translate}px, 0)` };
+    },
+    // 下拽容器样式
+    droppedWrapperStyle() {
+      let opacity = 1;
+      if (this.translate > this.stage3Distance) {
+        // 第四阶段
+        let step = 1 / 40;
+        opacity = 1 - step * (this.translate - this.stage3Distance);
+      }
+      return { height: this.translate + "px", opacity: opacity };
+    },
+    // 点容器样式
+    droppedDotsStyle() {
+      let top = (this.translate + 44 + 10 - 6) * 0.5;
+      return { top: top + "px" };
+    },
+    // 左边点样式 阶段I无需考虑样式，其他阶段只做平移
+    leftDotStyle() {
+      let translate = 0;
+      let opacity = 0;
+      if (this.translate > this.stage3Distance) {
+        // 阶段III: 平移到最左侧 -16
+        opacity = 1;
+        translate = -16;
+      } else if (this.translate > this.stage2Distance) {
+        // 阶段II: 慢慢平移 0 -> -16
+        let step = 16.0 / (this.stage3Distance - this.stage2Distance);
+        opacity = 1;
+        translate = -step * (this.translate - this.stage2Distance);
+      }
+      return {
+        opacity: opacity,
+        transform: `translate3d(${translate}px, 0, 0)`
+      };
+    },
+    // 右边点样式 阶段I无需考虑样式，其他阶段只做平移
+    rightDotStyle() {
+      let translate = 0;
+      let opacity = 0;
+      if (this.translate > this.stage3Distance) {
+        // 阶段III: 平移到最右侧
+        opacity = 1;
+        translate = 16;
+      } else if (this.translate > this.stage2Distance) {
+        // 阶段II: 慢慢平移 0 -> 16
+        let step = 16.0 / (this.stage3Distance - this.stage2Distance);
+        opacity = 1;
+        translate = step * (this.translate - this.stage2Distance);
+      }
+      return {
+        opacity: opacity,
+        transform: `translate3d(${translate}px, 0, 0)`
+      };
+    },
+
+    // 中间点样式 改点只做scale
+    centerDotStyle() {
+      let scale = 0;
+      let opacity = 0;
+      if (this.translate > this.stage3Distance) {
+        // 阶段III: 保持scale 为1
+        opacity = 1;
+        scale = 1;
+      } else if (this.translate > this.stage2Distance) {
+        // 阶段II: 中间点缩小：2 -> 1
+        let step = 1 / (this.stage3Distance - this.stage2Distance);
+        opacity = 1;
+        scale = 2 - step * (this.translate - this.stage2Distance);
+      } else if (this.translate > this.stage1Distance) {
+        // 阶段I: 中间点放大：0 -> 2
+        let step = 2 / (this.stage2Distance - this.stage1Distance);
+        opacity = 1;
+        scale = 0 + step * (this.translate - this.stage1Distance);
+      }
+      return {
+        opacity: opacity,
+        transform: `scale(${scale}, ${scale})`
+      };
+    }
   }
 };
 </script>
 
 <style scoped>
-.kkkk {
-  width: 100px;
-  height: 100px;
+/* 第三方插件的样式 */
+.weui-search-bar {
+  padding: 10px;
+}
+
+/* 本地样式 */
+.relative {
+  position: relative;
+}
+
+.dropped-animation {
+  transition: 0.25s;
 }
 .mh-mainframe__mask {
   position: fixed;
@@ -236,25 +487,45 @@ export default {
   margin-left: 16px;
 }
 
-.content__item {
+.content__wrapper {
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  font-size: 16px;
-  padding: 10px 10px;
-  background-color: #fff;
+  margin-top: calc(736px - 44px);
 }
-
-.content__item::after {
+/* 列表 + 列表项 */
+.content::after {
   content: " ";
   position: absolute;
   left: 0;
   bottom: 0;
   right: 0;
   height: 1px;
+  color: #ddd;
+  background-color: #ddd;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  z-index: 1;
+}
+
+.content__item {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 12px 16px;
+  background-color: #fff;
+}
+
+.content__item::after {
+  content: " ";
+  position: absolute;
+  left: 76px;
+  bottom: 0;
+  right: 0;
+  height: 1px;
   color: #d8d8d8;
-  background-color: #d8d8d8;
+  background-color: #b8b8b8;
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
   -webkit-transform: scaleY(0.5);
@@ -268,15 +539,21 @@ export default {
   -webkit-flex: 1;
   flex: 1;
   overflow: hidden;
-  padding-left: 10px;
+  padding-left: 12px;
 }
 .item__top,
 .item__bottom {
-  height: 30px;
-  line-height: 30px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+}
+.item__top {
+  height: 25px;
+  line-height: 25px;
+}
+
+.item__bottom {
+  margin-top: 2px;
 }
 
 .item__text,
@@ -284,5 +561,92 @@ export default {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
+}
+.item__name {
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 500;
+  font-size: 17px;
+}
+.item__time {
+  color: #b2b2b2;
+  font-size: 12px;
+}
+.item__text {
+  color: #9b9b9b;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+/* 顶部下拉三个点容器 */
+.dropped__wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+}
+.dropped__dots {
+  margin: 0 auto;
+  position: relative;
+  width: 38px;
+  height: 6px;
+  top: 0;
+}
+
+.dropped__dots .dot {
+  background-color: gray;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  /* 默认居中 */
+  left: 16px;
+}
+
+.applet__wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 200%;
+  background-color: rgba(79, 76, 103, 0.5);
+  z-index: 4;
+  /* fallback */
+  background-color: #063053;
+  /* chrome 2+, safari 4+; multiple color stops */
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right top,
+    color-stop(0.32, #063053),
+    color-stop(0.66, #395873),
+    color-stop(0.83, rgba(0, 0, 0, 0.4))
+  );
+  /* chrome 10+, safari 5.1+ */
+  background-image: -webkit-linear-gradient(45deg, #063053, #395873, #5c7c99);
+  /* firefox; multiple color stops */
+  background-image: -moz-linear-gradient(45deg, #063053, #395873, #5c7c99);
+  /* ie10 */
+  background-image: -ms-linear-gradient(45deg, #063053 0%, #395873 100%);
+  /* opera 11.1 */
+  background-image: -o-linear-gradient(45deg, #063053, #395873);
+  /* The "standard" */
+  background-image: linear-gradient(45deg, #063053, #395873);
+}
+
+.applet__content {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>
