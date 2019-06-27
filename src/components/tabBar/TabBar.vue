@@ -1,5 +1,5 @@
 <template>
-  <nav class="mh-tab-bar">
+  <nav class="mh-tab-bar" id="tabBar">
     <router-link
       class="mh-tab-item"
       to="/homepage/mainframe"
@@ -7,11 +7,7 @@
       @click.native.prevent="itemDidClicked(0)"
     >
       <span class="mh-tab-icon-box">
-        <img
-          class="mh-tab-icon"
-          :src="getMainFrameImage"
-          alt
-        />
+        <img class="mh-tab-icon" :src="getMainFrameImage" alt />
         <span class="mh-tab-badge">9</span>
       </span>
       <span class="mh-tab-label">微信</span>
@@ -22,11 +18,7 @@
       replace
       @click.native.prevent="itemDidClicked(1)"
     >
-      <img
-        class="mh-tab-icon"
-        :src="getContactsImage"
-        alt
-      />
+      <img class="mh-tab-icon" :src="getContactsImage" alt />
 
       <span class="mh-tab-label">通讯录</span>
     </router-link>
@@ -36,11 +28,7 @@
       replace
       @click.native.prevent="itemDidClicked(2)"
     >
-      <img
-        class="mh-tab-icon"
-        :src="getDiscoverImage"
-        alt
-      />
+      <img class="mh-tab-icon" :src="getDiscoverImage" alt />
       <span class="mh-tab-label">发现</span>
     </router-link>
     <router-link
@@ -49,11 +37,7 @@
       replace
       @click.native.prevent="itemDidClicked(3)"
     >
-      <img
-        class="mh-tab-icon"
-        :src="getProfileImage"
-        alt
-      />
+      <img class="mh-tab-icon" :src="getProfileImage" alt />
       <span class="mh-tab-label">我</span>
     </router-link>
   </nav>

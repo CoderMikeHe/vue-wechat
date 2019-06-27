@@ -10,7 +10,11 @@
     @scroll.passive="onScroll($event)"
   >
     <!-- 小程序 -->
-    <div class="applet__wrapper" :style="appletWrapperStyle">
+    <div
+      class="applet__wrapper"
+      :style="appletWrapperStyle"
+      v-show="showApplet"
+    >
       <div class="applet__content">
         <Applet></Applet>
       </div>
@@ -150,6 +154,7 @@ export default {
       showMenu: false,
       dataSource: [],
       isRelative: true,
+      startY: 0,
       // 下拉刷新状态
       topStatus: "",
       topDropped: false,
@@ -161,15 +166,19 @@ export default {
       translate: 0,
       // 刚开始滑动时的滚动条位置
       startScrollTop: 0,
-      // 下拉刷新临界点
-      topDistance: 80,
+      // 下拉刷新临界点 === stage2Distance
+      topDistance: 90,
       // 阶段I临界点
       stage1Distance: 60,
       // 阶段II临界点
       stage2Distance: 90,
       // 阶段III临界点
       stage3Distance: 130,
-      scrollTop: 0
+      // 阶段IV临界点
+      stage4Distance: 180,
+      scrollTop: 0,
+      // 展示小程序模块
+      showApplet: false
     };
   },
   created() {
@@ -196,21 +205,21 @@ export default {
     menuItemDidClicked(index) {
       console.log(index);
       switch (index) {
-      case 0: // 发起群聊
-        this.$router.push("/test");
-        break;
-      case 1: // 添加朋友
-        // this.$router.push("/test");
-        // console.log("mlgb");
-        break;
-      case 2: // 扫一扫
-        break;
-      case 3: // 收付款
-        this.$router.push("/test");
-        break;
+        case 0: // 发起群聊
+          this.$router.push("/test");
+          break;
+        case 1: // 添加朋友
+          // this.$router.push("/test");
+          // console.log("mlgb");
+          break;
+        case 2: // 扫一扫
+          break;
+        case 3: // 收付款
+          this.$router.push("/test");
+          break;
 
-      default:
-        break;
+        default:
+          break;
       }
     },
 
@@ -232,12 +241,6 @@ export default {
         this.topDropped = false;
       }
     },
-    kkkk(event) {
-      console.log("kkkk");
-
-      event.preventDefault();
-      event.stopPropagation();
-    },
     // 正在拖拽
     handleTouchMove(event) {
       console.log("handleTouchMove");
@@ -246,7 +249,7 @@ export default {
       // 当前触摸点Y
       let currentY = event.targetTouches[0].clientY;
       // 偏移距离
-      let distance = (currentY - this.startY) / 2;
+      let distance = (currentY - this.startY) / 4;
       // 上拉or下拉
       this.direction = distance > 0 ? "down" : "up";
       // 判断处理
@@ -262,7 +265,8 @@ export default {
           distance = 0;
         }
         // 不管下拉刷新状态，这个distance长期有效
-        this.translate = distance;
+        this.translate =
+          distance <= this.stage4Distance ? distance : this.translate;
         this.topStatus = this.translate >= this.topDistance ? "drop" : "pull";
       }
     },
@@ -280,14 +284,13 @@ export default {
         if (this.topStatus === "drop") {
           this.topStatus = "loading";
           this.topMethod();
-          this.translate = 80;
         } else {
           this.topStatus = "pull";
-          this.translate = 0;
         }
       }
       // 清空
       this.direction = "";
+      this.translate = 0;
     },
     onScroll(event) {
       console.log("onscroll");
@@ -298,9 +301,17 @@ export default {
     console.log("Mainframe -- ");
   },
   computed: {
+    // 获取手机屏幕的宽
+    screenHeight() {
+      return document.documentElement.clientHeight;
+    },
     // 滚动列表的动态样式
     transform() {
-      return { transform: `translate3d(0, ${this.translate}px, 0)` };
+      return {
+        transform: `translate3d(0, ${this.translate}px, 0)`,
+        marginTop:
+          this.topStatus === "loading" ? this.screenHeight - 44 + "px" : "0"
+      };
     },
     appletWrapperStyle() {
       let scrollTop = this.scrollTop;
@@ -312,8 +323,8 @@ export default {
     droppedWrapperStyle() {
       let opacity = 1;
       if (this.translate > this.stage3Distance) {
-        // 第四阶段
-        let step = 1 / 40;
+        // 第四阶段 1 - 0.2
+        let step = 0.8 / (this.stage4Distance - this.stage3Distance);
         opacity = 1 - step * (this.translate - this.stage3Distance);
       }
       return { height: this.translate + "px", opacity: opacity };
@@ -395,12 +406,10 @@ export default {
 .weui-search-bar {
   padding: 10px;
 }
-
 /* 本地样式 */
 .relative {
   position: relative;
 }
-
 .dropped-animation {
   transition: 0.25s;
 }
@@ -497,7 +506,7 @@ export default {
 
 .content__wrapper {
   position: relative;
-  margin-top: calc(736px - 44px);
+  /* margin-top: calc(736px - 44px); */
 }
 /* 列表 + 列表项 */
 .content::after {
@@ -626,7 +635,7 @@ export default {
   height: 200%;
   background-color: rgba(79, 76, 103, 0.5);
   z-index: 4;
-  /* The "standard" */
+  /* The "standard" https://www.runoob.com/try/try.php?filename=trycss3_gradient-linear_diagonal */
   background-image: linear-gradient(
     to bottom right,
     rgba(39, 37, 57, 1),
@@ -637,15 +646,5 @@ export default {
     rgba(86, 81, 110, 0.2),
     rgba(86, 81, 110, 0.1)
   );
-}
-
-.applet__content {
-  position: relative;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 300px;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 </style>

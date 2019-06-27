@@ -90,6 +90,16 @@ export default {
     {
       avatars: [
         { 
+          profile_image_url: require('@/assets/images/mainframe/Plugins_QQMail_29x29.png')
+        }
+      ],
+      screen_name: 'QQ邮箱提醒',
+      created_at: 'Tue Apr 09 00:05:03 +0800 2019',
+      text: '拉勾网：社群招新|加入拉钩前端干货群，每天成长5分钟，助你跑赢同龄人'
+    },
+    {
+      avatars: [
+        { 
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0' 
         }
       ],
