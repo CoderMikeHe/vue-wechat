@@ -1,5 +1,11 @@
 <template>
   <div class="_full-content _content-padding-bottom49">
+    <!-- 照相机 -->
+    <img
+      src="@/assets/images/profile/icons_filled_camera.png"
+      alt=""
+      class="profile__camera"
+    />
     <!-- headerView -->
     <div class="mh-profile__header" @click="skipUserInfo">
       <div class="mh-cell">
@@ -141,13 +147,23 @@ export default {
 </script>
 
 <style scoped>
+/* 照相机 */
+.profile__camera {
+  width: 25px;
+  height: 25px;
+  position: fixed;
+  right: 10px;
+  top: 9.5px;
+  z-index: 3;
+}
+
 .mh-common-group {
   margin-top: 8px;
 }
 
 /* ------ 头部 Start ------ */
 .mh-profile__header {
-  padding: 20px 0;
+  padding: 72px 0 40px;
   background-color: #fff;
   position: relative;
 }
@@ -172,6 +188,13 @@ export default {
   padding-left: 16px;
 }
 
+.mh-profile__title {
+  height: 33px;
+  line-height: 33px;
+  font-size: 24px;
+  color: #000;
+}
+
 .mh-profile__detail {
   position: relative;
   display: -webkit-box;
@@ -180,12 +203,17 @@ export default {
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
+  padding-top: 10px;
 }
 
 .mh-profile__detail-bd {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
+  color: #7f7f7f;
+  font-size: 16px;
+  height: 20px;
+  line-height: 20px;
 }
 
 .mh-profile__detail-ft {
