@@ -7,14 +7,18 @@
     <div class="mh-group-body">
       <a
         class="mh-common__cell"
-        v-for="(item,row) in group.items"
+        v-for="(item, row) in group.items"
         :key="row"
-        :class="{'_mh-cell-access':item.tapHighlight}"
-        :style="{'line-height':item.rowHeight}"
-        @click="didSelectRow(section,row)"
+        :class="{ '_mh-cell-access': item.tapHighlight }"
+        :style="{ 'line-height': item.rowHeight }"
+        @click="didSelectRow(section, row)"
       >
         <div class="mh-cell-header">
-          <img class="mh-image" :class="{'margin-right16px':item.icon}" :src="imageSrc[item.icon]">
+          <img
+            class="mh-image"
+            :class="{ 'margin-right16px': item.icon }"
+            :src="imageSrc[item.icon]"
+          />
         </div>
         <div class="mh-cell-body">
           <div class="mh-body">
@@ -28,16 +32,36 @@
               width="20"
               height="20"
               alt
-              v-if="item.type===4"
-            >
+              v-if="item.type === 4"
+            />
             <!-- 头像 -->
-            <img :src="item.avatar" alt v-if="item.type===3" height="66px" width="66px">
+            <img
+              :src="item.avatar"
+              alt
+              v-if="item.type === 3"
+              height="66px"
+              width="66px"
+            />
+            <!-- 朋友圈 -->
+            <div
+              class="footer__moments"
+              v-if="item.type === 5 && item.avatar.length !== 0"
+            >
+              <img :src="item.avatar" alt="" />
+              <span class="weui-badge weui-badge_dot"></span>
+            </div>
+            <!-- 右箭头 -->
             <img
               class="mh-right-arrow"
               src="@/assets/images/common/tableview_arrow_8x13.png"
-              v-if="item.type===0 || item.type === 3 || item.type === 4"
-            >
-            <mt-switch v-if="item.type===2" v-model="item.off"></mt-switch>
+              v-if="
+                item.type === 0 ||
+                  item.type === 3 ||
+                  item.type === 4 ||
+                  item.type === 5
+              "
+            />
+            <mt-switch v-if="item.type === 2" v-model="item.off"></mt-switch>
           </div>
         </div>
       </a>
@@ -243,6 +267,18 @@ export default {
   font-size: 15px;
 }
 
+.footer__moments {
+  position: relative;
+}
+
+.footer__moments img {
+  display: block;
+  width: 35px;
+  height: 35px;
+  border-radius: 4px;
+  position: relative;
+}
+
 /* 修改第三方组件的css */
 /* CMH TODO：修改第三方组件的CSS样式
 A：[【vue scoped 样式修改 】框架或插件组件样式更改及/deep/ 警告](https://blog.csdn.net/weixin_41000111/article/details/80450397) 
@@ -251,5 +287,13 @@ A：[【vue scoped 样式修改 】框架或插件组件样式更改及/deep/ �
   border-color: #57be6a;
   background-color: #57be6a;
 }
-</style>
 
+.weui-badge {
+  position: absolute;
+  right: 0;
+  top: 0;
+  -webkit-transform: translate3d(50%, -20%, 0);
+  transform: translate3d(50%, -20%, 0);
+  z-index: 2;
+}
+</style>

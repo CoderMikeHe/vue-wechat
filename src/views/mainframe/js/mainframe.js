@@ -1,7 +1,7 @@
 export default {
-  
+
   // 获取远程数据
-  fetchRemoteData(){
+  fetchRemoteData() {
     let dataSource = []
     this.dataSource.forEach(o => {
       // 时间格式化
@@ -46,163 +46,235 @@ export default {
     }
   },
   // 数据源
-  dataSource:[
+  dataSource: [
     {
+      idstr: '10000',
       avatars: [
-        { 
+        {
           profile_image_url: require('@/assets/images/mainframe/tencent_news.png')
         }
       ],
       screen_name: '腾讯新闻',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '工作996，生病ICU？关注：年轻人该如何奋斗'
+      text: '工作996，生病ICU？关注：年轻人该如何奋斗',
+      badge: {
+        type: 'digit',
+        value: 2,
+        text: '2',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10001',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         }
       ],
       screen_name: 'UI中国',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '生死看淡，不服就干'
+      text: '生死看淡，不服就干',
+      badge: null
     },
     {
+      idstr: '10002',
       avatars: [
-        { 
+        {
           profile_image_url: require('@/assets/images/mainframe/wechat_motion.png')
         }
       ],
       screen_name: '微信运动',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '[应用消息]'
+      text: '[应用消息]',
+      badge: {
+        type: 'digit',
+        value: 4,
+        text: '4',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10003',
       avatars: [
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         }
       ],
       screen_name: 'photoshop资源库',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '生死看淡，不服就干'
+      text: '生死看淡，不服就干',
+      badge: null
     },
     {
+      idstr: '10004',
       avatars: [
-        { 
+        {
           profile_image_url: require('@/assets/images/mainframe/Plugins_QQMail_29x29.png')
         }
       ],
       screen_name: 'QQ邮箱提醒',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '拉勾网：社群招新|加入拉钩前端干货群，每天成长5分钟，助你跑赢同龄人'
+      text: '拉勾网：社群招新|加入拉钩前端干货群，每天成长5分钟，助你跑赢同龄人',
+      badge: {
+        type: 'digit',
+        value: 1,
+        text: '1',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10005',
       avatars: [
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
         }
       ],
       screen_name: 'Lightroom资源库',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '生死看淡，不服就干'
+      text: '生死看淡，不服就干',
+      badge: null
     },
     {
+      idstr: '10006',
       avatars: [
-        { 
-          profile_image_url: 'http://tp2.sinaimg.cn/3178541805/50/5718597241/1' 
+        {
+          profile_image_url: 'http://tp2.sinaimg.cn/3178541805/50/5718597241/1'
         }
       ],
       screen_name: 'Sai资源库',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '[动画表情]'
+      text: '[动画表情]',
+      badge: null
+      
     },
     {
+      idstr: '10007',
       avatars: [
-        { 
+        {
           profile_image_url: require('@/assets/images/mainframe/wechat_game.png')
         }
       ],
       screen_name: '微信游戏',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '【订阅号消息】我的王者荣耀战报'
+      text: '【订阅号消息】我的王者荣耀战报',
+      badge: {
+        type: 'digit',
+        value: 9,
+        text: '9',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10008',
       avatars: [
-        { 
-          profile_image_url: 'http://tp2.sinaimg.cn/1401527553/50/5648353790/1' 
+        {
+          profile_image_url: 'http://tp2.sinaimg.cn/1401527553/50/5648353790/1'
         }
       ],
       screen_name: 'tombkeeper',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '湖人总冠军'
+      text: '湖人总冠军',
+      badge: null
     },
     {
+      idstr: '10009',
       avatars: [
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/1648494332/50/40061279636/1' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/1648494332/50/40061279636/1'
         }
       ],
       screen_name: '包昊军',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '卡哇伊FMVP'
+      text: '卡哇伊FMVP',
+      badge: {
+        type: 'digit',
+        value: 7,
+        text: '7',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10010',
       avatars: [
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/3256556000/50/5733114143/1' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/3256556000/50/5733114143/1'
         }
       ],
       screen_name: 'WETALK观点',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '如果世界上真有超级英雄，那人就是勒布朗.詹姆斯'
+      text: '如果世界上真有超级英雄，那人就是勒布朗.詹姆斯',
+      badge: null
     },
     {
+      idstr: '10011',
       avatars: [
-        { 
+        {
           profile_image_url: require('@/assets/images/mainframe/qq_safeguard.png')
         }
       ],
       screen_name: 'QQ安全中心',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '请接招：这里有份QQ防封秘籍！'
+      text: '请接招：这里有份QQ防封秘籍！',
+      badge: {
+        type: 'digit',
+        value: 6,
+        text: '6',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10012',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         }
       ],
       screen_name: '三人行必有我师焉',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '人可何：你是年少的欢喜，喜欢的少年是你'
+      text: '人可何：你是年少的欢喜，喜欢的少年是你',
+      badge: null
     },
     {
+      idstr: '10013',
       avatars: [
-        { 
+        {
           profile_image_url: require('@/assets/images/mainframe/subscription_number.png')
         }
       ],
       screen_name: '订阅号消息',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '脚踝终结者：德鲁大叔 凯里.欧文'
+      text: '脚踝终结者：德鲁大叔 凯里.欧文',
+      badge: {
+        type: 'dot',
+        value: 1,
+        text: '',
+        show: true,
+        dot: true
+      }
     },
     {
+      idstr: '10014',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         },
         {
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
@@ -210,18 +282,20 @@ export default {
       ],
       screen_name: '春花、秋月、夏日、冬雪',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '单人伍：纵然时间山南水北，你我人山人海，你来 所以我等'
+      text: '单人伍：纵然时间山南水北，你我人山人海，你来 所以我等',
+      badge: null
     },
     {
+      idstr: '10015',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         },
         {
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
@@ -232,18 +306,26 @@ export default {
       ],
       screen_name: '深圳五虎（diao）将（si）',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '大成：情深深，雨蒙蒙，车如流水马如龙'
+      text: '大成：情深深，雨蒙蒙，车如流水马如龙',
+      badge: {
+        type: 'digit',
+        value: 136,
+        text: '136',
+        show: true,
+        dot: false
+      }
     },
     {
+      idstr: '10016',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         },
         {
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
@@ -257,18 +339,20 @@ export default {
       ],
       screen_name: '六六大顺',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: 'Miss_伍：天苍苍，野茫茫，风吹草低见牛羊'
+      text: 'Miss_伍：天苍苍，野茫茫，风吹草低见牛羊',
+      badge: null
     },
     {
+      idstr: '10017',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         },
         {
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
@@ -285,18 +369,20 @@ export default {
       ],
       screen_name: '七星高照',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: 'Mike：人不能低下高贵的头颅，但捡钱时例外'
+      text: 'Mike：人不能低下高贵的头颅，但捡钱时例外',
+      badge: null
     },
     {
+      idstr: '10018',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         },
         {
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
@@ -316,18 +402,20 @@ export default {
       ],
       screen_name: '八面玲珑',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '露娜：八星八钻，走过路过别错过'
+      text: '露娜：八星八钻，走过路过别错过',
+      badge: null
     },
     {
+      idstr: '10019',
       avatars: [
-        { 
-          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1' 
+        {
+          profile_image_url: 'http://tp4.sinaimg.cn/1448595507/50/22871434059/1'
         },
-        { 
-          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1' 
+        {
+          profile_image_url: 'http://tp3.sinaimg.cn/2630646082/50/40073330660/1'
         },
-        { 
-          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0' 
+        {
+          profile_image_url: 'http://tp1.sinaimg.cn/2236171720/50/5733018646/0'
         },
         {
           profile_image_url: 'http://tp3.sinaimg.cn/3704303362/50/5731726065/0'
@@ -350,7 +438,8 @@ export default {
       ],
       screen_name: '九九归一',
       created_at: 'Tue Apr 09 00:05:03 +0800 2019',
-      text: '小书包：一一得一，九九八十一'
+      text: '鲁班大师：智商二百五，膜拜，极度膜拜',
+      badge: null
     }
   ]
 }

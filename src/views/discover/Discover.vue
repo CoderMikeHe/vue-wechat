@@ -2,8 +2,16 @@
   <div class="_full-content _content-padding-top44 _content-padding-bottom49">
     <NavigationBar title="发现"></NavigationBar>
     <div>
-      <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
-        <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+      <div
+        class="mh-common-group"
+        v-for="(group, section) in dataSource"
+        :key="section"
+      >
+        <common
+          :group="group"
+          :section="section"
+          @did-select-row="didSelectRow"
+        ></common>
       </div>
     </div>
   </div>
@@ -11,8 +19,14 @@
 
 <script>
 import common from "components/common/Common";
-import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
+import {
+  MHCommonGroup,
+  MHCommonItem,
+  MHCommonItemMoments
+} from "assets/js/MHCommonGroup.js";
 import MHPreferenceSettingHelper from "assets/js/MHPreferenceSettingHelper.js";
+import BadgeHelper from "@/assets/js/badge/badgeHelper";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "discover",
   data() {
@@ -34,10 +48,11 @@ export default {
         )
       ) {
         // 朋友圈
-        const moments = new MHCommonItem({
+        const moments = new MHCommonItemMoments({
           title: "朋友圈",
           icon: "ff_IconShowAlbum_25x25",
-          name: "moments"
+          name: "moments",
+          avatar: "http://tp1.sinaimg.cn/2236171720/50/5733018646/0"
         });
         group0.items.push(moments);
       }
@@ -182,12 +197,39 @@ export default {
     // item点击事件
     didSelectRow(section, row) {
       const item = this.dataSource[section].items[row];
-      console.log(item.name);
+      if (item.name === "moments" && item.avatar.length !== 0) {
+        // 将item.avatar 清空
+        item.avatar = "";
+        // 取出discover badge数据
+        let discover = Object.assign({}, this.discover);
+        // 取出moments的value
+        let value = discover.moments.value;
+        // 置位0
+        discover.moments.value = 0;
+        // 重新赋值
+        discover.moments = BadgeHelper(discover.moments);
+
+        // 修改discover的value
+        discover.value = discover.value - value;
+        // 处理 text和show
+        let tmp = BadgeHelper(discover);
+        discover.text = tmp.text;
+        discover.show = tmp.show;
+        // 存储到vuex
+        this.changeDiscover(discover);
+      }
       this.$router.push({ name: item.name });
-    }
+    },
+    // vuex
+    ...mapMutations("badge", ["changeDiscover"])
   },
   components: {
     common
+  },
+  computed: {
+    ...mapState({
+      discover: state => state.badge.discover
+    })
   }
 };
 </script>

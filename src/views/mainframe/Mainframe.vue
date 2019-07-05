@@ -34,7 +34,7 @@
       <!-- 导航栏 -->
       <NavigationBar
         :right-item="addItem"
-        title="微信"
+        :title="navTitle"
         @right-click="rightItemDidClicked"
         :class="{ relative: isRelative }"
       ></NavigationBar>
@@ -66,9 +66,18 @@
           class="content__item _mh-tap-highlight"
           v-for="(item, index) in dataSource"
           :key="index"
+          @click="skip2Chat(index)"
         >
           <div class="item__hd">
+            <!-- 头像 -->
             <Avatars :srcs="item.avatars"></Avatars>
+            <!-- 红点 -->
+            <span
+              v-show="item.badge && item.badge.show"
+              :class="{ 'weui-badge_dot': item.badge && item.badge.dot }"
+              class="weui-badge"
+              >{{ item.badge ? item.badge.text : "" }}</span
+            >
           </div>
           <div class="item__bd">
             <div class="item__top">
@@ -145,7 +154,10 @@ import ViewModel from "./js/mainframe";
 import Avatars from "./views/Avatars";
 // Applet
 import Applet from "./views/Applet";
-
+// Vuex
+import { mapState, mapMutations } from "vuex";
+// helper
+import BadgeHelper from "../../assets/js/badge/badgeHelper";
 // 小程序渐变色
 const GradientColor = `linear-gradient(to bottom right,rgba(39, 37, 57, 1),rgba(56, 53, 76, 1),rgba(56, 53, 76, 0.8),rgba(68, 64, 90, 0.7),rgba(68, 64, 90, 0.5),rgba(86, 81, 110, 0.2),rgba(86, 81, 110, 0.1))`;
 
@@ -206,10 +218,58 @@ export default {
     // 获取tabBar
     this.tabBar = document.getElementById("tabBar");
   },
+  activated() {
+    console.log("Mainframe -- ");
+  },
   methods: {
+    // vuex
+    ...mapMutations("badge", ["changeMainframe"]),
     // 获取远程数据
     fetchRemoteData() {
+      // 获取数据源
       this.dataSource = ViewModel.fetchRemoteData();
+      // 处理Badge
+      let badge = {};
+      let value = 0;
+      this.dataSource.forEach(item => {
+        // item 必须有值
+        if (item.badge && item.badge.type === "digit") {
+          value += item.badge.value;
+        }
+      });
+      badge.type = "digit";
+      badge.value = value;
+      badge.text = value + "";
+      badge.show = value > 0;
+      badge.dot = false;
+
+      // 存储到Vux
+      this.changeMainframe(badge);
+    },
+    skip2Chat(idx) {
+      let item = this.dataSource[idx];
+      let mainframe = Object.assign({}, this.mainframe);
+      if (item.badge) {
+        // 处理badge数据
+        if (item.badge.type === "digit") {
+          let value = mainframe.value - item.badge.value;
+          mainframe.value = value;
+
+          // 重新生成一个临时的
+          let badge = BadgeHelper(mainframe);
+          // 存储到Vuex
+          this.changeMainframe(badge);
+        }
+        // 清空badge
+        item.badge = null;
+      }
+      // 跳转到chat
+      this.$router.push({
+        name: "ChatMessage",
+        params: {
+          title: item.screen_name
+        }
+      });
     },
     // 导航栏事件处理
     rightItemDidClicked(index) {
@@ -369,10 +429,17 @@ export default {
       }
     }
   },
-  activated() {
-    console.log("Mainframe -- ");
-  },
   computed: {
+    // Vuex
+    ...mapState({
+      mainframe: state => state.badge.mainframe
+    }),
+    // 导航栏标题
+    navTitle() {
+      let value = this.mainframe.value;
+      let title = value > 0 ? `(${value})` : "";
+      return "微信" + title;
+    },
     // 获取手机屏幕的宽
     screenHeight() {
       return document.documentElement.clientHeight * 1;
@@ -541,6 +608,15 @@ export default {
 .weui-search-bar {
   padding: 10px;
 }
+.weui-badge {
+  position: absolute;
+  right: -6px;
+  top: 0;
+  z-index: 2;
+  -webkit-transform: translate3d(0, -40%, 0);
+  transform: translate3d(0, -40%, 0);
+}
+
 /* 本地样式 */
 .relative {
   position: relative;
@@ -643,6 +719,7 @@ export default {
   position: relative;
   /* margin-top: calc(736px - 44px); */
 }
+
 /* 列表 + 列表项 */
 .content::after {
   content: " ";
@@ -683,6 +760,9 @@ export default {
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   z-index: 2;
+}
+.item__hd {
+  position: relative;
 }
 
 .item__bd {

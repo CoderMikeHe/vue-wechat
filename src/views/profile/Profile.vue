@@ -1,11 +1,13 @@
 <template>
   <div class="_full-content _content-padding-bottom49">
     <!-- 照相机 -->
-    <img
-      src="@/assets/images/profile/icons_filled_camera.png"
-      alt=""
-      class="profile__camera"
-    />
+    <div class="profile__camera" @click="cameraDidClick">
+      <span
+        v-show="profile.camera.show"
+        :class="{ 'weui-badge_dot': profile.camera.dot }"
+        class="weui-badge"
+      ></span>
+    </div>
     <!-- headerView -->
     <div class="mh-profile__header" @click="skipUserInfo">
       <div class="mh-cell">
@@ -45,7 +47,6 @@
         </div>
       </div>
     </div>
-
     <!-- Item list -->
     <div
       class="mh-common-group"
@@ -64,9 +65,13 @@
 <script>
 import common from "../../components/common/Common";
 import { MHCommonGroup, MHCommonItem } from "../../assets/js/MHCommonGroup.js";
+import { mapState, mapMutations } from "vuex";
+import BadgeHelper from "@/assets/js/badge/badgeHelper";
 export default {
   name: "profile",
-
+  components: {
+    common
+  },
   data() {
     return {
       dataSource: []
@@ -138,15 +143,53 @@ export default {
     skipUserInfo() {
       console.log("------跳转用户信息------");
       this.$router.push("/profile/userinfo");
-    }
+    },
+    // 照相机被点击
+    cameraDidClick() {
+      // 取出profile badge数据
+      let profile = Object.assign({}, this.profile);
+
+      // 取出camera的value
+      let value = profile.camera.value;
+      // 置位0
+      profile.camera.value = 0;
+      // 重新赋值
+      profile.camera = BadgeHelper(profile.camera);
+
+      // 修改profile的value
+      profile.value = profile.value - value;
+      // 处理 text和show
+      let tmp = BadgeHelper(profile);
+      profile.text = tmp.text;
+      profile.show = tmp.show;
+      // 存储到vuex
+      this.changeProfile(profile);
+
+      // 打开照相机 TODO
+    },
+    // vuex
+    ...mapMutations("badge", ["changeProfile"])
   },
-  components: {
-    common
+
+  computed: {
+    ...mapState({
+      profile: state => state.badge.profile
+    })
   }
 };
 </script>
 
 <style scoped>
+/* 第三方框架样式 */
+.weui-badge_dot {
+  position: absolute;
+  right: 0;
+  top: 0;
+  -webkit-transform: translate3d(50%, -20%, 0);
+  transform: translate3d(50%, -20%, 0);
+}
+
+/* 本地样式 */
 /* 照相机 */
 .profile__camera {
   width: 25px;
@@ -155,6 +198,9 @@ export default {
   right: 10px;
   top: 9.5px;
   z-index: 3;
+  background-image: url("~@/assets/images/profile/icons_filled_camera.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .mh-common-group {
@@ -193,6 +239,7 @@ export default {
   line-height: 33px;
   font-size: 24px;
   color: #000;
+  font-weight: 500;
 }
 
 .mh-profile__detail {

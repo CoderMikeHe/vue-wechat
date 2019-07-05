@@ -43,7 +43,11 @@ import OtherLogin from './views/login/OtherLogin.vue'
 import LanguagePicker from './views/login/languagePicker/LanguagePicker.vue';
 
 // 主页
-const Homepage = resolve => require(['./views/homepage/Homepage.vue'], resolve)
+const Homepage = Homepage => require(['./views/homepage/Homepage.vue'], Homepage)
+
+// 聊天页面
+const ChatMessage = ChatMessage => require(['./views/mainframe/chat/ChatMessage.vue'], ChatMessage)
+
 // import Homepage from './views/homepage/Homepage.vue'
 import Test from './views/discover/Test.vue'
 Vue.use(Router)
@@ -102,6 +106,14 @@ export default new Router({
         { path: '', redirect: '/homepage/mainframe' }
       ],
       
+    },
+    {
+      path: '/chat-message',
+      name: 'ChatMessage',
+      component: ChatMessage,
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/current-login',

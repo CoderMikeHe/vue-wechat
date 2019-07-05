@@ -33,6 +33,7 @@ class MHCommonItem {
   // type 2 ： 默认是 icon+title+switch
   // type 3 ： 默认是 icon+title+avatar+>
   // type 4 :  默认是 icon+title+qrcode+>
+  // type 5 :  默认是 icon+title+avatar+dot+>
   type = 0;
   tapHighlight = true; // 是否点击高亮
   // 行高
@@ -146,9 +147,34 @@ class MHCommonItemAvatar extends MHCommonItem {
     this.avatar = avatar;
   }
 }
+
+// type 5 :  默认是 icon+title+avatar+dot+>
+class MHCommonItemMoments extends MHCommonItem {
+  // 用户头像
+  avatar = "";
+  constructor({
+    icon = "",
+    title = "",
+    type = 5,
+    name = "",
+    avatar = "",
+  } = {}) {
+    // must调用父类
+    super({
+      icon: icon,
+      title: title,
+      type: type,
+      name: name
+    });
+    this.avatar = avatar;
+  }
+}
+
+
 export {
   MHCommonGroup,
   MHCommonItem,
   MHCommonItemSwitch,
-  MHCommonItemAvatar
+  MHCommonItemAvatar,
+  MHCommonItemMoments
 };

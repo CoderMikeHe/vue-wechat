@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import modules from "../modules"
 
-import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
+
+import MHPreferenceSettingHelper from '../assets/js/MHPreferenceSettingHelper'
 
 // 类似单利
 Vue.use(Vuex);
@@ -35,5 +37,6 @@ export default new Vuex.Store({
     }
   },
   getters: {},
-  actions: {}
+  actions: {},
+  modules:modules(require.context('./modules', true, /.+\.js$/))
 });

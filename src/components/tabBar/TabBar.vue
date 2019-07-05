@@ -8,7 +8,12 @@
     >
       <span class="mh-tab-icon-box">
         <img class="mh-tab-icon" :src="getMainFrameImage" alt />
-        <span class="mh-tab-badge">9</span>
+        <span
+          v-show="mainframe.show"
+          class="weui-badge"
+          :class="{ 'weui-badge_dot': mainframe.dot }"
+          >{{ mainframe.text }}
+        </span>
       </span>
       <span class="mh-tab-label">微信</span>
     </router-link>
@@ -18,33 +23,54 @@
       replace
       @click.native.prevent="itemDidClicked(1)"
     >
-      <img class="mh-tab-icon" :src="getContactsImage" alt />
-
+      <span class="mh-tab-icon-box">
+        <img class="mh-tab-icon" :src="getContactsImage" alt />
+      </span>
       <span class="mh-tab-label">通讯录</span>
     </router-link>
+    <!-- 发现 -->
     <router-link
       class="mh-tab-item"
       to="/homepage/discover"
       replace
       @click.native.prevent="itemDidClicked(2)"
     >
-      <img class="mh-tab-icon" :src="getDiscoverImage" alt />
+      <span class="mh-tab-icon-box">
+        <img class="mh-tab-icon" :src="getDiscoverImage" alt />
+        <span
+          v-show="discover.show"
+          class="weui-badge"
+          :class="{ 'weui-badge_dot': discover.dot }"
+          >{{ discover.text }}
+        </span>
+      </span>
       <span class="mh-tab-label">发现</span>
     </router-link>
+    <!-- 我 -->
     <router-link
       class="mh-tab-item"
       to="/homepage/profile"
       replace
       @click.native.prevent="itemDidClicked(3)"
     >
-      <img class="mh-tab-icon" :src="getProfileImage" alt />
+      <span class="mh-tab-icon-box">
+        <img class="mh-tab-icon" :src="getProfileImage" alt />
+        <span
+          v-show="profile.show"
+          class="weui-badge"
+          :class="{ 'weui-badge_dot': profile.dot }"
+          >{{ profile.text }}
+        </span>
+      </span>
       <span class="mh-tab-label">我</span>
     </router-link>
   </nav>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
+  name: "tab-bar",
   data() {
     return {
       // 初始化数据
@@ -61,6 +87,11 @@ export default {
     this.selectedContacts = name === "contacts" ? 1 : 0;
     this.selectedDiscover = name === "discover" ? 1 : 0;
     this.selectedProfile = name === "profile" ? 1 : 0;
+  },
+
+  mounted() {
+    console.log("回答哈哈都是");
+    console.log(this.profile);
   },
 
   methods: {
@@ -92,12 +123,24 @@ export default {
       let sel = require("../../assets/images/tabBar/tabbar_meHL_23x23.png");
       let nor = require("../../assets/images/tabBar/tabbar_me_23x23.png");
       return this.selectedProfile ? sel : nor;
-    }
+    },
+    ...mapState({
+      profile: state => state.badge.profile,
+      mainframe: state => state.badge.mainframe,
+      discover: state => state.badge.discover
+    })
   }
 };
 </script>
 
 <style lang="scss" scoped>
+// 第三方样式
+.weui-badge {
+  position: absolute;
+  left: 18px;
+  top: -2px;
+}
+
 // tabBar
 .mh-tab-bar {
   display: -webkit-box;
@@ -117,7 +160,6 @@ export default {
 // 该类名，解决 tabbar 点击无法切换的问题
 .mh-tab-bar .mh-tab-item {
   flex: auto;
-  overflow: hidden;
   height: 49px;
   text-align: center;
   vertical-align: middle;
@@ -150,24 +192,5 @@ export default {
   text-align: center;
   display: inline-block;
   text-overflow: ellipsis;
-}
-
-.mh-tab-bar .mh-tab-item .mh-tab-icon-box .mh-tab-badge {
-  position: absolute;
-  display: inline-block;
-  top: -2px;
-  left: 100%;
-  margin-left: -5px;
-  min-width: 8px;
-  font-size: 12px; // 谷歌最小字体 12px
-  line-height: 1;
-  border-radius: 12px;
-  padding: 3px 5px;
-  color: #fff;
-  background-color: red;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scale(0.5);
-  transform: scale(0.8);
 }
 </style>
