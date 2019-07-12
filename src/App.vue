@@ -1,15 +1,14 @@
 <template>
-  <div class="app__wrapper">
+  <!-- 🔥按需加载路由：- [另辟蹊径：vue单页面，多路由，前进刷新，后退不刷新](https://segmentfault.com/a/1190000012083511) -->
+  <!-- - [vue-router 之 keep-alive](https://www.jianshu.com/p/0b0222954483) -->
+  <!-- - [<keep-alive>组件缓存问题](https://github.com/vuejs/vue-router/issues/811) -->
+  <!-- <div class="app__wrapper">
     <transition
       name="custom-classes-transition"
       :enter-active-class="enterAnimate"
       :leave-active-class="leaveAnimate"
     >
-      <!-- 🔥按需加载路由：- [另辟蹊径：vue单页面，多路由，前进刷新，后退不刷新](https://segmentfault.com/a/1190000012083511) -->
-      <!-- - [vue-router 之 keep-alive](https://www.jianshu.com/p/0b0222954483) -->
-      <!-- - [<keep-alive>组件缓存问题](https://github.com/vuejs/vue-router/issues/811) -->
       <keep-alive>
-        <!-- 这里是会被缓存的视图组件 -->
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
     </transition>
@@ -18,12 +17,10 @@
       :enter-active-class="enterAnimate"
       :leave-active-class="leaveAnimate"
     >
-      <!-- 这里是不被缓存的视图组件 -->
       <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
-    <!-- tabBar -->
-    <!-- <tabBar></tabBar> -->
-  </div>
+  </div> -->
+  <vue-route-transition :keepAlive="true"></vue-route-transition>
 </template>
 
 <script>
@@ -80,6 +77,9 @@ export default {
   mounted() {
     console.log("appvue");
     console.log(this.$route.meta);
+  },
+  created() {
+    console.log("🔥App");
   }
 };
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div class="vue-route-transition__wrapper">
-    <header>
+    <!-- <header>
       <slot name="header"></slot>
-    </header>
+    </header> -->
     <main class="vue-route-transition__content" :id="cId">
       <slot></slot>
     </main>
-    <footer>
+    <!-- <footer>
       <slot name="footer"></slot>
-    </footer>
+    </footer> -->
   </div>
 </template>
 <script>

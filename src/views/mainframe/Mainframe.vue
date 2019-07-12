@@ -209,7 +209,7 @@ export default {
     };
   },
   created() {
-    console.log("我被嗲啊啊 ");
+    console.log("马勒戈壁🔥");
     this.fetchRemoteData();
   },
   mounted() {
@@ -219,7 +219,7 @@ export default {
     this.tabBar = document.getElementById("tabBar");
   },
   activated() {
-    console.log("Mainframe -- ");
+    console.log("马勒戈壁😪");
   },
   methods: {
     // vuex

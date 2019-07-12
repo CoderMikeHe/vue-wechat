@@ -44,7 +44,10 @@ import LanguagePicker from './views/login/languagePicker/LanguagePicker.vue';
 
 // 主页
 const Homepage = Homepage => require(['./views/homepage/Homepage.vue'], Homepage)
-
+// 主页
+const button = button => require(['./views/homepage/button.vue'], button)
+// 主页
+const rate = rate => require(['./views/homepage/rate.vue'], rate)
 // 聊天页面
 const ChatMessage = ChatMessage => require(['./views/mainframe/chat/ChatMessage.vue'], ChatMessage)
 
@@ -71,6 +74,14 @@ export default new Router({
         keepAlive: true
       },
       children: [
+        {
+          path: 'button',
+          name: 'button',
+          component: button,
+          meta: {
+            keepAlive: true
+          },
+        },
         {
           path: 'mainframe',
           name: 'mainframe',
@@ -103,9 +114,20 @@ export default new Router({
             keepAlive: true
           },
         },
-        { path: '', redirect: '/homepage/mainframe' }
+        { path: '', redirect: '/homepage/button',
+        meta: {
+          keepAlive: true
+        },}
       ],
       
+    },
+    {
+      path: '/rate',
+      name: 'rate',
+      component: rate,
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/chat-message',

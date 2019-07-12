@@ -1,14 +1,12 @@
 // 项目主页
 <template>
   <!-- 搞个绝对定位的盒子 -->
-  <div class="_full-container">
-    <div class="_full-content">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </div>
-    <TabBar></TabBar>
-  </div>
+  <vue-route-layout>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    <!-- <TabBar></TabBar> -->
+  </vue-route-layout>
 </template>
 
 <script>
@@ -23,13 +21,13 @@ export default {
     return {};
   },
   created() {
-    console.log("=++created");
+    console.log("Homepage -- =++created");
   },
   mounted() {
-    console.log("=++mounted");
+    console.log("Homepage -- =++mounted");
   },
   activated() {
-    console.log("Homepage -- ");
+    console.log("Homepage -- activated");
   }
 };
 </script>

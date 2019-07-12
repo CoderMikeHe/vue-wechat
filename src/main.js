@@ -28,8 +28,12 @@ import './assets/css/wechat.css'
 import './assets/css/iconfont.css'
 
 // 全局导航栏
-import NavigationBar from 'components/navigationBar'
+import NavigationBar from '@/components/navigationBar'
 Vue.use(NavigationBar)
+
+// 全局布局和路由过渡动画
+import RouteTransition from '@/components/vue-route-transition'
+Vue.use(RouteTransition)
 
 import utils from 'assets/utils/utils'
 Vue.use(utils)
@@ -53,10 +57,11 @@ MHPreferenceSettingHelper.initialize()
 
 
 // 记录样式
-router.afterEach((to, from) => {
+router.beforeEach((to, from , next) => {
   // ...
-  // console.log('afterEach-to', to)
-  // console.log('afterEach-from', from)
+  console.log('beforeEach-to', to)
+  console.log('beforeEach-from', from)
+  next()
 })
 
 new Vue({
