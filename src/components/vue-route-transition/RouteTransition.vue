@@ -1,28 +1,58 @@
 <template>
   <!-- https://www.cnblogs.com/mmzuo-798/p/10712009.html -->
   <div class="vue-route-transition">
-    <transition :name="pageDirection">
-      <keep-alive v-show="$route.meta.keepAlive">
-        <router-view :kkk="pageDirection" id="mmnn"></router-view>
+    <!-- <transition :name="state.pageDirection" @leave="setRouterMap">
+      <keep-alive v-if="this.keepAlive===true && $route.meta.keepAlive!==false">
+        <router-view></router-view>
+      </keep-alive>
+      <router-view v-else></router-view>
+    </transition> -->
+    <!-- <transition :name="state.pageDirection" @leave="setRouterMap">
+      <keep-alive>
+        <router-view
+          v-if="keepAlive === true && $route.meta.keepAlive !== false"
+        ></router-view>
       </keep-alive>
     </transition>
-    <transition :name="pageDirection">
+    <transition :name="state.pageDirection" @leave="setRouterMap">
       <router-view
-        :kkk="pageDirection"
-        id="xxoo"
-        v-show="$route.meta.keepAlive === false"
+        v-if="keepAlive === false || $route.meta.keepAlive === false"
+      ></router-view>
+    </transition> -->
+    <transition
+      v-on:before-enter="beforeEnter"
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-on:before-leave="beforeLeave"
+      v-on:leave="leave"
+      v-on:after-leave="afterLeave"
+      v-bind:css="false"
+    >
+      <keep-alive>
+        <router-view
+          v-if="keepAlive === true && $route.meta.keepAlive !== false"
+        ></router-view>
+      </keep-alive>
+    </transition>
+    <transition
+      v-on:before-enter="beforeEnter"
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-on:before-leave="beforeLeave"
+      v-on:leave="leave"
+      v-on:after-leave="afterLeave"
+      v-bind:css="false"
+    >
+      <router-view
+        v-if="keepAlive === false || $route.meta.keepAlive === false"
       ></router-view>
     </transition>
-    <!-- <transition :name="state.pageDirection" @leave="setRouterMap">
-      <div class="abc" v-if="$route.meta.keepAlive !== false" key="xx">
-        <keep-alive>
-          <router-view></router-view>
-        </keep-alive>
-      </div>
-      <div class="abc" v-if="$route.meta.keepAlive === false" key="oo">
-        <router-view></router-view>
-      </div>
-    </transition> -->
+    <!-- <transition-group :name="state.pageDirection" @leave="setRouterMap">
+      <keep-alive :key="1234">
+      <router-view :key="2134" v-if="this.keepAlive===true && $route.meta.keepAlive!==false"></router-view>
+      </keep-alive>
+      <router-view :key="234" v-if="this.keepAlive===false || $route.meta.keepAlive===false"></router-view>
+    </transition-group> -->
   </div>
 </template>
 <script>
@@ -46,7 +76,6 @@ export default {
       localSessionRouteChain = [];
     }
     return {
-      pageDirection: "fade",
       state: {
         addCount: localSessionRouteChain.length,
         routerMap: {},
@@ -56,6 +85,131 @@ export default {
     };
   },
   methods: {
+    // --------
+    // 进入中
+    // --------
+
+    beforeEnter: function(el) {
+      // ...
+      console.log("beforeEnter", el);
+      console.log(this.state.pageDirection);
+
+      let dir = this.state.pageDirection;
+      if (dir === "slide-left") {
+        // 进入
+        // el.style.transform = 'translate(100%, 0)'
+      } else if (dir === "slide-right") {
+        // 返回
+        // el.style.transform = 'translate(-20%, 0)'
+      } else {
+        // fade
+      }
+
+      console.log(el.style.transform);
+      console.log("-----------------");
+    },
+    // 当与 CSS 结合使用时
+    // 回调函数 done 是可选的
+    enter: function(el, done) {
+      // ...
+      console.log("enter", el);
+      console.log(this.state.pageDirection);
+      console.log("-----------------");
+      // eslint-disable-next-line no-unused-expressions
+      el.offsetWidth;
+      let dir = this.state.pageDirection;
+      if (dir === "slide-left") {
+        // 进入
+        // el.style.transform = 'translate(0, 0)'
+        // el.style.transition = 'all 0.4s'
+        el.style.animation = "pageFromRightToCenter 5000ms forwards";
+        el.style.zIndex = "10";
+        el.style.boxShadow = " -3px 0 5px rgba(0, 0, 0, 0.1)";
+      } else if (dir === "slide-right") {
+        // 返回
+        // el.style.transform = 'translate(0, 0)'
+        // el.style.transition = 'transform 0.4s'
+        el.style.animation = "pageFromLeftToCenter 5000ms forwards";
+        el.style.zIndex = "1";
+      } else {
+        // fade
+      }
+      setTimeout(() => {
+        done();
+      }, 5000);
+      // done()
+    },
+    afterEnter: function(el) {
+      // ...
+      console.log("afterEnter", el);
+      console.log(this.state.pageDirection);
+      console.log("-----------------");
+    },
+
+    // --------
+    // 离开时
+    // --------
+
+    beforeLeave: function(el) {
+      // ...
+      console.log("beforeLeave", el);
+      console.log(this.state.pageDirection);
+      console.log("-----------------");
+
+      let dir = this.state.pageDirection;
+      if (dir === "slide-left") {
+        // 进入
+        // el.style.transform = 'translate(0, 0)'
+      } else if (dir === "slide-right") {
+        // 返回
+        // el.style.transform = 'translate(0, 0)'
+      } else {
+        // fade
+      }
+    },
+    // 当与 CSS 结合使用时
+    // 回调函数 done 是可选的
+    leave: function(el, done) {
+      // ...
+      console.log("leave", el);
+      console.log(this.state.pageDirection);
+      let dir = this.state.pageDirection;
+      let to = this.state.routerMap.to.replace(/\//g, "_");
+      let from = this.state.routerMap.from.replace(/\//g, "_");
+      console.log("setRouterMap", dir);
+      console.log("setRouterMap", to);
+      console.log("setRouterMap", from);
+      console.log("-----------------");
+      // eslint-disable-next-line no-unused-expressions
+      el.offsetWidth;
+      if (dir === "slide-left") {
+        // el.style.transform = 'translate(-100%, 0)'
+        // el.style.transition = 'all 0.4s'
+        el.style.animation = "pageFromCenterToLeft 5000ms forwards";
+        el.style.zIndex = "1";
+      } else if (dir === "slide-right") {
+        // 返回
+        // el.style.transform = 'translate(100%, 0)'
+        // el.style.transition = 'all 0.4s'
+        el.style.animation = "pageFromCenterToRight 5000ms forwards";
+        el.style.boxShadow = " -3px 0 5px rgba(0, 0, 0, 0.1)";
+        el.style.zIndex = "10";
+      } else {
+        // fade
+      }
+
+      setTimeout(() => {
+        done();
+      }, 5000);
+      // done()
+    },
+    afterLeave: function(el) {
+      // ...
+      console.log("afterLeave", el);
+      console.log(this.state.pageDirection);
+      console.log("-----------------");
+    },
+
     addRouteChain(route) {
       console.log("addRouteChain - ", this.state.addCount);
       console.log("addRouteChain - ", localSessionRouteChain.length);
@@ -93,7 +247,6 @@ export default {
     },
     setPageDirection({ dir, to, from }) {
       this.state.pageDirection = dir;
-      this.pageDirection = dir;
       this.state.routerMap["to"] = to.path;
       this.state.routerMap["from"] = from.path;
     },
@@ -119,48 +272,6 @@ export default {
         } else {
         }
       } catch (error) {}
-    },
-    // --------
-    // 进入中
-    // --------
-
-    beforeEnter: function(el) {
-      // ...
-      console.log("beforeEnter", el);
-    },
-    // 当与 CSS 结合使用时
-    // 回调函数 done 是可选的
-    enter: function(el, done) {
-      // ...
-      console.log("enter", el);
-
-      done();
-    },
-    afterEnter: function(el) {
-      // ...
-      // ...
-      console.log("afterEnter", el);
-    },
-
-    // --------
-    // 离开时
-    // --------
-    beforeLeave: function(el) {
-      // ...
-      console.log("beforeLeave", el);
-    },
-    // 当与 CSS 结合使用时
-    // 回调函数 done 是可选的
-    leave: function(el, done) {
-      console.log("leave", el);
-
-      // ...
-      done();
-    },
-    afterLeave: function(el) {
-      console.log("leaafterLeaveve", el);
-
-      // ...
     }
   },
   mounted() {
@@ -203,25 +314,22 @@ export default {
     });
   },
   created() {
-    console.log("created😁😁😁  ", this.$route.meta);
-    console.log("created😁😁😁  ", this.state);
+    // console.log('created😁😁😁  ', this.$route.meta)
+    // console.log('created😁😁😁  ', this.state)
   },
   activated() {
-    console.log("activated😁😁😁  ", this.$route.meta);
-    console.log("activated😁😁😁  ", this.state);
+    // console.log('activated😁😁😁  ', this.$route.meta)
+    // console.log('activated😁😁😁  ', this.state)
   }
 };
 </script>
 
-<style scoped></style>
-
-<style scoped>
-.abc {
-  position: absolute;
+<style lang="less">
+html,
+body {
   width: 100%;
   height: 100%;
 }
-/* 子绝父相 */
 .vue-route-transition {
   position: absolute;
   width: 100%;
@@ -232,9 +340,8 @@ export default {
   backface-visibility: hidden;
   perspective: 1000;
 }
-
 .fade-enter-active {
-  animation: pageFadeIn 400ms forwards;
+  animation: pageFadeIn 5000ms forwards;
 }
 @keyframes pageFadeIn {
   from {
@@ -245,27 +352,28 @@ export default {
   }
 }
 
+/*路由前进，退出*/
+.slide-left-leave-active {
+  animation: pageFromCenterToLeft 5000ms forwards;
+  z-index: 1;
+}
+
 /*路由后退，进入*/
 .slide-right-enter-active {
-  animation: pageFromLeftToCenter 10000ms forwards;
+  animation: pageFromLeftToCenter 5000ms forwards;
   z-index: 1;
 }
 
 /*路由后退，退出*/
 .slide-right-leave-active {
-  animation: pageFromCenterToRight 10000ms forwards;
+  animation: pageFromCenterToRight 5000ms forwards;
   z-index: 10;
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/*路由前进，退出*/
-.slide-left-leave-active {
-  animation: pageFromCenterToLeft 10000ms forwards;
-  z-index: 9;
-}
 /*路由前进，进入*/
 .slide-left-enter-active {
-  animation: pageFromRightToCenter 10000ms forwards;
+  animation: pageFromRightToCenter 5000ms forwards;
   z-index: 10;
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
 }
@@ -288,6 +396,7 @@ export default {
 }
 
 /*路由前进，退出*/
+
 @keyframes pageFromCenterToLeft {
   from {
     opacity: 1;
