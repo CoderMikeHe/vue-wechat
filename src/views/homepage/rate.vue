@@ -1,6 +1,6 @@
 <template>
   <vue-route-layout>
-    <div class="xxoo"></div>
+    <div class="xxoo" @click="$router.back()"></div>
   </vue-route-layout>
 </template>
 <script>
@@ -12,6 +12,9 @@ export default {
   },
   mounted() {
     console.log("mmmm");
+  },
+  activated() {
+    console.log("nnnn");
   }
 };
 </script>

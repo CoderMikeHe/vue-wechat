@@ -12,7 +12,7 @@ const MomentsOther = resolve =>
   require(['./views/discover/other/MomentsOther.vue'], resolve)
 // 发现-朋友圈-全文
 const MomentsFullText = resolve =>
-require(['./views/discover/fullText/MomentsFullText.vue'], resolve)
+  require(['./views/discover/fullText/MomentsFullText.vue'], resolve)
 
 import Profile from './views/profile/Profile.vue'
 import AddFriends from './views/contacts/AddFriends.vue'
@@ -40,16 +40,18 @@ import CurrentLogin from './views/login/CurrentLogin.vue'
 // 其他账号登陆
 import OtherLogin from './views/login/OtherLogin.vue'
 // 语言选择
-import LanguagePicker from './views/login/languagePicker/LanguagePicker.vue';
+import LanguagePicker from './views/login/languagePicker/LanguagePicker.vue'
 
 // 主页
-const Homepage = Homepage => require(['./views/homepage/Homepage.vue'], Homepage)
+const Homepage = Homepage =>
+  require(['./views/homepage/Homepage.vue'], Homepage)
 // 主页
 const button = button => require(['./views/homepage/button.vue'], button)
 // 主页
 const rate = rate => require(['./views/homepage/rate.vue'], rate)
 // 聊天页面
-const ChatMessage = ChatMessage => require(['./views/mainframe/chat/ChatMessage.vue'], ChatMessage)
+const ChatMessage = ChatMessage =>
+  require(['./views/mainframe/chat/ChatMessage.vue'], ChatMessage)
 
 // import Homepage from './views/homepage/Homepage.vue'
 import Test from './views/discover/Test.vue'
@@ -62,7 +64,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/homepage'
+      redirect: '/button'
+    },
+    {
+      path: '/button',
+      name: 'button',
+      component: button,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/homepage',
@@ -80,7 +90,7 @@ export default new Router({
           component: button,
           meta: {
             keepAlive: true
-          },
+          }
         },
         {
           path: 'mainframe',
@@ -88,7 +98,7 @@ export default new Router({
           component: MainFrame,
           meta: {
             keepAlive: true
-          },
+          }
         },
         {
           path: 'contacts',
@@ -96,7 +106,7 @@ export default new Router({
           component: Contacts,
           meta: {
             keepAlive: true
-          },
+          }
         },
         {
           path: 'discover',
@@ -104,7 +114,7 @@ export default new Router({
           component: Discover,
           meta: {
             keepAlive: true
-          },
+          }
         },
         {
           path: 'profile',
@@ -112,14 +122,16 @@ export default new Router({
           component: Profile,
           meta: {
             keepAlive: true
-          },
+          }
         },
-        { path: '', redirect: '/homepage/button',
-        meta: {
-          keepAlive: true
-        },}
-      ],
-      
+        {
+          path: '',
+          redirect: '/homepage/button',
+          meta: {
+            keepAlive: true
+          }
+        }
+      ]
     },
     {
       path: '/rate',
@@ -197,7 +209,7 @@ export default new Router({
       name: 'moments', // 朋友圈
       component: Moments,
       meta: {
-        keepAlive: true  // 此组件需要缓存
+        keepAlive: true // 此组件需要缓存
       }
     },
     {
@@ -230,7 +242,7 @@ export default new Router({
       name: 'setting', // 设置
       component: Setting,
       meta: {
-        keepAlive: true  // 此组件需要缓存
+        keepAlive: true // 此组件需要缓存
       },
       children: [
         {
@@ -255,7 +267,7 @@ export default new Router({
       name: 'discover-manager',
       component: DiscoverManager
     }
-  ],
+  ]
 
   // 🔥 滚动行为
   // 👉 vue-router scrollBehavior无效的问题

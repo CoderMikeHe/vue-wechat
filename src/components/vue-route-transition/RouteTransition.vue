@@ -1,29 +1,27 @@
 <template>
   <!-- https://www.cnblogs.com/mmzuo-798/p/10712009.html -->
   <div class="vue-route-transition">
-    <!-- 需keep-alive -->
-    <transition :name="state.pageDirection" @leave="setRouterMap">
-      <keep-alive>
-        <router-view
-          v-if="keepAlive === true && $route.meta.keepAlive !== false"
-        ></router-view>
+    <transition :name="pageDirection">
+      <keep-alive v-show="$route.meta.keepAlive">
+        <router-view :kkk="pageDirection" id="mmnn"></router-view>
       </keep-alive>
     </transition>
-    <!-- 无需keep-alive -->
-    <transition :name="state.pageDirection" @leave="setRouterMap">
+    <transition :name="pageDirection">
       <router-view
-        v-if="keepAlive === false || $route.meta.keepAlive === false"
+        :kkk="pageDirection"
+        id="xxoo"
+        v-show="$route.meta.keepAlive === false"
       ></router-view>
     </transition>
     <!-- <transition :name="state.pageDirection" @leave="setRouterMap">
-      <keep-alive
-        v-if="this.keepAlive === true && $route.meta.keepAlive !== false"
-      >
-        <router-view
-          v-if="this.keepAlive === true && $route.meta.keepAlive !== false"
-        ></router-view>
-      </keep-alive>
-      <router-view v-else></router-view>
+      <div class="abc" v-if="$route.meta.keepAlive !== false" key="xx">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </div>
+      <div class="abc" v-if="$route.meta.keepAlive === false" key="oo">
+        <router-view></router-view>
+      </div>
     </transition> -->
   </div>
 </template>
@@ -48,6 +46,7 @@ export default {
       localSessionRouteChain = [];
     }
     return {
+      pageDirection: "fade",
       state: {
         addCount: localSessionRouteChain.length,
         routerMap: {},
@@ -94,6 +93,7 @@ export default {
     },
     setPageDirection({ dir, to, from }) {
       this.state.pageDirection = dir;
+      this.pageDirection = dir;
       this.state.routerMap["to"] = to.path;
       this.state.routerMap["from"] = from.path;
     },
@@ -119,6 +119,48 @@ export default {
         } else {
         }
       } catch (error) {}
+    },
+    // --------
+    // 进入中
+    // --------
+
+    beforeEnter: function(el) {
+      // ...
+      console.log("beforeEnter", el);
+    },
+    // 当与 CSS 结合使用时
+    // 回调函数 done 是可选的
+    enter: function(el, done) {
+      // ...
+      console.log("enter", el);
+
+      done();
+    },
+    afterEnter: function(el) {
+      // ...
+      // ...
+      console.log("afterEnter", el);
+    },
+
+    // --------
+    // 离开时
+    // --------
+    beforeLeave: function(el) {
+      // ...
+      console.log("beforeLeave", el);
+    },
+    // 当与 CSS 结合使用时
+    // 回调函数 done 是可选的
+    leave: function(el, done) {
+      console.log("leave", el);
+
+      // ...
+      done();
+    },
+    afterLeave: function(el) {
+      console.log("leaafterLeaveve", el);
+
+      // ...
     }
   },
   mounted() {
@@ -174,6 +216,11 @@ export default {
 <style scoped></style>
 
 <style scoped>
+.abc {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 /* 子绝父相 */
 .vue-route-transition {
   position: absolute;
@@ -200,25 +247,25 @@ export default {
 
 /*路由后退，进入*/
 .slide-right-enter-active {
-  animation: pageFromLeftToCenter 2000ms forwards;
+  animation: pageFromLeftToCenter 10000ms forwards;
   z-index: 1;
 }
 
 /*路由后退，退出*/
 .slide-right-leave-active {
-  animation: pageFromCenterToRight 2000ms forwards;
+  animation: pageFromCenterToRight 10000ms forwards;
   z-index: 10;
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 /*路由前进，退出*/
 .slide-left-leave-active {
-  animation: pageFromCenterToLeft 2000ms forwards;
+  animation: pageFromCenterToLeft 10000ms forwards;
   z-index: 9;
 }
 /*路由前进，进入*/
 .slide-left-enter-active {
-  animation: pageFromRightToCenter 2000ms forwards;
+  animation: pageFromRightToCenter 10000ms forwards;
   z-index: 10;
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
 }
