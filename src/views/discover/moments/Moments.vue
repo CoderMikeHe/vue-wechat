@@ -1,7 +1,7 @@
 // 朋友圈
 <template>
-  <div class="_full-container" @touchstart="touchstartAction">
-    <div class="_full-content">
+  <vue-route-layout>
+    <div class="_full-content" @touchstart="touchstartAction">
       <!-- 导航栏透明 -->
       <NavigationBar
         title="朋友圈"
@@ -254,7 +254,7 @@
         @on-index-change="logIndexChange"
       ></previewer>
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>
@@ -659,8 +659,12 @@ export default {
       if (this.lastOpacity !== opacity) {
         this.lastOpacity = opacity;
       }
-      // lastRefreshTop
-      this.lastRefreshTop = scrollTop;
+      // Fixed Bug: 20190715 不需要设置lastRefreshTop 过大，否则会导致出现两根滚动条的Bug
+      // lastRefreshTop 只要设置为 this.refreshShowValue - this.refreshHiddenValue 为临界点即可
+      this.lastRefreshTop = Math.min(
+        this.refreshShowValue - this.refreshHiddenValue,
+        scrollTop
+      );
     },
 
     // 导航栏有按钮点击事件

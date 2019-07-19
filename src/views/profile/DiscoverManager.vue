@@ -1,13 +1,25 @@
 // 发现页管理
 <template>
-  <div class="_full-container">
-    <NavigationBar title="发现页管理" :left-item="blackBackItem" @left-click="$router.back()"></NavigationBar>
-    <div class="_full-content _content-padding-top44">
-      <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
-        <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+  <vue-route-layout>
+    <NavigationBar
+      title="发现页管理"
+      :left-item="blackBackItem"
+      @left-click="$router.back()"
+    ></NavigationBar>
+    <div class="_content-padding-top44">
+      <div
+        class="mh-common-group"
+        v-for="(group, section) in dataSource"
+        :key="section"
+      >
+        <common
+          :group="group"
+          :section="section"
+          @did-select-row="didSelectRow"
+        ></common>
       </div>
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>

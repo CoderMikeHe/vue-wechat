@@ -122,21 +122,23 @@ export default {
         // 进入
         // el.style.transform = 'translate(0, 0)'
         // el.style.transition = 'all 0.4s'
-        el.style.animation = "pageFromRightToCenter 5000ms forwards";
+        el.style.animation = "pageFromRightToCenter 400ms forwards";
         el.style.zIndex = "10";
         el.style.boxShadow = " -3px 0 5px rgba(0, 0, 0, 0.1)";
       } else if (dir === "slide-right") {
         // 返回
         // el.style.transform = 'translate(0, 0)'
         // el.style.transition = 'transform 0.4s'
-        el.style.animation = "pageFromLeftToCenter 5000ms forwards";
+        el.style.animation = "pageFromLeftToCenter 400ms forwards";
         el.style.zIndex = "1";
       } else {
         // fade
+        el.style.animation = "pageFadeIn 400ms forwards";
       }
+      // 这里需要设置个定时器，否则消失的界面会立即隐藏掉
       setTimeout(() => {
         done();
-      }, 5000);
+      }, 400);
       // done()
     },
     afterEnter: function(el) {
@@ -185,22 +187,20 @@ export default {
       if (dir === "slide-left") {
         // el.style.transform = 'translate(-100%, 0)'
         // el.style.transition = 'all 0.4s'
-        el.style.animation = "pageFromCenterToLeft 5000ms forwards";
+        el.style.animation = "pageFromCenterToLeft 400ms forwards";
         el.style.zIndex = "1";
       } else if (dir === "slide-right") {
         // 返回
-        // el.style.transform = 'translate(100%, 0)'
-        // el.style.transition = 'all 0.4s'
-        el.style.animation = "pageFromCenterToRight 5000ms forwards";
+        el.style.animation = "pageFromCenterToRight 400ms forwards";
         el.style.boxShadow = " -3px 0 5px rgba(0, 0, 0, 0.1)";
         el.style.zIndex = "10";
       } else {
-        // fade
+        // fade out
+        el.style.animation = "pageFadeOut 400ms forwards";
       }
-
       setTimeout(() => {
         done();
-      }, 5000);
+      }, 400);
       // done()
     },
     afterLeave: function(el) {
@@ -324,25 +324,28 @@ export default {
 };
 </script>
 
-<style lang="less">
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
+<style scoped>
 .vue-route-transition {
-  position: absolute;
+  position: relative;
+  background-color: #ededed;
   width: 100%;
   height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex-direction: column;
   flex-direction: column;
   overflow: hidden;
   backface-visibility: hidden;
   perspective: 1000;
 }
+</style>
+
+<style>
 .fade-enter-active {
-  animation: pageFadeIn 5000ms forwards;
+  animation: pageFadeIn 400ms forwards;
 }
+/* fade 进入 */
 @keyframes pageFadeIn {
   from {
     opacity: 0;
@@ -351,29 +354,37 @@ body {
     opacity: 1;
   }
 }
+@keyframes pageFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 /*路由前进，退出*/
 .slide-left-leave-active {
-  animation: pageFromCenterToLeft 5000ms forwards;
+  animation: pageFromCenterToLeft 400ms forwards;
   z-index: 1;
 }
 
 /*路由后退，进入*/
 .slide-right-enter-active {
-  animation: pageFromLeftToCenter 5000ms forwards;
+  animation: pageFromLeftToCenter 400ms forwards;
   z-index: 1;
 }
 
 /*路由后退，退出*/
 .slide-right-leave-active {
-  animation: pageFromCenterToRight 5000ms forwards;
+  animation: pageFromCenterToRight 400ms forwards;
   z-index: 10;
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 /*路由前进，进入*/
 .slide-left-enter-active {
-  animation: pageFromRightToCenter 5000ms forwards;
+  animation: pageFromRightToCenter 400ms forwards;
   z-index: 10;
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
 }

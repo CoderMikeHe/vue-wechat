@@ -1,11 +1,20 @@
-// 更多信息
-// 个人信息
 <template>
-  <div class="_full-container">
-    <NavigationBar :left-item="blackBackItem" @left-click="$router.back()"></NavigationBar>
-    <div class="_full-content _content-padding-top44">
-      <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
-        <common :group="group" :section="section" @did-select-row="didSelectRow"></common>
+  <vue-route-layout>
+    <NavigationBar
+      :left-item="blackBackItem"
+      @left-click="$router.back()"
+    ></NavigationBar>
+    <div class="_content-padding-top44">
+      <div
+        class="mh-common-group"
+        v-for="(group, section) in dataSource"
+        :key="section"
+      >
+        <common
+          :group="group"
+          :section="section"
+          @did-select-row="didSelectRow"
+        ></common>
       </div>
       <!-- SwitchAccount -->
       <transition
@@ -15,7 +24,7 @@
         <router-view></router-view>
       </transition>
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>

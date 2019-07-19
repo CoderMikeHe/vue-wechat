@@ -1,7 +1,7 @@
 <template>
-  <div class="_full-content _content-padding-top44 _content-padding-bottom49">
+  <vue-route-layout>
     <NavigationBar title="发现"></NavigationBar>
-    <div>
+    <div class="_content-padding-top44 _content-padding-bottom49">
       <div
         class="mh-common-group"
         v-for="(group, section) in dataSource"
@@ -14,7 +14,7 @@
         ></common>
       </div>
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>

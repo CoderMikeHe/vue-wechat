@@ -1,11 +1,11 @@
 <template>
-  <div class="_full-container">
+  <vue-route-layout>
     <NavigationBar
       :left-item="blackBackItem"
       @left-click="$router.back()"
       title="富文本事件"
     ></NavigationBar>
-    <div class="_full-content _content-padding-top44">
+    <div class="_content-padding-top44">
       <h1 class="other__title">点击内容：👉{{ value }}</h1>
       <img
         class="previewer-demo-img"
@@ -16,7 +16,7 @@
         @click="show(index)"
       />
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>

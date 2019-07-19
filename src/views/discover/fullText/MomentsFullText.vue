@@ -1,11 +1,11 @@
 <template>
-  <div class="_full-container">
+  <vue-route-layout>
     <NavigationBar
       :left-item="blackBackItem"
       @left-click="$router.back()"
       title="全文"
     ></NavigationBar>
-    <div class="_full-content _content-padding-top44">
+    <div class="_content-padding-top44">
       <!-- 正文wrapper -->
       <div :style="style">
         <p
@@ -22,7 +22,7 @@
         :items="items"
       ></ActionSheet>
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>

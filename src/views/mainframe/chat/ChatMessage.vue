@@ -1,5 +1,5 @@
 <template>
-  <div class="_full-container">
+  <vue-route-layout>
     <NavigationBar
       :left-item="blackBackItem"
       :right-item="moreItem"
@@ -7,8 +7,8 @@
       @left-click="$router.back()"
       @right-click="rightItemClick"
     ></NavigationBar>
-    <div class="_full-content _content-padding-top44"></div>
-  </div>
+    <div class="_content-padding-top44"></div>
+  </vue-route-layout>
 </template>
 
 <script>

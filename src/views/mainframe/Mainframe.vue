@@ -1,147 +1,149 @@
 <template>
-  <div
-    class="_full-content _content-padding-bottom49"
-    :class="{ '_content-padding-top44': !isRelative }"
-    ref="scrollView"
-    @touchstart="handleTouchStart"
-    @touchmove="handleTouchMove"
-    @touchend="handleTouchEnd"
-    @touchcancel="handleTouchEnd"
-    @scroll.passive="onScroll"
-  >
-    <!-- 小程序模块 -->
-    <div class="applet__wrapper" :style="appletWrapperStyle">
-      <div class="applet__content" :style="appletContentStyle" v-if="show">
-        <Applet ref="applet" @on-load-more="hiddenApplet"></Applet>
-      </div>
-    </div>
-    <!-- 顶部下拉点模块 -->
-    <div class="dropped__wrapper" :style="droppedWrapperStyle">
-      <div class="dropped__dots" :style="droppedDotsStyle">
-        <div class="dot" :style="leftDotStyle"></div>
-        <div class="dot" :style="centerDotStyle"></div>
-        <div class="dot" :style="rightDotStyle"></div>
-      </div>
-    </div>
-    <!-- PS: 因为用了 transform 会导致 fixed失效 -->
+  <vue-route-layout>
     <div
-      class="content__wrapper"
-      :style="transform"
-      :class="{ 'dropped-animation': topDropped }"
+      class="_full-content _content-padding-bottom49"
+      :class="{ '_content-padding-top44': !isRelative }"
+      ref="scrollView"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+      @touchcancel="handleTouchEnd"
+      @scroll.passive="onScroll"
     >
-      <!-- topView -->
-      <div class="topView" :style="topViewStyle"></div>
-      <!-- 导航栏 -->
-      <NavigationBar
-        :right-item="addItem"
-        :title="navTitle"
-        @right-click="rightItemDidClicked"
-        :class="{ relative: isRelative }"
-      ></NavigationBar>
-      <div class="content">
-        <div class="weui-search-bar" id="searchBar">
-          <form class="weui-search-bar__form">
-            <div class="weui-search-bar__box">
-              <i class="weui-icon-search"></i>
-              <input
-                type="search"
-                class="weui-search-bar__input"
-                id="searchInput"
-                placeholder="搜索"
-                required
-              />
-              <a
-                href="javascript:"
-                class="weui-icon-clear"
-                id="searchClear"
-              ></a>
-            </div>
-            <label class="weui-search-bar__label" id="searchText">
-              <i class="weui-icon-search"></i>
-              <span>搜索</span>
-            </label>
-          </form>
+      <!-- 小程序模块 -->
+      <div class="applet__wrapper" :style="appletWrapperStyle">
+        <div class="applet__content" :style="appletContentStyle" v-if="show">
+          <Applet ref="applet" @on-load-more="hiddenApplet"></Applet>
         </div>
-        <div
-          class="content__item _mh-tap-highlight"
-          v-for="(item, index) in dataSource"
-          :key="index"
-          @click="skip2Chat(index)"
-        >
-          <div class="item__hd">
-            <!-- 头像 -->
-            <Avatars :srcs="item.avatars"></Avatars>
-            <!-- 红点 -->
-            <span
-              v-show="item.badge && item.badge.show"
-              :class="{ 'weui-badge_dot': item.badge && item.badge.dot }"
-              class="weui-badge"
-              >{{ item.badge ? item.badge.text : "" }}</span
-            >
+      </div>
+      <!-- 顶部下拉点模块 -->
+      <div class="dropped__wrapper" :style="droppedWrapperStyle">
+        <div class="dropped__dots" :style="droppedDotsStyle">
+          <div class="dot" :style="leftDotStyle"></div>
+          <div class="dot" :style="centerDotStyle"></div>
+          <div class="dot" :style="rightDotStyle"></div>
+        </div>
+      </div>
+      <!-- PS: 因为用了 transform 会导致 fixed失效 -->
+      <div
+        class="content__wrapper"
+        :style="transform"
+        :class="{ 'dropped-animation': topDropped }"
+      >
+        <!-- topView -->
+        <div class="topView" :style="topViewStyle"></div>
+        <!-- 导航栏 -->
+        <NavigationBar
+          :right-item="addItem"
+          :title="navTitle"
+          @right-click="rightItemDidClicked"
+          :class="{ relative: isRelative }"
+        ></NavigationBar>
+        <div class="content">
+          <div class="weui-search-bar" id="searchBar">
+            <form class="weui-search-bar__form">
+              <div class="weui-search-bar__box">
+                <i class="weui-icon-search"></i>
+                <input
+                  type="search"
+                  class="weui-search-bar__input"
+                  id="searchInput"
+                  placeholder="搜索"
+                  required
+                />
+                <a
+                  href="javascript:"
+                  class="weui-icon-clear"
+                  id="searchClear"
+                ></a>
+              </div>
+              <label class="weui-search-bar__label" id="searchText">
+                <i class="weui-icon-search"></i>
+                <span>搜索</span>
+              </label>
+            </form>
           </div>
-          <div class="item__bd">
-            <div class="item__top">
-              <div class="item__name">{{ item.screen_name }}</div>
-              <div class="item__time">{{ item.createdAt }}</div>
+          <div
+            class="content__item _mh-tap-highlight"
+            v-for="(item, index) in dataSource"
+            :key="index"
+            @click="skip2Chat(index)"
+          >
+            <div class="item__hd">
+              <!-- 头像 -->
+              <Avatars :srcs="item.avatars"></Avatars>
+              <!-- 红点 -->
+              <span
+                v-show="item.badge && item.badge.show"
+                :class="{ 'weui-badge_dot': item.badge && item.badge.dot }"
+                class="weui-badge"
+                >{{ item.badge ? item.badge.text : "" }}</span
+              >
             </div>
-            <div class="item__bottom">
-              <div class="item__text">{{ item.text }}</div>
-              <!-- <div class="item__icon">2019/6/6</div> -->
+            <div class="item__bd">
+              <div class="item__top">
+                <div class="item__name">{{ item.screen_name }}</div>
+                <div class="item__time">{{ item.createdAt }}</div>
+              </div>
+              <div class="item__bottom">
+                <div class="item__text">{{ item.text }}</div>
+                <!-- <div class="item__icon">2019/6/6</div> -->
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- mask -->
-    <div
-      class="mh-mainframe__mask"
-      v-if="showMenu"
-      @click.stop="showMenu = false"
-      @touchstart.stop
-      @touchmove.stop
-      @touchend.stop
-      @touchcancel.stop
-    ></div>
-    <ul
-      class="mh-more__menu"
-      :class="[showMenu ? 'mh-more__menu-open' : 'mh-more__menu-close']"
-      @click.stop="showMenu = false"
-    >
-      <li @click="menuItemDidClicked(0)">
-        <div>
-          <span
-            class="iconfont icon-mainframe-message mh-more__menu-item-icon"
-          ></span
-          >发起群聊
-        </div>
-      </li>
-      <router-link tag="li" to="/contacts/add-friends">
-        <div>
-          <span
-            class="iconfont icon-mainframe-add-friend mh-more__menu-item-icon"
-          ></span
-          >添加朋友
-        </div>
-      </router-link>
-      <li @click="menuItemDidClicked(2)">
-        <div>
-          <span
-            class="iconfont icon-mainframe-scan mh-more__menu-item-icon"
-          ></span
-          >扫一扫
-        </div>
-      </li>
-      <li @click="menuItemDidClicked(3)">
-        <div>
-          <span
-            class="iconfont icon-mainframe-pay mh-more__menu-item-icon"
-          ></span
-          >收付款
-        </div>
-      </li>
-    </ul>
-  </div>
+      <!-- mask -->
+      <div
+        class="mh-mainframe__mask"
+        v-if="showMenu"
+        @click.stop="showMenu = false"
+        @touchstart.stop
+        @touchmove.stop
+        @touchend.stop
+        @touchcancel.stop
+      ></div>
+      <ul
+        class="mh-more__menu"
+        :class="[showMenu ? 'mh-more__menu-open' : 'mh-more__menu-close']"
+        @click.stop="showMenu = false"
+      >
+        <li @click="menuItemDidClicked(0)">
+          <div>
+            <span
+              class="iconfont icon-mainframe-message mh-more__menu-item-icon"
+            ></span
+            >发起群聊
+          </div>
+        </li>
+        <router-link tag="li" to="/contacts/add-friends">
+          <div>
+            <span
+              class="iconfont icon-mainframe-add-friend mh-more__menu-item-icon"
+            ></span
+            >添加朋友
+          </div>
+        </router-link>
+        <li @click="menuItemDidClicked(2)">
+          <div>
+            <span
+              class="iconfont icon-mainframe-scan mh-more__menu-item-icon"
+            ></span
+            >扫一扫
+          </div>
+        </li>
+        <li @click="menuItemDidClicked(3)">
+          <div>
+            <span
+              class="iconfont icon-mainframe-pay mh-more__menu-item-icon"
+            ></span
+            >收付款
+          </div>
+        </li>
+      </ul>
+    </div>
+  </vue-route-layout>
 </template>
 
 <script>
@@ -282,21 +284,21 @@ export default {
     menuItemDidClicked(index) {
       console.log(index);
       switch (index) {
-      case 0: // 发起群聊
-        this.$router.push("/test");
-        break;
-      case 1: // 添加朋友
-        // this.$router.push("/test");
-        // console.log("mlgb");
-        break;
-      case 2: // 扫一扫
-        break;
-      case 3: // 收付款
-        this.$router.push("/test");
-        break;
+        case 0: // 发起群聊
+          this.$router.push("/test");
+          break;
+        case 1: // 添加朋友
+          // this.$router.push("/test");
+          // console.log("mlgb");
+          break;
+        case 2: // 扫一扫
+          break;
+        case 3: // 收付款
+          this.$router.push("/test");
+          break;
 
-      default:
-        break;
+        default:
+          break;
       }
     },
 

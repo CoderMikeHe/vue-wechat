@@ -5,7 +5,7 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <!-- <TabBar></TabBar> -->
+    <TabBar></TabBar>
   </vue-route-layout>
 </template>
 

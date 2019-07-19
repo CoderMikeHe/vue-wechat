@@ -64,15 +64,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/button'
-    },
-    {
-      path: '/button',
-      name: 'button',
-      component: button,
-      meta: {
-        keepAlive: true
-      }
+      redirect: '/homepage'
     },
     {
       path: '/homepage',
@@ -84,14 +76,6 @@ export default new Router({
         keepAlive: true
       },
       children: [
-        {
-          path: 'button',
-          name: 'button',
-          component: button,
-          meta: {
-            keepAlive: true
-          }
-        },
         {
           path: 'mainframe',
           name: 'mainframe',
@@ -126,7 +110,7 @@ export default new Router({
         },
         {
           path: '',
-          redirect: '/homepage/button',
+          redirect: '/homepage/mainframe',
           meta: {
             keepAlive: true
           }

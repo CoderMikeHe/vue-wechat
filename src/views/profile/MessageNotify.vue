@@ -1,13 +1,21 @@
 // 新消息通知
 <template>
-  <div class="_full-container">
-    <NavigationBar title="新消息通知" :left-item="blackBackItem" @left-click="$router.back()"></NavigationBar>
-    <div class="_full-content _content-padding-top44">
-      <div class="mh-common-group" v-for="(group,section) in dataSource" :key="section">
+  <vue-route-layout>
+    <div class="_content-padding-top44">
+      <NavigationBar
+        title="新消息通知"
+        :left-item="blackBackItem"
+        @left-click="$router.back()"
+      ></NavigationBar>
+      <div
+        class="mh-common-group"
+        v-for="(group, section) in dataSource"
+        :key="section"
+      >
         <common :group="group" :section="section"></common>
       </div>
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>

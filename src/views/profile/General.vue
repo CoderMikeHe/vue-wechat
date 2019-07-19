@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <vue-route-layout>
     <NavigationBar
       title="通用"
       :left-item="blackBackItem"
       @left-click="$router.back()"
     ></NavigationBar>
-    <div class="_full-content _content-padding-top44">
+    <div class="_content-padding-top44">
       <div
         class="mh-common-group"
         v-for="(group, section) in dataSource"
@@ -23,15 +23,15 @@
           <a class="mh-center-content _mh-cell-access">清空聊天记录</a>
         </div>
       </div>
-      <!-- ActionSheet -->
-      <actionSheet
-        v-model="showActionSheet"
-        :items="items"
-        title="将删除所有个人和群的聊天记录"
-        @did-click-item="didClickItem"
-      ></actionSheet>
     </div>
-  </div>
+    <!-- ActionSheet -->
+    <actionSheet
+      v-model="showActionSheet"
+      :items="items"
+      title="将删除所有个人和群的聊天记录"
+      @did-click-item="didClickItem"
+    ></actionSheet>
+  </vue-route-layout>
 </template>
 
 <script>
@@ -124,18 +124,7 @@ export default {
       });
       group4.items = [chatRecord, storageSpace];
 
-      this.dataSource = [
-        group0,
-        group1,
-        group2,
-        group3,
-        group4,
-        group0,
-        group1,
-        group2,
-        group3,
-        group4
-      ];
+      this.dataSource = [group0, group1, group2, group3, group4];
     },
     // item点击事件
     didSelectRow(section, row) {

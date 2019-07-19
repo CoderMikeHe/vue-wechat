@@ -1,25 +1,27 @@
 <template>
-  <div class="_full-content _content-padding-top44 _content-padding-bottom49">
+  <vue-route-layout>
     <NavigationBar
       title="通讯录"
       :right-item="addFriendsItem"
       @right-click="rightItemDidClicked"
     ></NavigationBar>
-    <SlotTest>
-      <!-- <div slot="header">我是头部</div>
+    <div class="_content-padding-top44 _content-padding-bottom49">
+      <SlotTest>
+        <!-- <div slot="header">我是头部</div>
       <div>我是默认</div>
       <div slot="footer">我是尾部</div> -->
-      <template v-slot:header>
-        <div slot="header">我是头部</div>
-      </template>
-      <template v-slot:default="slotProps">{{
-        slotProps.user.lastName
-      }}</template>
-      <template v-slot:footer>
-        <div>我是尾部</div>
-      </template>
-    </SlotTest>
-  </div>
+        <template v-slot:header>
+          <div slot="header">我是头部</div>
+        </template>
+        <template v-slot:default="slotProps">{{
+          slotProps.user.lastName
+        }}</template>
+        <template v-slot:footer>
+          <div>我是尾部</div>
+        </template>
+      </SlotTest>
+    </div>
+  </vue-route-layout>
 </template>
 
 <script>
