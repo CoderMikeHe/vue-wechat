@@ -1,31 +1,26 @@
 <template>
-  <div class="_full-container">
-    <div class="_full-content">
-      <!-- 背景图片 -->
-      <div class="background-image"></div>
-      <!-- 语言按钮 -->
-      <a href="javascript:;" class="language" @click="skipToLanguageList">{{
-        language
-      }}</a>
-      <!-- 登陆或注册 -->
-      <div class="login-register">
-        <!-- 登陆按钮 -->
-        <a
-          href="javascript:;"
-          class="mh-btn mh-btn_primary login"
-          @click="login"
-          >登录</a
-        >
-        <!-- 注册按钮 -->
-        <a
-          href="javascript:;"
-          class="mh-btn mh-btn_primary register"
-          @click="register"
-          >注册</a
-        >
-      </div>
+  <vue-route-layout>
+    <!-- 背景图片 -->
+    <div class="background-image"></div>
+    <!-- 语言按钮 -->
+    <a href="javascript:;" class="language" @click="skipToLanguageList">{{
+      language
+    }}</a>
+    <!-- 登陆或注册 -->
+    <div class="login-register">
+      <!-- 登陆按钮 -->
+      <a href="javascript:;" class="mh-btn mh-btn_primary login" @click="login"
+        >登录</a
+      >
+      <!-- 注册按钮 -->
+      <a
+        href="javascript:;"
+        class="mh-btn mh-btn_primary register"
+        @click="register"
+        >注册</a
+      >
     </div>
-  </div>
+  </vue-route-layout>
 </template>
 
 <script>
@@ -59,7 +54,11 @@ export default {
     },
 
     // 注册
-    register() {}
+    register() {
+      this.$router.push({
+        name: "Register"
+      });
+    }
   }
 };
 </script>

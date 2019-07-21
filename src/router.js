@@ -64,7 +64,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/homepage'
+      redirect: '/login'
     },
     {
       path: '/homepage',
@@ -152,6 +152,11 @@ export default new Router({
       path: '/language-picker',
       name: 'LanguagePicker',
       component: LanguagePicker
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register => require(['./views/login/Register.vue'], Register)
     },
     {
       path: '/current-login/other-login',
