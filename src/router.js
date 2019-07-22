@@ -37,8 +37,7 @@ import DataSetting from './views/contacts/DataSetting.vue'
 const Login = resolve => require(['./views/login/Login.vue'], resolve)
 // 当前账号登陆
 import CurrentLogin from './views/login/CurrentLogin.vue'
-// 其他账号登陆
-import OtherLogin from './views/login/OtherLogin.vue'
+
 // 语言选择
 import LanguagePicker from './views/login/languagePicker/LanguagePicker.vue'
 
@@ -161,7 +160,15 @@ export default new Router({
     {
       path: '/current-login/other-login',
       name: 'other-login',
-      component: OtherLogin
+      component: OtherLogin => require(['./views/login/OtherLogin.vue'], OtherLogin),
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/phone-login',
+      name: 'PhoneLogin',
+      component: PhoneLogin => require(['./views/login/phoneLogin/PhoneLogin.vue'], PhoneLogin)
     },
     // {
     //   path: '/mainframe',

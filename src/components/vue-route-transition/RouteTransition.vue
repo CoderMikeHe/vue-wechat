@@ -44,7 +44,7 @@
       v-bind:css="false"
     >
       <router-view
-        v-if="keepAlive === false || $route.meta.keepAlive === false"
+        v-if="keepAlive === false || !$route.meta.keepAlive"
       ></router-view>
     </transition>
     <!-- <transition-group :name="state.pageDirection" @leave="setRouterMap">
@@ -106,15 +106,15 @@ export default {
       }
 
       console.log(el.style.transform);
-      console.log("-----------------");
+      // console.log("-----------------");
     },
     // 当与 CSS 结合使用时
     // 回调函数 done 是可选的
     enter: function(el, done) {
       // ...
-      console.log("enter", el);
-      console.log(this.state.pageDirection);
-      console.log("-----------------");
+      // console.log("enter", el);
+      // console.log(this.state.pageDirection);
+      // console.log("-----------------");
       // eslint-disable-next-line no-unused-expressions
       el.offsetWidth;
       let dir = this.state.pageDirection;
@@ -143,9 +143,9 @@ export default {
     },
     afterEnter: function(el) {
       // ...
-      console.log("afterEnter", el);
-      console.log(this.state.pageDirection);
-      console.log("-----------------");
+      // console.log("afterEnter", el);
+      // console.log(this.state.pageDirection);
+      // console.log("-----------------");
     },
 
     // --------
@@ -154,9 +154,9 @@ export default {
 
     beforeLeave: function(el) {
       // ...
-      console.log("beforeLeave", el);
-      console.log(this.state.pageDirection);
-      console.log("-----------------");
+      // console.log("beforeLeave", el);
+      // console.log(this.state.pageDirection);
+      // console.log("-----------------");
 
       let dir = this.state.pageDirection;
       if (dir === "slide-left") {
@@ -173,15 +173,15 @@ export default {
     // 回调函数 done 是可选的
     leave: function(el, done) {
       // ...
-      console.log("leave", el);
-      console.log(this.state.pageDirection);
+      // console.log("leave", el);
+      // console.log(this.state.pageDirection);
       let dir = this.state.pageDirection;
       let to = this.state.routerMap.to.replace(/\//g, "_");
       let from = this.state.routerMap.from.replace(/\//g, "_");
-      console.log("setRouterMap", dir);
-      console.log("setRouterMap", to);
-      console.log("setRouterMap", from);
-      console.log("-----------------");
+      // console.log("setRouterMap", dir);
+      // console.log("setRouterMap", to);
+      // console.log("setRouterMap", from);
+      // console.log("-----------------");
       // eslint-disable-next-line no-unused-expressions
       el.offsetWidth;
       if (dir === "slide-left") {
@@ -205,18 +205,18 @@ export default {
     },
     afterLeave: function(el) {
       // ...
-      console.log("afterLeave", el);
-      console.log(this.state.pageDirection);
-      console.log("-----------------");
+      // console.log("afterLeave", el);
+      // console.log(this.state.pageDirection);
+      // console.log("-----------------");
     },
 
     addRouteChain(route) {
-      console.log("addRouteChain - ", this.state.addCount);
-      console.log("addRouteChain - ", localSessionRouteChain.length);
+      // console.log("addRouteChain - ", this.state.addCount);
+      // console.log("addRouteChain - ", localSessionRouteChain.length);
       if (this.state.addCount === 0 && localSessionRouteChain.length > 0) {
         // 排除刷新的时候
         this.state.addCount = 1;
-        console.log("哭泣哭泣");
+        // console.log("哭泣哭泣");
       } else {
         if (
           this.state.addCount === 0 ||
@@ -255,9 +255,9 @@ export default {
       let dir = this.state.pageDirection;
       let to = this.state.routerMap.to.replace(/\//g, "_");
       let from = this.state.routerMap.from.replace(/\//g, "_");
-      console.log("setRouterMap", dir);
-      console.log("setRouterMap", to);
-      console.log("setRouterMap", from);
+      // console.log("setRouterMap", dir);
+      // console.log("setRouterMap", to);
+      // console.log("setRouterMap", from);
       try {
         if (dir === "slide-left") {
           // 进入

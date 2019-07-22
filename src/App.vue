@@ -20,15 +20,23 @@
       <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
   </div> -->
-  <vue-route-transition :keepAlive="true"></vue-route-transition>
+  <!-- 启动页 -->
+  <div id="app">
+    <Launch></Launch>
+    <vue-route-transition :keepAlive="true"></vue-route-transition>
+  </div>
 </template>
 
 <script>
 import tabBar from "./components/tabBar/TabBar";
 import navigationBar from "./components/navigationBar/NavigationBar";
 import MHBarButtonItem from "./assets/js/MHBarButtonItem.js";
+import Launch from "./components/launch/Launch";
 export default {
   name: "app",
+  components: {
+    Launch
+  },
   data() {
     return {
       blackBackItem: new MHBarButtonItem(
@@ -40,10 +48,7 @@ export default {
       leaveAnimate: "" // 页面离开动效
     };
   },
-  components: {
-    tabBar,
-    navigationBar
-  },
+
   watch: {
     // 监听路由变化 设置页面的过度效果
     $route(to, from) {
@@ -86,10 +91,11 @@ export default {
 
 <style scoped>
 /* app 容器 */
-.app__wrapper {
+#app {
   overflow: hidden;
   position: relative;
   height: 100%;
+  width: 100%;
 }
 
 /*

@@ -56,14 +56,6 @@ MHPreferenceSettingHelper.initialize()
 // }
 
 
-// 记录样式
-router.beforeEach((to, from , next) => {
-  // ...
-  console.log('beforeEach-to', to)
-  console.log('beforeEach-from', from)
-  next()
-})
-
 new Vue({
   router,
   store,

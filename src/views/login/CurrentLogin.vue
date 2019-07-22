@@ -145,13 +145,13 @@ export default {
   methods: {
     itemDidClick(idx) {
       switch (idx) {
-        case 0:
-          break;
-        case 1:
-          break;
-        default:
-          this.showActionSheet = true;
-          break;
+      case 0:
+        break;
+      case 1:
+        break;
+      default:
+        this.showActionSheet = true;
+        break;
       }
     },
     // 配置actionsheet items
@@ -171,12 +171,12 @@ export default {
     didClickItem(idx) {
       if (idx === 0) return;
       switch (idx) {
-        case 1:
-          break;
-        case 2:
-          break;
-        default:
-          break;
+      case 1:
+        break;
+      case 2:
+        break;
+      default:
+        break;
       }
     },
     changeBtnDidClick() {
@@ -394,13 +394,13 @@ export default {
 .mh-current-login__more-item:not(:last-child)::after {
   content: "";
   position: absolute;
-  width: 1px;
+  width: 2px;
   top: 0;
   right: 0;
   bottom: 0;
   background-color: #000;
-  -webkit-transform: scale(0.5);
-  -ms-transform: scale(0.5);
-  transform: scale(0.5);
+  -webkit-transform: scaleY(0.5);
+  -ms-transform: scaleY(0.5);
+  transform: scaleY(0.5);
 }
 </style>

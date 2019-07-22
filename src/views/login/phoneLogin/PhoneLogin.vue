@@ -5,83 +5,85 @@
     <p class="mh-nav-close-btn">
       <span class="iconfont icon-navbar-close" @click="$router.back()"></span>
     </p>
+
     <!-- 中间内容 -->
     <div class="mh-current-login__container">
+      <!-- 手机号登录 -->
+      <h1>手机号登录</h1>
+      <div class="mh-current-login__cell">
+        <div class="mh-current-login__cell-hd">
+          <label class="mh-current-login__label">手机号</label>
+        </div>
+        <div class="mh-current-login__cell-bd">
+          {{ "+" + zoneCode + " " + phone }}
+        </div>
+      </div>
+      <!-- 过渡动画 -->
       <transition name="left">
-        <!-- 手机号登录 -->
         <div
-          class="mh-current-login__panel mh-current-login__password"
+          class="mh-current-login__cell mh-current-login__password"
           key="password"
           v-if="showPasswordWay"
         >
-          <h1>手机号登录</h1>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">国家/地区</label>
-            </div>
-            <div class="mh-current-login__cell-bd">
-              <p class="mh-zone-title" @click="skipZoneList">中国</p>
-            </div>
-            <div class="mh-current-login__cell-ft">
-              <img
-                class="mh-right-arrow"
-                src="@/assets/images/common/tableview_arrow_8x13.png"
-              />
-            </div>
+          <div class="mh-current-login__cell-hd">
+            <label class="mh-current-login__label">密码</label>
           </div>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <div class="mh-zone-code-container">
-                <label class="zone">+</label>
-                <input
-                  class="mh-current-login__input mh-zone"
-                  type="text"
-                  v-model="zoneCode"
-                />
-              </div>
-            </div>
-            <div class="mh-current-login__cell-bd">
+          <div class="mh-current-login__cell-bd">
+            <div class="mh-input__wrapper">
               <input
-                class="mh-current-login__input"
-                type="text"
-                placeholder="请填写手机号码"
-                v-model="phone"
+                required="required"
+                class="mh-input"
+                type="password"
+                placeholder="请填写密码"
+                v-model="password"
               />
+              <a
+                href="javascript:;"
+                class="mh-input-clear"
+                @click="clearAllPassword"
+              >
+                <img
+                  src="@/assets/images/input/input_clear.png"
+                  class="mh-input-clear__clear"
+                  alt=""
+                />
+              </a>
             </div>
           </div>
         </div>
-        <!-- 微信号/QQ号/邮箱登录 -->
         <div
-          class="mh-current-login__panel mh-current-login__captcha"
+          class="mh-current-login__cell mh-current-login__captcha"
           key="captcha"
           v-else
         >
-          <h1>微信号/QQ号/邮箱登录</h1>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">账号</label>
-            </div>
-            <div class="mh-current-login__cell-bd">
+          <div class="mh-current-login__cell-hd">
+            <label class="mh-current-login__label">验证码</label>
+          </div>
+          <div class="mh-current-login__cell-bd">
+            <div class="mh-input__wrapper input-captcha">
               <input
-                class="mh-current-login__input"
-                type="text"
-                placeholder="微信号/QQ号/邮箱"
-                v-model="account"
+                required="required"
+                class="mh-input"
+                type="tel"
+                maxlength="6"
+                placeholder="请输入验证码"
+                v-model="captcha"
               />
+              <a
+                href="javascript:;"
+                class="mh-input-clear"
+                @click="clearAllCaptcha"
+              >
+                <img
+                  src="@/assets/images/input/input_clear.png"
+                  class="mh-input-clear__clear"
+                  alt=""
+                />
+              </a>
             </div>
           </div>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">密码</label>
-            </div>
-            <div class="mh-current-login__cell-bd">
-              <input
-                class="mh-current-login__input"
-                type="password"
-                placeholder="请填写QQ密码"
-                v-model="password"
-              />
-            </div>
+          <div class="mh-current-login__cell-ft">
+            <div class="captcha-btn">获取验证码</div>
           </div>
         </div>
       </transition>
@@ -97,17 +99,7 @@
         class="mh-btn mh-btn_primary"
         :class="{ 'mh-btn_disabled': loginBtnDisabled }"
         @click="login"
-        >{{ loginBtnTitle }}</a
-      >
-    </div>
-
-    <!-- 底部更多面板 -->
-    <div class="mh-current-login__more">
-      <span class="mh-current-login__more-item" @click="itemDidClick(0)"
-        >找回密码</span
-      >
-      <span class="mh-current-login__more-item" @click="itemDidClick(1)"
-        >更多选项</span
+        >登陆</a
       >
     </div>
 
@@ -125,7 +117,7 @@ import ActionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
 export default {
-  name: "OtherLogin",
+  name: "phone-login",
   data() {
     return {
       // 显示ActionSheet
@@ -133,18 +125,23 @@ export default {
       items: [],
       // 默认是登录密码
       showPasswordWay: true,
-      // 账号
-      account: "",
       // 密码
       password: "",
       // 地区编号
-      zoneCode: "86",
+      zoneCode: "",
       // 手机号
-      phone: ""
+      phone: "",
+      // 验证码
+      captcha: ""
     };
   },
   created() {
     this.configItems();
+    console.log("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥M呕吐hi");
+    console.log(this.$route);
+    // 路由传参赋值
+    this.phone = this.$route.params.phone;
+    this.zoneCode = this.$route.params.zoneCode;
   },
   mounted() {},
   methods: {
@@ -186,78 +183,60 @@ export default {
     },
     // 登陆事件
     login() {
-      // 跳转到手机登陆
-      if (this.loginBtnDisabled) {
-        return;
-      }
-      if (this.showPasswordWay) {
-        // 跳转到手机登陆
-        this.$router.push({
-          name: "PhoneLogin",
-          params: {
-            phone: this.phone,
-            zoneCode: this.zoneCode
-          }
-        });
-      } else {
-        // 对账号做验证 TODO
+      // 登陆账号
+      // 模拟网络加载
+      setTimeout(() => {
+        const user = {
+          /// PS: 假设请求到数据模型是  User模型
+          screen_name: "Mike-乱港三千-Mr_元先森",
+          idstr: "61856069",
+          profile_image_url:
+            "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
+          avatar_large: "",
+          /// 用户的封面
+          coverImageUrl:
+            "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
+          coverImage: "Kris.jpeg",
 
-        // 登陆账号
-        // 模拟网络加载
-        setTimeout(() => {
-          const user = {
-            /// PS: 假设请求到数据模型是  User模型
-            screen_name: "Mike-乱港三千-Mr_元先森",
-            idstr: "61856069",
-            profile_image_url:
-              "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
-            avatar_large: "",
-            /// 用户的封面
-            coverImageUrl:
-              "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
-            coverImage: "Kris.jpeg",
-
-            /// 假设是这里统一都是qq号码登录
-            qq: this.account,
-            email: this.account + "@qq.com", // PS：机智，拼接成QQ邮箱
-            wechatId: "codermikehe", // PS：瞎写的
-            phone: "13874385438", // PS：瞎写的
-            // 登陆渠道：QQ登陆
-            channel: "QQ",
-            // -- 0 Boy -- 1 Girl
-            gender: 0,
-            // 个新签名
-            featureSign: "生死看淡，不服就干"
-          };
-
-          // 归档登陆账号
-          this.$store.commit("loginUser", user);
-
-          // 跳转登陆
-          this.$router.push("/homepage");
-        }, 3000);
-      }
+          /// 假设是这里统一都是qq号码登录
+          qq: "491273090",
+          email: "491273090" + "@qq.com", // PS：机智，拼接成QQ邮箱
+          wechatId: "codermikehe", // PS：瞎写的
+          phone: this.phone, // PS：瞎写的
+          // 登陆渠道：手机号登陆
+          channel: "Mobile Phone",
+          // -- 0 雄性 -- 1 女孩
+          gender: 0,
+          // 个新签名
+          featureSign: "生死看淡，不服就干"
+        };
+        // 归档登陆账号 TODO
+        // 归档用户信息
+        this.$store.commit("loginUser", user);
+        // 跳转登陆
+        this.$router.push("/homepage");
+      }, 3000);
     },
-    // 跳转地区列表
-    skipZoneList() {}
+
+    // 清除按钮事件
+    clearAllPassword() {
+      this.password = "";
+    },
+    clearAllCaptcha() {
+      this.captcha = "";
+    }
   },
   computed: {
     // 切换名称
     changeLogin() {
-      return this.showPasswordWay ? "用微信号/QQ号/邮箱登录" : "用手机号登录";
-    },
-
-    // loginBtnTitle
-    loginBtnTitle() {
-      return this.showPasswordWay ? "下一步" : "登录";
+      return this.showPasswordWay ? "用短信验证码登录" : "用密码登录";
     },
 
     // 登录按钮是否无效
     loginBtnDisabled() {
-      console.log("🔥😴😿", this.account);
       return this.showPasswordWay
-        ? this.phone.length <= 0
-        : this.account.length <= 0 || this.password.length <= 0;
+        ? this.password.length <= 0
+        : this.captcha.length <= 0;
     }
   },
   components: {
@@ -305,7 +284,7 @@ export default {
 .mh-current-login__panel {
   height: 168px;
 }
-.mh-current-login__panel h1 {
+.mh-current-login__container h1 {
   font-size: 24px;
   font-weight: 500;
   padding: 0 20px;
@@ -344,14 +323,12 @@ export default {
 .mh-current-login__password {
   position: absolute;
   left: 0;
-  top: 0;
   bottom: 0;
   width: 100%;
 }
 .mh-current-login__captcha {
   position: absolute;
   left: 0;
-  top: 0;
   bottom: 0;
   width: 100%;
 }
@@ -420,15 +397,6 @@ export default {
   line-height: 45px;
   -webkit-appearance: searchfield;
   box-sizing: border-box;
-}
-
-.mh-current-login__cell-ft {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
 }
 
 .mh-right-arrow {
@@ -543,5 +511,20 @@ export default {
   -webkit-transform: scaleY(0.5);
   -ms-transform: scaleY(0.5);
   transform: scaleY(0.5);
+}
+
+.input-captcha {
+  padding-right: 40px;
+}
+/* 获取验证码 */
+.captcha-btn {
+  border: 1px solid #353535;
+  color: #353535;
+  background-color: transparent;
+  font-size: 13px;
+  border-radius: 3px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 5px;
 }
 </style>
