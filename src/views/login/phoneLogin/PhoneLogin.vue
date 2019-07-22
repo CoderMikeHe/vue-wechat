@@ -113,11 +113,17 @@
 </template>
 
 <script>
+// ActionSheet
 import ActionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
+// 账号存储
+import AccountStorage from "@/assets/js/account/account";
 export default {
   name: "phone-login",
+  components: {
+    ActionSheet
+  },
   data() {
     return {
       // 显示ActionSheet
@@ -210,7 +216,8 @@ export default {
           // 个新签名
           featureSign: "生死看淡，不服就干"
         };
-        // 归档登陆账号 TODO
+        // 归档登陆账号
+        AccountStorage.setRawLogin(this.phone);
         // 归档用户信息
         this.$store.commit("loginUser", user);
         // 跳转登陆
@@ -238,9 +245,6 @@ export default {
         ? this.password.length <= 0
         : this.captcha.length <= 0;
     }
-  },
-  components: {
-    ActionSheet
   }
 };
 </script>
