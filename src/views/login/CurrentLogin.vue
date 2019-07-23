@@ -3,71 +3,56 @@
   <vue-route-layout>
     <!-- AvatarView -->
     <div class="mh-current-login__avatar">
-      <img :src="user.profile_image_url" alt />
+      <img :src="user.profile_image_url"
+           alt />
       <p>{{ account }}</p>
     </div>
     <!-- PasswordView -->
     <div class="mh-current-login__container">
       <transition name="left">
-        <div
-          class="mh-current-login__cell mh-current-login__password"
-          key="password"
-          v-if="showPasswordWay"
-        >
+        <div class="mh-current-login__cell mh-current-login__password"
+             key="password"
+             v-if="showPasswordWay">
           <div class="mh-current-login__cell-hd">
             <label class="mh-current-login__label">密码</label>
           </div>
           <div class="mh-current-login__cell-bd">
             <div class="mh-input__wrapper">
-              <input
-                required="required"
-                class="mh-input"
-                type="password"
-                placeholder="请填写QQ密码"
-                v-model="password"
-              />
-              <a
-                href="javascript:;"
-                class="mh-input-clear"
-                @click="clearAllPassword"
-              >
-                <img
-                  src="@/assets/images/input/input_clear.png"
-                  class="mh-input-clear__clear"
-                  alt=""
-                />
+              <input required="required"
+                     class="mh-input"
+                     type="password"
+                     placeholder="请填写QQ密码"
+                     v-model="password" />
+              <a href="javascript:;"
+                 class="mh-input-clear"
+                 @click="clearAllPassword">
+                <img src="@/assets/images/input/input_clear.png"
+                     class="mh-input-clear__clear"
+                     alt="" />
               </a>
             </div>
           </div>
         </div>
-        <div
-          class="mh-current-login__cell mh-current-login__captcha"
-          key="captcha"
-          v-else
-        >
+        <div class="mh-current-login__cell mh-current-login__captcha"
+             key="captcha"
+             v-else>
           <div class="mh-current-login__cell-hd">
             <label class="mh-current-login__label">验证码</label>
           </div>
           <div class="mh-current-login__cell-bd">
             <div class="mh-input__wrapper input-captcha">
-              <input
-                required="required"
-                class="mh-input"
-                type="tel"
-                maxlength="6"
-                placeholder="请输入验证码"
-                v-model="captcha"
-              />
-              <a
-                href="javascript:;"
-                class="mh-input-clear"
-                @click="clearAllCaptcha"
-              >
-                <img
-                  src="@/assets/images/input/input_clear.png"
-                  class="mh-input-clear__clear"
-                  alt=""
-                />
+              <input required="required"
+                     class="mh-input"
+                     type="tel"
+                     maxlength="6"
+                     placeholder="请输入验证码"
+                     v-model="captcha" />
+              <a href="javascript:;"
+                 class="mh-input-clear"
+                 @click="clearAllCaptcha">
+                <img src="@/assets/images/input/input_clear.png"
+                     class="mh-input-clear__clear"
+                     alt="" />
               </a>
             </div>
           </div>
@@ -83,46 +68,39 @@
     </div>
     <!-- 登录按钮 -->
     <div class="mh-current-login__login">
-      <a
-        class="mh-btn mh-btn_primary"
-        :class="{ 'mh-btn_disabled': loginBtnDisabled }"
-        @click="login"
-        >登录
+      <a class="mh-btn mh-btn_primary"
+         :class="{ 'mh-btn_disabled': loginBtnDisabled }"
+         @click="login">登录
       </a>
     </div>
     <!-- 底部更多面板 -->
     <div class="mh-current-login__more">
-      <span class="mh-current-login__more-item" @click="itemDidClick(0)"
-        >找回密码</span
-      >
-      <span class="mh-current-login__more-item" @click="itemDidClick(1)"
-        >紧急冻结</span
-      >
-      <span class="mh-current-login__more-item" @click="itemDidClick(2)"
-        >更多选项</span
-      >
+      <span class="mh-current-login__more-item"
+            @click="itemDidClick(0)">找回密码</span>
+      <span class="mh-current-login__more-item"
+            @click="itemDidClick(1)">紧急冻结</span>
+      <span class="mh-current-login__more-item"
+            @click="itemDidClick(2)">更多选项</span>
     </div>
     <!-- ActionSheet -->
-    <ActionSheet
-      v-model="showActionSheet"
-      @did-click-item="didClickItem"
-      :items="items"
-    ></ActionSheet>
+    <ActionSheet v-model="showActionSheet"
+                 @did-click-item="didClickItem"
+                 :items="items"></ActionSheet>
   </vue-route-layout>
 </template>
 
 <script>
 import ActionSheet, {
   ActionSheetItem
-} from "components/actionSheet/ActionSheet";
+} from 'components/actionSheet/ActionSheet'
 // 账号存储
-import AccountHelper from "@/assets/js/account/account";
+import AccountHelper from '@/assets/js/account/account'
 // store
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 // 工具类
-import Utils from "assets/utils/utils";
+import Utils from 'assets/utils/utils'
 export default {
-  name: "current-login",
+  name: 'current-login',
   components: {
     ActionSheet
   },
@@ -135,77 +113,78 @@ export default {
       // 默认是登录密码
       showPasswordWay: true,
       // 密码
-      password: "",
+      password: '',
       // 验证码
-      captcha: ""
-    };
+      captcha: ''
+    }
   },
   created() {
-    console.log(this.$route.name + "  👉  " + window.history.length);
-    console.log(this.user);
+    console.log(this.$route.name + '  👉  ' + window.history.length)
+    console.log(this.user)
     // 配置数据
-    this.initialize();
+    this.initialize()
     // 配置
-    this.configItems();
+    this.configItems()
   },
   mounted() {},
   methods: {
     // 初始化
     initialize() {
-      this.showActionSheet = false;
+      this.showActionSheet = false
       // 配置数据
-      this.showPasswordWay = this.user.channel !== "Mobile Phone";
-      this.password = this.captcha = "";
+      this.showPasswordWay = this.user.channel !== 'Mobile Phone'
+      this.password = this.captcha = ''
     },
 
     // 底部更多面板点击事件
     itemDidClick(idx) {
-      console.log("itemDidClick ", idx);
+      console.log('itemDidClick ', idx)
       // 更多面板
       if (idx === 2) {
-        this.showActionSheet = true;
+        this.showActionSheet = true
       }
     },
     // 配置actionsheet items
     configItems() {
       const loginOther = new ActionSheetItem({
-        title: "登录其他账号"
-      });
+        title: '登录其他账号'
+      })
       const securityCenter = new ActionSheetItem({
-        title: "前往微信安全中心"
-      });
+        title: '前往微信安全中心'
+      })
       const register = new ActionSheetItem({
-        title: "注册"
-      });
-      this.items = [loginOther, securityCenter, register];
+        title: '注册'
+      })
+      this.items = [loginOther, securityCenter, register]
     },
     // ActionSheet 事件处理
     didClickItem(idx) {
-      if (idx === 0) return;
+      if (idx === 0) return
     },
+    // 切换登录方式的事件
     changeBtnDidClick() {
-      this.showPasswordWay = !this.showPasswordWay;
+      this.showPasswordWay = !this.showPasswordWay
     },
     // 登录事件
     login() {
       // 按钮不可点击，则过滤
-      if (this.loginBtnDisabled) return;
+      if (this.loginBtnDisabled) return
       // 模拟网络加载
       setTimeout(() => {
         // user info
-        const user = this.user;
+        const user = this.user
         // 设置登陆模式
-        user.channel = this.showPasswordWay ? "QQ" : "Mobile Phone";
+        user.channel = this.showPasswordWay ? 'QQ' : 'Mobile Phone'
         // 登陆
-        AccountHelper.login(user, this.showPasswordWay ? user.qq : user.phone);
-      }, 3000);
+        AccountHelper.login(user, this.showPasswordWay ? user.qq : user.phone)
+      }, 3000)
     },
     // 清除按钮事件
     clearAllPassword() {
-      this.password = "";
+      this.password = ''
     },
     clearAllCaptcha() {
-      this.captcha = "";
+      this.captcha = ''
     }
   },
   computed: {
@@ -215,33 +194,32 @@ export default {
 
     // 切换名称
     changeLogin() {
-      return this.showPasswordWay ? "用短信验证码登陆" : "用微信密码登录";
+      return this.showPasswordWay ? '用短信验证码登陆' : '用微信密码登录'
     },
 
     // 登录按钮是否无效
     loginBtnDisabled() {
       return this.showPasswordWay
         ? this.password.length <= 0
-        : this.captcha.length <= 0;
+        : this.captcha.length <= 0
     },
 
     // 账号信息
     account() {
-      let phone = Utils.formatMobile344(this.user.phone);
-      let zoneCode = this.user.zoneCode || "86";
-      return this.showPasswordWay ? this.user.qq : "+" + zoneCode + " " + phone;
+      let phone = Utils.formatMobile344(this.user.phone)
+      let zoneCode = this.user.zoneCode || '86'
+      return this.showPasswordWay ? this.user.qq : '+' + zoneCode + ' ' + phone
     }
   },
   watch: {
     $route(to, from) {
-      console.log("xxxxxx " + to.name + "   " + from.name);
-      if (to.name === "CurrentLogin" && from.name === "Setting") {
+      if (to.name === 'CurrentLogin' && from.name === 'Setting') {
         // 初始化
-        this.initialize();
+        this.initialize()
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -296,7 +274,7 @@ export default {
   align-items: center;
 }
 .mh-current-login__cell:after {
-  content: " ";
+  content: ' ';
   position: absolute;
   left: 20px;
   bottom: 0;
@@ -386,7 +364,7 @@ export default {
 }
 
 .mh-current-login__more-item:not(:last-child)::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 2px;
   top: 0;
