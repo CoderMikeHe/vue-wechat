@@ -83,9 +83,7 @@ export default {
     console.log("appvue");
     console.log(this.$route.meta);
   },
-  created() {
-    console.log("🔥App");
-  }
+  created() {}
 };
 </script>
 

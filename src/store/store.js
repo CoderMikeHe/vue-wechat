@@ -1,16 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import modules from "../modules"
-
-
-import MHPreferenceSettingHelper from '../assets/js/MHPreferenceSettingHelper'
+// 存储类
+import Storage from '../assets/js/MHPreferenceSettingHelper'
+// 常量类
+import Constant from '../assets/js/constant/constant';
 
 // 类似单利
+// PS： root store 只处理用户信息，其他的请放在 modules 中，例如：badge.js
 Vue.use(Vuex);
 
 // 获取本地缓存的用户信息
-let user = JSON.parse(MHPreferenceSettingHelper.getItem('491273090') || '{}');
-console.log('user---' + user);
+let user = JSON.parse(Storage.getItem(Constant.MH_USER_INFO_KEY) || '{}');
+console.log('🔥😴😿 ** USER ** 😴😿🔥', user);
 
 export default new Vuex.Store({
   state: {
@@ -26,13 +28,11 @@ export default new Vuex.Store({
       // 0. 对象转json字符串
       let jsonStr = JSON.stringify(user);
       // 1. 归档数据
-      MHPreferenceSettingHelper.setItem(user.qq, jsonStr);
+      Storage.setItem(Constant.MH_USER_INFO_KEY, jsonStr);
     },
     // 登出用户
     logoutUser(state) {
-      // 0 清除掉用户数据
-      MHPreferenceSettingHelper.removeItem(state.user.qq);
-      // 1 记录
+      // 只需要将 vuex 的user置位空对象即可，无需删除本地数据
       state.user = {};
     }
   },

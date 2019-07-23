@@ -38,29 +38,23 @@ Vue.use(RouteTransition)
 import utils from 'assets/utils/utils'
 Vue.use(utils)
 
-// import VuePreview from 'vue-preview'
-// Vue.use(VuePreview);
-// console.log(VuePreview);
-
-
 // 配置偏好设置
-import MHPreferenceSettingHelper from './assets/js/MHPreferenceSettingHelper'
-MHPreferenceSettingHelper.initialize()
-
-// 获取用户信息
-// let user = MHPreferenceSettingHelper.getItem('491273090') || {}
-// if (Object.keys(user).length === 0) {
-//   router.replace('/current-login')
-// } else {
-//   router.replace('/mainframe')
-// }
-
-
+import Storage from '@/assets/js/MHPreferenceSettingHelper'
+// 初始化
+Storage.initialize()
+// 账号存储
+import AccountHelper from '@/assets/js/account/account'
+// 挂在实例
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+
+// 重置根路由
+AccountHelper.resetRootRouterView()
+
 
 // {
 //   "workbench.iconTheme": "vscode-icons",

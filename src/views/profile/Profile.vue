@@ -125,7 +125,7 @@ export default {
       const setting = new MHCommonItem({
         title: "设置",
         icon: "MoreSetting_25x25",
-        name: "setting"
+        name: "Setting"
       });
       group2.items = [setting];
 

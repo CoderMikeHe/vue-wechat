@@ -3,61 +3,71 @@
   <vue-route-layout>
     <!-- 关闭按钮 -->
     <p class="mh-nav-close-btn">
-      <span class="iconfont icon-navbar-close"
-            @click="$router.back()"></span>
+      <span class="iconfont icon-navbar-close" @click="$router.back()"></span>
     </p>
     <!-- 中间内容 -->
     <div class="mh-current-login__container">
       <transition name="left">
         <!-- 手机号登录 -->
-        <div class="mh-current-login__panel mh-current-login__password"
-             key="password"
-             v-if="showPasswordWay">
+        <div
+          class="mh-current-login__panel mh-current-login__password"
+          key="password"
+          v-if="showPasswordWay"
+        >
           <h1>手机号登录</h1>
           <div class="mh-current-login__cell">
             <div class="mh-current-login__cell-hd">
               <label class="mh-current-login__label">国家/地区</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <p class="mh-zone-title"
-                 @click="skipZoneList">中国</p>
+              <p class="mh-zone-title" @click="skipZoneList">中国</p>
             </div>
             <div class="mh-current-login__cell-ft">
-              <img class="mh-right-arrow"
-                   src="@/assets/images/common/tableview_arrow_8x13.png" />
+              <img
+                class="mh-right-arrow"
+                src="@/assets/images/common/tableview_arrow_8x13.png"
+              />
             </div>
           </div>
           <div class="mh-current-login__cell">
             <div class="mh-current-login__cell-hd">
               <div class="mh-zone-code-container">
                 <label class="zone">+</label>
-                <input class="mh-current-login__input mh-zone"
-                       type="text"
-                       v-model="zoneCode" />
+                <input
+                  class="mh-current-login__input mh-zone"
+                  type="text"
+                  v-model="zoneCode"
+                />
               </div>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input class="mh-current-login__input"
-                     type="text"
-                     placeholder="请填写手机号码"
-                     v-model="phone" />
+              <input
+                class="mh-current-login__input"
+                type="text"
+                placeholder="请填写手机号码"
+                v-model="phone"
+              />
             </div>
           </div>
         </div>
         <!-- 微信号/QQ号/邮箱登录 -->
-        <div class="mh-current-login__panel mh-current-login__captcha"
-             key="captcha"
-             v-else>
+        <div
+          class="mh-current-login__panel mh-current-login__captcha"
+          key="captcha"
+          v-else
+        >
           <h1>微信号/QQ号/邮箱登录</h1>
           <div class="mh-current-login__cell">
             <div class="mh-current-login__cell-hd">
               <label class="mh-current-login__label">账号</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input class="mh-current-login__input"
-                     type="text"
-                     placeholder="微信号/QQ号/邮箱"
-                     v-model="account" />
+              <input
+                class="mh-current-login__input"
+                type="text"
+                placeholder="微信号/QQ号/邮箱"
+                v-model="account"
+              />
             </div>
           </div>
           <div class="mh-current-login__cell">
@@ -65,10 +75,12 @@
               <label class="mh-current-login__label">密码</label>
             </div>
             <div class="mh-current-login__cell-bd">
-              <input class="mh-current-login__input"
-                     type="password"
-                     placeholder="请填写QQ密码"
-                     v-model="password" />
+              <input
+                class="mh-current-login__input"
+                type="password"
+                placeholder="请填写QQ密码"
+                v-model="password"
+              />
             </div>
           </div>
         </div>
@@ -81,34 +93,41 @@
 
     <!-- 登陆按钮 -->
     <div class="mh-current-login__login">
-      <a class="mh-btn mh-btn_primary"
-         :class="{ 'mh-btn_disabled': loginBtnDisabled }"
-         @click="login">{{ loginBtnTitle }}</a>
+      <a
+        class="mh-btn mh-btn_primary"
+        :class="{ 'mh-btn_disabled': loginBtnDisabled }"
+        @click="login"
+        >{{ loginBtnTitle }}</a
+      >
     </div>
 
     <!-- 底部更多面板 -->
     <div class="mh-current-login__more">
-      <span class="mh-current-login__more-item"
-            @click="itemDidClick(0)">找回密码</span>
-      <span class="mh-current-login__more-item"
-            @click="itemDidClick(1)">更多选项</span>
+      <span class="mh-current-login__more-item" @click="itemDidClick(0)"
+        >找回密码</span
+      >
+      <span class="mh-current-login__more-item" @click="itemDidClick(1)"
+        >更多选项</span
+      >
     </div>
 
     <!-- ActionSheet -->
-    <ActionSheet v-model="showActionSheet"
-                 @did-click-item="didClickItem"
-                 :items="items"></ActionSheet>
+    <ActionSheet
+      v-model="showActionSheet"
+      @did-click-item="didClickItem"
+      :items="items"
+    ></ActionSheet>
   </vue-route-layout>
 </template>
 
 <script>
 import ActionSheet, {
   ActionSheetItem
-} from 'components/actionSheet/ActionSheet'
+} from "components/actionSheet/ActionSheet";
 // 账号存储
-import AccountStorage from '@/assets/js/account/account'
+import AccountHelper from "@/assets/js/account/account";
 export default {
-  name: 'OtherLogin',
+  name: "OtherLogin",
   data() {
     return {
       // 显示ActionSheet
@@ -117,71 +136,71 @@ export default {
       // 默认是登录密码
       showPasswordWay: true,
       // 账号
-      account: '',
+      account: "",
       // 密码
-      password: '',
+      password: "",
       // 地区编号
-      zoneCode: '86',
+      zoneCode: "86",
       // 手机号
-      phone: ''
-    }
+      phone: ""
+    };
   },
   created() {
-    this.configItems()
+    this.configItems();
   },
   mounted() {},
   methods: {
     changeBtnDidClick() {
-      this.showPasswordWay = !this.showPasswordWay
+      this.showPasswordWay = !this.showPasswordWay;
     },
     // 底部更多面板事件处理
     itemDidClick(idx) {
       switch (idx) {
-        case 0:
-          break
-        default:
-          this.showActionSheet = true
-          break
+      case 0:
+        break;
+      default:
+        this.showActionSheet = true;
+        break;
       }
     },
     // 配置actionsheet items
     configItems() {
       const freeze = new ActionSheetItem({
-        title: '紧急冻结'
-      })
+        title: "紧急冻结"
+      });
       const securityCenter = new ActionSheetItem({
-        title: '前往微信安全中心'
-      })
-      this.items = [freeze, securityCenter]
+        title: "前往微信安全中心"
+      });
+      this.items = [freeze, securityCenter];
     },
     // ActionSheet 事件处理
     didClickItem(idx) {
-      if (idx === 0) return
+      if (idx === 0) return;
       switch (idx) {
-        case 1:
-          this.$router.push({ name: 'setting' })
-          break
-        case 2:
-          break
-        default:
-          break
+      case 1:
+        this.$router.push({ name: "setting" });
+        break;
+      case 2:
+        break;
+      default:
+        break;
       }
     },
     // 登陆事件
     login() {
       // 跳转到手机登陆
       if (this.loginBtnDisabled) {
-        return
+        return;
       }
       if (this.showPasswordWay) {
         // 跳转到手机登陆
         this.$router.push({
-          name: 'PhoneLogin',
+          name: "PhoneLogin",
           params: {
             phone: this.phone,
             zoneCode: this.zoneCode
           }
-        })
+        });
       } else {
         // 对账号做验证 TODO
 
@@ -190,35 +209,31 @@ export default {
         setTimeout(() => {
           const user = {
             /// PS: 假设请求到数据模型是  User模型
-            screen_name: 'Mike-乱港三千-Mr_元先森',
-            idstr: '61856069',
+            screen_name: "Mike-乱港三千-Mr_元先森",
+            idstr: "61856069",
             profile_image_url:
-              'http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg',
-            avatar_large: '',
+              "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
+            avatar_large: "",
             /// 用户的封面
             coverImageUrl:
-              'http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg',
-            coverImage: 'Kris.jpeg',
+              "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
+            coverImage: "Kris.jpeg",
 
             /// 假设是这里统一都是qq号码登录
             qq: this.account,
-            email: this.account + '@qq.com', // PS：机智，拼接成QQ邮箱
-            wechatId: 'codermikehe', // PS：瞎写的
-            phone: '13874385438', // PS：瞎写的
+            email: this.account + "@qq.com", // PS：机智，拼接成QQ邮箱
+            wechatId: "codermikehe", // PS：瞎写的
+            phone: "13874385438", // PS：瞎写的
             // 登陆渠道：QQ登陆
-            channel: 'QQ',
+            channel: "QQ",
             // -- 0 Boy -- 1 Girl
             gender: 0,
             // 个新签名
-            featureSign: '生死看淡，不服就干'
-          }
-          // 归档登陆账号
-          AccountStorage.setRawLogin(this.account)
-          // 归档用户信息
-          this.$store.commit('loginUser', user)
-          // 跳转登陆
-          this.$router.push('/homepage')
-        }, 3000)
+            featureSign: "生死看淡，不服就干"
+          };
+          // 登陆
+          AccountHelper.login(user, this.account);
+        }, 3000);
       }
     },
     // 跳转地区列表
@@ -227,26 +242,26 @@ export default {
   computed: {
     // 切换名称
     changeLogin() {
-      return this.showPasswordWay ? '用微信号/QQ号/邮箱登录' : '用手机号登录'
+      return this.showPasswordWay ? "用微信号/QQ号/邮箱登录" : "用手机号登录";
     },
 
     // loginBtnTitle
     loginBtnTitle() {
-      return this.showPasswordWay ? '下一步' : '登录'
+      return this.showPasswordWay ? "下一步" : "登录";
     },
 
     // 登录按钮是否无效
     loginBtnDisabled() {
-      console.log('🔥😴😿', this.account)
+      console.log("🔥😴😿", this.account);
       return this.showPasswordWay
         ? this.phone.length <= 0
-        : this.account.length <= 0 || this.password.length <= 0
+        : this.account.length <= 0 || this.password.length <= 0;
     }
   },
   components: {
     ActionSheet
   }
-}
+};
 </script>
 
 <style scoped>
@@ -309,7 +324,7 @@ export default {
   line-height: 45px;
 }
 .mh-current-login__cell:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   left: 20px;
   bottom: 0;
@@ -365,7 +380,7 @@ export default {
 }
 
 .mh-zone-code-container::after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 0;
   bottom: 0;
@@ -457,7 +472,7 @@ export default {
   overflow: hidden;
 }
 .mh-btn:after {
-  content: ' ';
+  content: " ";
   width: 200%;
   height: 200%;
   position: absolute;
@@ -516,7 +531,7 @@ export default {
 }
 
 .mh-current-login__more-item:not(:last-child)::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 2px;
   top: 0;

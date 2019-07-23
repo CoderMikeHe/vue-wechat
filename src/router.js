@@ -63,6 +63,7 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Root',
       redirect: '/login'
     },
     {
@@ -134,8 +135,11 @@ export default new Router({
     },
     {
       path: '/current-login',
-      name: 'current-login',
-      component: CurrentLogin
+      name: 'CurrentLogin',
+      component: CurrentLogin => require(['./views/login/CurrentLogin.vue'], CurrentLogin),
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/login',
@@ -158,7 +162,7 @@ export default new Router({
       component: Register => require(['./views/login/Register.vue'], Register)
     },
     {
-      path: '/current-login/other-login',
+      path: '/other-login',
       name: 'other-login',
       component: OtherLogin => require(['./views/login/OtherLogin.vue'], OtherLogin),
       meta: {
@@ -235,7 +239,7 @@ export default new Router({
     },
     {
       path: '/profile/setting',
-      name: 'setting', // 设置
+      name: 'Setting', // 设置
       component: Setting,
       meta: {
         keepAlive: true // 此组件需要缓存

@@ -60,7 +60,8 @@ import actionSheet, {
 
 import { MHCommonGroup, MHCommonItem } from "assets/js/MHCommonGroup.js";
 // import SwitchAccount from "components/switchAccount/SwitchAccount";
-
+// 账号存储
+import AccountHelper from "@/assets/js/account/account";
 export default {
   name: "setting",
   data() {
@@ -168,7 +169,8 @@ export default {
     // actionSheet事件点击
     didClickItem(index) {
       if (index === 0) return;
-      this.$router.replace("/current-login");
+      // 退出登录
+      AccountHelper.logout();
     }
   },
   components: {
