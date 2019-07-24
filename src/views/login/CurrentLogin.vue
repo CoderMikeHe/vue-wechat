@@ -169,8 +169,13 @@ export default {
     login() {
       // 按钮不可点击，则过滤
       if (this.loginBtnDisabled) return
+
+      // 显示loading
+      let loading = this.$weui.loading('正在加载中...')
       // 模拟网络加载
       setTimeout(() => {
+        // 隐藏loading
+        loading.hide()
         // user info
         const user = this.user
         // 设置登陆模式

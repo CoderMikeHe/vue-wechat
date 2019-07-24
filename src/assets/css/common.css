@@ -209,11 +209,8 @@ a {
 } */
 
 body {
-  line-height: 1;
-}
-
-body {
-  font: 13px/1.5 -apple-system-font, Helvetica Neue, Helvetica, Hiragino Sans GB,
+  line-height: 1.6;
+  font-family: -apple-system-font, Helvetica Neue, Helvetica, Hiragino Sans GB,
     Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif;
 }
 

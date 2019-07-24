@@ -19,8 +19,12 @@ import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(Mint)
 
-// 导入weui
+// 导入weui 样式库
 import 'weui'
+// 导入weiui js库
+import weui from 'weui.js'
+// 挂载到Vue 实例上去
+Vue.$weui = Vue.prototype.$weui = weui
 
 // 全局app常量css
 import './assets/css/common.css'
@@ -51,10 +55,8 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-
 // 重置根路由
 AccountHelper.resetRootRouterView()
-
 
 // {
 //   "workbench.iconTheme": "vscode-icons",
@@ -95,7 +97,7 @@ AccountHelper.resetRootRouterView()
 
 // 👉 github 添加 SSH key
 // - [github 添加 SSH key](https://www.cnblogs.com/blogzhangwei/p/5944975.html)
-// 
+//
 
 // 👉 网页部署到GitHub Pages
 // - [部署到GitHub Pages](https://cli.vuejs.org/zh/guide/deployment.html#github-pages)
@@ -106,7 +108,6 @@ AccountHelper.resetRootRouterView()
 // - [环境变量和模式](https://cli.vuejs.org/zh/guide/mode-and-env.html)
 // - [vue-cli3.0 环境变量与模式](https://segmentfault.com/a/1190000015133974?utm_source=tag-newest)
 // - [vuecli3.0脚手架搭建及不同的打包环境配置vue.config.js](https://blog.csdn.net/qq_36407748/article/details/82050976)
-
 
 // - [使用 github pages, 快速部署你的静态网页](https://blog.csdn.net/baidu_25464429/article/details/80805237)
 // - [NodeJs/Vue项目中对process.env的使用](https://www.jianshu.com/p/07fda339f57e)
@@ -362,10 +363,6 @@ AccountHelper.resetRootRouterView()
 // - [dynamicsjs](http://dynamicsjs.com/)
 // - [velocity](https://github.com/julianshapiro/velocity)
 // - [dropzone](https://github.com/enyo/dropzone)
-
-
-
-
 
 // https://github.com/SunshineBrother/JHBlog
 
