@@ -169,8 +169,13 @@ export default {
     // actionSheet事件点击
     didClickItem(index) {
       if (index === 0) return;
-      // 退出登录
-      AccountHelper.logout();
+      // 显示loading
+      let loading = this.$weui.loading("正在加载中...");
+      setTimeout(() => {
+        loading.hide();
+        // 退出登录
+        AccountHelper.logout();
+      }, 1000);
     }
   },
   components: {

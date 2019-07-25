@@ -1,0 +1,18 @@
+/* ------------ 修改第三方样式 ------------ */
+
+/* 修改weui loading 居中 */
+.weui-toast {
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}
+
+/* 修改weui alertView 距离屏幕左右的距离 */
+.weui-dialog {
+  left: 48px;
+  right: 48px;
+}
+/* 修改weui alertView 内容的最小高度和距离底部的高度 */
+.weui-dialog__bd {
+  padding: 0 24px 20px;
+  min-height: 20px;
+}

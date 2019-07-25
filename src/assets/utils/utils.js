@@ -3,7 +3,6 @@
 // 导航栏返回按钮
 import { blackBackItem } from '../js/MHBarButtonItem'
 
-
 const utils = {
   install(Vue) {
     // 导航栏返回按钮
@@ -43,7 +42,17 @@ const utils = {
     if (!regex.test(mobile)) {
       return mobile
     }
-    return (mobile + '').replace(/(^\d{3}|\d{4}\B)/g, "$1 ")
+    return (mobile + '').replace(/(^\d{3}|\d{4}\B)/g, '$1 ')
+  },
+
+  // 🔥是否包含中文字符
+  includeChinese(str) {
+    var patrn = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi
+    if (!patrn.exec(str)) {
+      return false
+    } else {
+      return true
+    }
   }
 }
 
