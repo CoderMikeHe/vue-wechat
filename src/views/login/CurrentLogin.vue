@@ -189,6 +189,15 @@ export default {
     // ActionSheet 事件处理
     didClickItem(idx) {
       if (idx === 0) return;
+      if (idx === 1) {
+        console.log("登陆其他账号");
+        this.$router.push("/other-login");
+      } else if (idx === 2) {
+        console.log("前往微信安全中心");
+      } else {
+        console.log("注册");
+        this.$router.push("/register");
+      }
     },
     // 切换登录方式的事件
     changeBtnDidClick() {
@@ -198,9 +207,9 @@ export default {
     login() {
       // 按钮不可点击，则过滤
       if (this.loginBtnDisabled) return;
-      // 密码登录
       if (this.showPasswordWay) {
-        // 密码 8~16位 且 不能含有中文
+        // 密码登录
+        // 密码 8~16位 且 不能含有中文 ，其他都行
         if (
           this.password.length < 8 ||
           this.password.length > 16 ||
@@ -230,9 +239,22 @@ export default {
           return;
         }
       } else {
-        // 验证码登录
+        // 验证码登录 纯6位数字
+        if (
+          this.captcha.length !== 6 ||
+          !Utils.pureDigitCharacters(this.captcha)
+        ) {
+          let content = !this.inputCaptchaError
+            ? "你输入的是一个无效的手机号码"
+            : "";
+          let title = !this.inputCaptchaError
+            ? "手机号码错误"
+            : "验证码超时，请重新获取验证码";
+          this.$weui.alert(content, { title: title });
+          this.inputCaptchaError = true;
+          return;
+        }
       }
-
       // 显示loading
       let loading = this.$weui.loading("请稍后...");
       // 模拟网络加载

@@ -53,6 +53,12 @@ const utils = {
     } else {
       return true
     }
+  },
+
+  // 纯数字 ^[0-9]*$
+  pureDigitCharacters (str) {
+    let regex = /^[0-9]*$/
+    return regex.test(str)
   }
 }
 
