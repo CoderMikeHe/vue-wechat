@@ -27,6 +27,24 @@ const utils = {
     return Array.from(new Set(arr))
   },
 
+  // 🔥是否为正确的QQ号码、微信号、QQ邮箱
+  // - [微信号正则校验，qq正则，邮箱正则,英文名正则](https://blog.csdn.net/qq_29091239/article/details/80075981)
+  // - [微信号正则校验](https://blog.csdn.net/unknowna/article/details/50524529)
+  validQQ(qq){
+    let regex = /^[1-9][0-9]{4,9}$/g
+    return regex.test(qq)
+  },
+
+  validWeChatId(id){
+    let regex = /^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/g
+    return regex.test(id)
+  },
+
+  validQQMail (mail){
+    let regex = /^[1-9][0-9]{4,9}@qq\.com$/g
+    return regex.test(mail)
+  },
+
   // 🔥是否为有效电话号码
   // - [一组匹配中国大陆手机号码的正则表达式](https://github.com/VincentSit/ChinaMobilePhoneNumberRegex)
   validMobile(mobile) {
@@ -38,10 +56,6 @@ const utils = {
   // - [手机格式化](https://blog.csdn.net/Wangdanting123/article/details/86938915)
   // - [格式化手机号](https://segmentfault.com/q/1010000004508861)
   formatMobile344(mobile) {
-    let regex = /((?:\+?86)?1(?:3\d{3}|5[^4\D]\d{2}|8\d{3}|7(?:[35678]\d{2}|4(?:0\d|1[0-2]|9\d))|9[189]\d{2}|66\d{2})\d{6})+?/g
-    if (!regex.test(mobile)) {
-      return mobile
-    }
     return (mobile + '').replace(/(^\d{3}|\d{4}\B)/g, '$1 ')
   },
 
@@ -57,7 +71,7 @@ const utils = {
 
   // 纯数字 ^[0-9]*$
   pureDigitCharacters (str) {
-    let regex = /^[0-9]*$/
+    let regex = /^[0-9]*$/gi
     return regex.test(str)
   }
 }

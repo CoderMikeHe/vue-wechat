@@ -1,0 +1,17 @@
+/* 这个公用css样式，服务login这个模块 换血lg*/
+/* ------------------------------ */
+/* 获取验证码 */
+.lg-captcha-btn {
+  border: 1px solid #353535;
+  color: #353535;
+  background-color: transparent;
+  font-size: 13px;
+  border-radius: 3px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 5px;
+}
+.lg-captcha-btn--disabled {
+  border: 1px solid #999;
+  color: #999;
+}

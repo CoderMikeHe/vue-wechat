@@ -126,6 +126,10 @@ import ActionSheet, {
 } from "components/actionSheet/ActionSheet";
 // 账号存储
 import AccountHelper from "@/assets/js/account/account";
+// 工具类
+import Utils from "assets/utils/utils";
+// UserModel
+import UserModel from "./js/user";
 export default {
   name: "OtherLogin",
   data() {
@@ -150,17 +154,18 @@ export default {
   },
   mounted() {},
   methods: {
+    // 初始化数据
+    // 初始化
+    initialize() {},
+
+    // 切换方式的按钮点击事件
     changeBtnDidClick() {
       this.showPasswordWay = !this.showPasswordWay;
     },
     // 底部更多面板事件处理
     itemDidClick(idx) {
-      switch (idx) {
-      case 0:
-        break;
-      default:
+      if (idx === 1) {
         this.showActionSheet = true;
-        break;
       }
     },
     // 配置actionsheet items
@@ -176,15 +181,6 @@ export default {
     // ActionSheet 事件处理
     didClickItem(idx) {
       if (idx === 0) return;
-      switch (idx) {
-      case 1:
-        this.$router.push({ name: "setting" });
-        break;
-      case 2:
-        break;
-      default:
-        break;
-      }
     },
     // 登陆事件
     login() {
@@ -203,37 +199,31 @@ export default {
         });
       } else {
         // 对账号做验证 TODO
-
-        // 登陆账号
-        // 模拟网络加载
+        // 1、正确的QQ号 2、密码8-16位且不含中文
+        if (
+          !Utils.validQQ(this.account) ||
+          this.password.length < 8 ||
+          this.password.length > 16 ||
+          Utils.includeChinese(this.password)
+        ) {
+          this.$weui.alert("", { title: "账号或密码错误，请重新填写" });
+          return;
+        }
+        // 登陆账号 模拟网络加载
+        // 显示loading
+        let loading = this.$weui.loading("请稍后...");
         setTimeout(() => {
-          const user = {
-            /// PS: 假设请求到数据模型是  User模型
-            screen_name: "Mike-乱港三千-Mr_元先森",
-            idstr: "61856069",
-            profile_image_url:
-              "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
-            avatar_large: "",
-            /// 用户的封面
-            coverImageUrl:
-              "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
-            coverImage: "Kris.jpeg",
-
-            /// 假设是这里统一都是qq号码登录
-            qq: this.account,
-            email: this.account + "@qq.com", // PS：机智，拼接成QQ邮箱
-            wechatId: "codermikehe", // PS：瞎写的
-            phone: "13874385438", // PS：瞎写的
-            // 登陆渠道：QQ登陆
-            channel: "QQ",
-            // -- 0 Boy -- 1 Girl
-            gender: 0,
-            // 个新签名
-            featureSign: "生死看淡，不服就干"
-          };
+          // 隐藏loading
+          loading.hide();
+          // 假设获取到了数据
+          let user = Object.assign({}, UserModel);
+          user.qq = this.account;
+          user.emial = this.account + "@qq.com"; // PS：机智，拼接成QQ邮箱
+          user.phone = "13874385438"; // PS：瞎写的
+          user.channel = "QQ";
           // 登陆
           AccountHelper.login(user, this.account);
-        }, 3000);
+        }, 1000);
       }
     },
     // 跳转地区列表
@@ -252,7 +242,6 @@ export default {
 
     // 登录按钮是否无效
     loginBtnDisabled() {
-      console.log("🔥😴😿", this.account);
       return this.showPasswordWay
         ? this.phone.length <= 0
         : this.account.length <= 0 || this.password.length <= 0;
@@ -297,11 +286,11 @@ export default {
   overflow: hidden;
   position: relative;
   margin-top: 90px;
-  height: 168px;
+  height: 170px;
 }
 
 .mh-current-login__panel {
-  height: 168px;
+  height: 170px;
 }
 .mh-current-login__panel h1 {
   font-size: 24px;
@@ -527,7 +516,7 @@ export default {
 
 .mh-current-login__more-item {
   position: relative;
-  padding: 0 10px;
+  padding: 0 16px;
 }
 
 .mh-current-login__more-item:not(:last-child)::after {

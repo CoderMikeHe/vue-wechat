@@ -73,7 +73,13 @@
             </div>
           </div>
           <div class="mh-current-login__cell-ft">
-            <div class="captcha-btn">获取验证码</div>
+            <div
+              @click="captchaAction"
+              class="lg-captcha-btn"
+              :class="{ 'lg-captcha-btn--disabled': captchaBtnDisabled }"
+            >
+              {{ captchaTitle }}
+            </div>
           </div>
         </div>
       </transition>
@@ -139,15 +145,21 @@ export default {
       password: "",
       // 验证码
       captcha: "",
+      // 验证码名称
+      captchaTitle: "获取验证码",
+      // 验证码是否不可点击
+      captchaBtnDisabled: false,
       // 是否输错过密码
       inputPasswordError: false,
       // 是否输错过验证码
-      inputCaptchaError: false
+      inputCaptchaError: false,
+      // 定时器
+      timer: 0,
+      // timerMaxCount 定时器最大时间
+      timerMaxCount: 60
     };
   },
   created() {
-    console.log(this.$route.name + "  👉  " + window.history.length);
-    console.log(this.user);
     // 配置数据
     this.initialize();
     // 配置
@@ -163,6 +175,10 @@ export default {
       // 配置数据
       this.showPasswordWay = this.user.channel !== "Mobile Phone";
       this.password = this.captcha = "";
+      this.timer = 0;
+      this.captchaBtnDisabled = false;
+      this.captchaTitle = "获取验证码";
+      this.timerMaxCount = 60;
     },
 
     // 底部更多面板点击事件
@@ -275,6 +291,62 @@ export default {
     },
     clearAllCaptcha() {
       this.captcha = "";
+    },
+    // 获取验证码
+    captchaAction() {
+      // 按钮不可点击，则过滤
+      if (this.captchaBtnDisabled) return;
+
+      // 1、验证手机号是否correct
+      if (!Utils.validMobile(this.user.phone)) {
+        let content = "你输入的是一个无效的手机号码";
+        let title = "手机号码错误";
+        this.$weui.alert(content, { title: title });
+        return;
+      }
+
+      // 2、弹出有提示
+      let content = "我们将发送验证码短信到这个号码：" + this.account;
+      this.$weui.confirm(content, {
+        title: "确认手机号码",
+        buttons: [
+          {
+            label: "取消",
+            type: "default"
+          },
+          {
+            label: "好",
+            type: "primary",
+            onClick: this.fetchCaptcha
+          }
+        ]
+      });
+    },
+    // 获取验证码
+    fetchCaptcha() {
+      // 获取验证码
+      this.captchaBtnDisabled = true;
+      this.captchaTitle = "发送中...";
+      // 先开启一个简短的延时
+      setTimeout(() => {
+        this.timerMaxCount = 60;
+        this.captchaTitle = "60s后重新发送";
+        this.timer = window.setInterval(this.timerValueChanged, 1000);
+      }, 1000);
+    },
+
+    // 定时器事件
+    timerValueChanged() {
+      this.timerMaxCount--;
+      if (this.timerMaxCount === 0) {
+        // 20190727 Fixed Bug : 指明 window，否则报错
+        window.clearInterval(this.timer);
+        this.timer = 0;
+        this.captchaBtnDisabled = false;
+        this.captchaTitle = "获取验证码";
+        return;
+      }
+      this.captchaTitle = this.timerMaxCount + "后重新发送";
     }
   },
   computed: {
@@ -312,6 +384,7 @@ export default {
 };
 </script>
 
+<style src="./css/login.css" scoped></style>
 <style scoped>
 .left-enter {
   -webkit-transform: translate(100%, 0);
@@ -422,16 +495,6 @@ export default {
   padding: 0 20px;
 }
 
-/* 获取验证码 */
-.captcha-btn {
-  border: 1px solid #353535;
-  color: #353535;
-  background-color: transparent;
-  padding: 2px 5px;
-  font-size: 13px;
-  border-radius: 3px;
-}
-
 /* 底部更多列表 */
 .mh-current-login__more {
   position: absolute;
@@ -450,7 +513,7 @@ export default {
 
 .mh-current-login__more-item {
   position: relative;
-  padding: 0 10px;
+  padding: 0 16px;
 }
 
 .mh-current-login__more-item:not(:last-child)::after {
@@ -460,7 +523,7 @@ export default {
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: #000;
+  background-color: #888;
   -webkit-transform: scaleY(0.5);
   -ms-transform: scaleY(0.5);
   transform: scaleY(0.5);

@@ -1,10 +1,13 @@
 // 其他账号登陆
 <template>
   <vue-route-layout>
-    <!-- 关闭按钮 -->
-    <p class="mh-nav-close-btn">
-      <span class="iconfont icon-navbar-close" @click="$router.back()"></span>
-    </p>
+    <!-- 导航栏 -->
+    <NavigationBar
+      :left-item="blackBackItem"
+      :right-item="moreItem"
+      @left-click="$router.back()"
+      @right-click="rightItemClick"
+    ></NavigationBar>
 
     <!-- 中间内容 -->
     <div class="mh-current-login__container">
@@ -15,7 +18,7 @@
           <label class="mh-current-login__label">手机号</label>
         </div>
         <div class="mh-current-login__cell-bd">
-          {{ "+" + zoneCode + " " + phone }}
+          {{ phoneFormat }}
         </div>
       </div>
       <!-- 过渡动画 -->
@@ -34,6 +37,7 @@
                 required="required"
                 class="mh-input"
                 type="password"
+                maxlength="16"
                 placeholder="请填写密码"
                 v-model="password"
               />
@@ -83,7 +87,13 @@
             </div>
           </div>
           <div class="mh-current-login__cell-ft">
-            <div class="captcha-btn">获取验证码</div>
+            <div
+              @click="captchaAction"
+              class="lg-captcha-btn"
+              :class="{ 'lg-captcha-btn--disabled': captchaBtnDisabled }"
+            >
+              {{ captchaTitle }}
+            </div>
           </div>
         </div>
       </transition>
@@ -102,7 +112,6 @@
         >登陆</a
       >
     </div>
-
     <!-- ActionSheet -->
     <ActionSheet
       v-model="showActionSheet"
@@ -119,6 +128,11 @@ import ActionSheet, {
 } from "components/actionSheet/ActionSheet";
 // 账号存储
 import AccountHelper from "@/assets/js/account/account";
+// 工具类
+import Utils from "assets/utils/utils";
+// UserModel
+import UserModel from "../js/user";
+import { moreItem } from "@/assets/js/MHBarButtonItem.js";
 export default {
   name: "phone-login",
   components: {
@@ -138,87 +152,150 @@ export default {
       // 手机号
       phone: "",
       // 验证码
-      captcha: ""
+      captcha: "",
+      // 验证码名称
+      captchaTitle: "获取验证码",
+      // 验证码是否不可点击
+      captchaBtnDisabled: false,
+      moreItem,
+      // 定时器
+      timer: 0,
+      // timerMaxCount 定时器最大时间
+      timerMaxCount: 60
     };
   },
   created() {
     this.configItems();
-    console.log("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥M呕吐hi");
-    console.log(this.$route);
     // 路由传参赋值
     this.phone = this.$route.params.phone;
     this.zoneCode = this.$route.params.zoneCode;
   },
   mounted() {},
   methods: {
+    // 切换登陆方式按钮事件
     changeBtnDidClick() {
       this.showPasswordWay = !this.showPasswordWay;
     },
     // 底部更多面板事件处理
-    itemDidClick(idx) {
-      switch (idx) {
-      case 0:
-        break;
-      default:
-        this.showActionSheet = true;
-        break;
-      }
+    rightItemClick() {
+      this.showActionSheet = true;
     },
     // 配置actionsheet items
     configItems() {
-      const freeze = new ActionSheetItem({
-        title: "紧急冻结"
+      const findPassword = new ActionSheetItem({
+        title: "找回密码"
       });
       const securityCenter = new ActionSheetItem({
         title: "前往微信安全中心"
       });
-      this.items = [freeze, securityCenter];
+      this.items = [findPassword, securityCenter];
     },
     // ActionSheet 事件处理
     didClickItem(idx) {
       if (idx === 0) return;
-      switch (idx) {
-      case 1:
-        this.$router.push({ name: "setting" });
-        break;
-      case 2:
-        break;
-      default:
-        break;
-      }
     },
     // 登陆事件
     login() {
-      // 登陆账号
-      // 模拟网络加载
-      setTimeout(() => {
-        const user = {
-          /// PS: 假设请求到数据模型是  User模型
-          screen_name: "Mike-乱港三千-Mr_元先森",
-          idstr: "61856069",
-          profile_image_url:
-            "http://tva3.sinaimg.cn/crop.0.6.264.264.180/93276e1fjw8f5c6ob1pmpj207g07jaa5.jpg",
-          avatar_large: "",
-          /// 用户的封面
-          coverImageUrl:
-            "http://p1.gexing.com/G1/M00/7A/83/rBACE1TW-cjDb2yHAAGORXsJM6w706.jpg",
-          coverImage: "Kris.jpeg",
+      // 按钮不可点击，则过滤
+      if (this.loginBtnDisabled) return;
+      if (this.showPasswordWay) {
+        // 密码登陆 验证账号+密码
+        // 1、验证phone 是不是正确 2、密码8-16位且不含中文
+        if (
+          !Utils.validMobile(this.phone) ||
+          this.password.length < 8 ||
+          this.password.length > 16 ||
+          Utils.includeChinese(this.password)
+        ) {
+          this.$weui.alert("", { title: "账号或密码错误，请重新填写" });
+          return;
+        }
+      } else {
+        // 1、验证phone 是不是正确 2、验证码登录 纯6位数字
+        if (
+          !Utils.validMobile(this.phone) ||
+          this.captcha.length !== 6 ||
+          !Utils.pureDigitCharacters(this.captcha)
+        ) {
+          let content = "";
+          let title = "验证码超时，请重新获取验证码";
+          this.$weui.alert(content, { title: title });
+          return;
+        }
+      }
 
-          /// 假设是这里统一都是qq号码登录
-          qq: "491273090",
-          email: "491273090" + "@qq.com", // PS：机智，拼接成QQ邮箱
-          wechatId: "codermikehe", // PS：瞎写的
-          phone: this.phone, // PS：瞎写的
-          // 登陆渠道：手机号登陆
-          channel: "Mobile Phone",
-          // -- 0 雄性 -- 1 女孩
-          gender: 0,
-          // 个新签名
-          featureSign: "生死看淡，不服就干"
-        };
+      // 登陆账号
+      // 显示loading
+      let loading = this.$weui.loading("请稍后...");
+      setTimeout(() => {
+        // 隐藏loading
+        loading.hide();
+        // 假设获取到了数据
+        let user = Object.assign({}, UserModel);
+        user.qq = "491273090";
+        user.emial = "491273090" + "@qq.com"; // PS：机智，拼接成QQ邮箱
+        user.phone = this.phone; // PS：瞎写的
+        user.channel = "Mobile Phone";
         // 登陆
         AccountHelper.login(user, this.phone);
-      }, 3000);
+      }, 1000);
+    },
+
+    // 获取验证码
+    captchaAction() {
+      // 按钮不可点击，则过滤
+      if (this.captchaBtnDisabled) return;
+
+      // 1、验证手机号是否correct
+      if (!Utils.validMobile(this.phone)) {
+        let content = "你输入的是一个无效的手机号码";
+        let title = "手机号码错误";
+        this.$weui.alert(content, { title: title });
+        return;
+      }
+
+      // 2、弹出有提示
+      let content = "我们将发送验证码短信到这个号码：" + this.phoneFormat;
+      this.$weui.confirm(content, {
+        title: "确认手机号码",
+        buttons: [
+          {
+            label: "取消",
+            type: "default"
+          },
+          {
+            label: "好",
+            type: "primary",
+            onClick: this.fetchCaptcha
+          }
+        ]
+      });
+    },
+    // 获取验证码
+    fetchCaptcha() {
+      // 获取验证码
+      this.captchaBtnDisabled = true;
+      this.captchaTitle = "发送中...";
+      // 先开启一个简短的延时
+      setTimeout(() => {
+        this.timerMaxCount = 60;
+        this.captchaTitle = "60s后重新发送";
+        this.timer = window.setInterval(this.timerValueChanged, 1000);
+      }, 1000);
+    },
+
+    // 定时器事件
+    timerValueChanged() {
+      this.timerMaxCount--;
+      if (this.timerMaxCount === 0) {
+        // 20190727 Fixed Bug : 指明 window，否则报错
+        window.clearInterval(this.timer);
+        this.timer = 0;
+        this.captchaBtnDisabled = false;
+        this.captchaTitle = "获取验证码";
+        return;
+      }
+      this.captchaTitle = this.timerMaxCount + "后重新发送";
     },
 
     // 清除按钮事件
@@ -240,11 +317,17 @@ export default {
       return this.showPasswordWay
         ? this.password.length <= 0
         : this.captcha.length <= 0;
+    },
+
+    // 电话格式化
+    phoneFormat() {
+      return "+" + this.zoneCode + " " + Utils.formatMobile344(this.phone);
     }
   }
 };
 </script>
 
+<style src="../css/login.css" scoped></style>
 <style scoped>
 .left-enter {
   -webkit-transform: translate(100%, 0);
@@ -277,7 +360,8 @@ export default {
   font-size: 17px;
   overflow: hidden;
   position: relative;
-  margin-top: 90px;
+  /* 90+44 */
+  margin-top: 134px;
   height: 168px;
 }
 
@@ -515,16 +599,5 @@ export default {
 
 .input-captcha {
   padding-right: 40px;
-}
-/* 获取验证码 */
-.captcha-btn {
-  border: 1px solid #353535;
-  color: #353535;
-  background-color: transparent;
-  font-size: 13px;
-  border-radius: 3px;
-  height: 25px;
-  line-height: 25px;
-  padding: 0 5px;
 }
 </style>
