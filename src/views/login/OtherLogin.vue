@@ -15,35 +15,29 @@
           v-if="showPasswordWay"
         >
           <h1>手机号登录</h1>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">国家/地区</label>
+          <div class="weui-cell lg-cell">
+            <div class="weui-cell__hd">
+              <label class="weui-label">国家/地区</label>
             </div>
-            <div class="mh-current-login__cell-bd">
+            <div class="weui-cell__bd">
               <p class="mh-zone-title" @click="skipZoneList">中国</p>
             </div>
-            <div class="mh-current-login__cell-ft">
+            <div class="weui-cell__ft">
               <img
-                class="mh-right-arrow"
+                class="lg-right-arrow"
                 src="@/assets/images/common/tableview_arrow_8x13.png"
               />
             </div>
           </div>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <div class="mh-zone-code-container">
-                <label class="zone">+</label>
-                <input
-                  class="mh-current-login__input mh-zone"
-                  type="text"
-                  v-model="zoneCode"
-                />
-              </div>
+          <div class="weui-cell lg-cell">
+            <div class="weui-cell__hd lg-cell__hd">
+              <label class="lg-zone">+</label>
+              <input class="weui-input" type="number" v-model="zoneCode" />
             </div>
-            <div class="mh-current-login__cell-bd">
+            <div class="weui-cell__bd">
               <input
-                class="mh-current-login__input"
-                type="text"
+                class="weui-input"
+                type="tel"
                 placeholder="请填写手机号码"
                 v-model="phone"
               />
@@ -57,60 +51,57 @@
           v-else
         >
           <h1>微信号/QQ号/邮箱登录</h1>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">账号</label>
+          <div class="weui-cell lg-cell">
+            <div class="weui-cell__hd">
+              <label class="weui-label">账号</label>
             </div>
-            <div class="mh-current-login__cell-bd">
+            <div class="weui-cell__bd">
               <input
-                class="mh-current-login__input"
+                class="weui-input"
                 type="text"
                 placeholder="微信号/QQ号/邮箱"
                 v-model="account"
               />
             </div>
           </div>
-          <div class="mh-current-login__cell">
-            <div class="mh-current-login__cell-hd">
-              <label class="mh-current-login__label">密码</label>
+          <div class="weui-cell lg-cell">
+            <div class="weui-cell__hd">
+              <label class="weui-label">密码</label>
             </div>
-            <div class="mh-current-login__cell-bd">
-              <input
-                class="mh-current-login__input"
-                type="password"
-                placeholder="请填写QQ密码"
-                v-model="password"
-              />
+            <div class="weui-cell__bd">
+              <div class="mh-input__wrapper">
+                <input
+                  required="required"
+                  class="weui-input"
+                  type="password"
+                  placeholder="请填写QQ密码"
+                  maxlength="16"
+                  v-model="password"
+                />
+                <a href="javascript:" class="weui-icon-clear"></a>
+              </div>
             </div>
           </div>
         </div>
       </transition>
     </div>
     <!-- 切换按钮 -->
-    <div class="mh-current-login__change-btn">
+    <div class="lg-change-button">
       <span @click="changeBtnDidClick">{{ changeLogin }}</span>
     </div>
-
     <!-- 登陆按钮 -->
-    <div class="mh-current-login__login">
-      <a
-        class="mh-btn mh-btn_primary"
-        :class="{ 'mh-btn_disabled': loginBtnDisabled }"
-        @click="login"
-        >{{ loginBtnTitle }}</a
-      >
-    </div>
-
+    <a
+      href="javascript:;"
+      @click="login"
+      class="weui-btn weui-btn_block weui-btn_primary lg-login-btn"
+      :class="{ 'lg-btn--disabled': loginBtnDisabled }"
+      >{{ loginBtnTitle }}</a
+    >
     <!-- 底部更多面板 -->
-    <div class="mh-current-login__more">
-      <span class="mh-current-login__more-item" @click="itemDidClick(0)"
-        >找回密码</span
-      >
-      <span class="mh-current-login__more-item" @click="itemDidClick(1)"
-        >更多选项</span
-      >
+    <div class="lg-more__wrapper">
+      <span class="lg-more__item" @click="itemDidClick(0)">找回密码</span>
+      <span class="lg-more__item" @click="itemDidClick(1)">更多选项</span>
     </div>
-
     <!-- ActionSheet -->
     <ActionSheet
       v-model="showActionSheet"
@@ -253,6 +244,8 @@ export default {
 };
 </script>
 
+<style src="./css/login.css" scoped></style>
+
 <style scoped>
 .left-enter {
   -webkit-transform: translate(100%, 0);
@@ -299,35 +292,6 @@ export default {
   padding-bottom: 42px;
 }
 
-.mh-current-login__cell {
-  padding: 0 20px;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  font-size: 17px;
-  height: 45px;
-  line-height: 45px;
-}
-.mh-current-login__cell:after {
-  content: " ";
-  position: absolute;
-  left: 20px;
-  bottom: 0;
-  right: 20px;
-  height: 1px;
-  border-bottom: 1px solid #d8d8d8;
-  color: #d8d8d8;
-  -webkit-transform-origin: 0 100%;
-  transform-origin: 0 100%;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
-  z-index: 2;
-}
-
 .mh-current-login__password {
   position: absolute;
   left: 0;
@@ -341,194 +305,5 @@ export default {
   top: 0;
   bottom: 0;
   width: 100%;
-}
-
-.mh-current-login__cell-bd {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-}
-
-.mh-current-login__label {
-  display: block;
-  width: 100px;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.mh-zone-code-container {
-  width: 80px;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  margin-right: 10px;
-}
-
-.mh-zone-code-container::after {
-  content: " ";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  color: #d8d8d8;
-  background-color: #d8d8d8;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
-  z-index: 2;
-}
-
-.zone {
-  width: initial;
-  display: block;
-  word-wrap: break-word;
-  word-break: break-all;
-  padding-right: 5px;
-}
-.mh-zone.mh-current-login__input {
-  flex: 1;
-}
-
-.mh-current-login__input {
-  width: 100%;
-  border: 0;
-  outline: 0;
-  -webkit-appearance: none;
-  background-color: transparent;
-  font-size: inherit;
-  color: inherit;
-  height: 45px;
-  line-height: 45px;
-  -webkit-appearance: searchfield;
-  box-sizing: border-box;
-}
-
-.mh-current-login__cell-ft {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
-.mh-right-arrow {
-  display: inline-block;
-  width: 8px;
-  height: 13px;
-  margin-left: 10px;
-  margin-right: 5px;
-}
-
-.mh-current-login__input::-webkit-outer-spin-button,
-.mh-current-login__input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.mh-current-login__change-btn {
-  margin: 34px 16px 64px;
-  font-size: 16px;
-  color: #5b6a91;
-}
-
-.mh-current-login__login {
-  margin-top: 63px;
-  padding: 0 20px;
-}
-
-.mh-btn {
-  position: relative;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 14px;
-  padding-right: 14px;
-  box-sizing: border-box;
-  font-size: 18px;
-  text-align: center;
-  text-decoration: none;
-  color: #ffffff;
-  line-height: 2.55555556;
-  border-radius: 5px;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  overflow: hidden;
-}
-.mh-btn:after {
-  content: " ";
-  width: 200%;
-  height: 200%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  -webkit-transform: scale(0.5);
-  transform: scale(0.5);
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  box-sizing: border-box;
-  border-radius: 10px;
-}
-
-.mh-btn_primary {
-  background-color: #1aad19;
-}
-.mh-btn_primary:not(.mh-btn_disabled):visited {
-  color: #ffffff;
-}
-.mh-btn_primary:not(.mh-btn_disabled):active {
-  color: rgba(255, 255, 255, 0.6);
-  background-color: #179b16;
-}
-
-.mh-btn_disabled {
-  color: rgba(255, 255, 255, 0.6);
-}
-.mh-btn_disabled.mh-btn_default {
-  color: rgba(0, 0, 0, 0.3);
-  background-color: #f7f7f7;
-}
-.mh-btn_disabled.mh-btn_primary {
-  background-color: #9ed99d;
-}
-
-/* 底部更多列表 */
-.mh-current-login__more {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 23px;
-  color: #5b6a91;
-  text-align: center;
-  font-size: 15px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  justify-content: center;
-}
-
-.mh-current-login__more-item {
-  position: relative;
-  padding: 0 16px;
-}
-
-.mh-current-login__more-item:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #888;
-  -webkit-transform: scaleY(0.5);
-  -ms-transform: scaleY(0.5);
-  transform: scaleY(0.5);
 }
 </style>

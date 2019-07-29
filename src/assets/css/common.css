@@ -143,6 +143,10 @@ input {
   outline: 0;
 }
 
+input, textarea {
+  caret-color: #07C160;
+}
+
 .hidden {
   float: left;
   width: 0;

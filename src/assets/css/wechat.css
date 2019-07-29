@@ -108,50 +108,17 @@
   -webkit-justify-content: center;
   justify-content: center;
 }
-.mh-input__wrapper .mh-input{
-  width: 100%;
-  border: 0;
-  outline: 0;
-  -webkit-appearance: none;
-  background-color: transparent;
-  font-size: inherit;
-  color: inherit;
-  height: 40px;
-  line-height: 40px;
-  -webkit-appearance: searchfield;
-  box-sizing: border-box;
-  /* 🔥 CSS设置input的光标颜色
-  * - [用css改变input光标的3种方法](https://blog.csdn.net/qq_39234685/article/details/83180468)
-  */
-  caret-color:rgb(10, 193, 42);
-}
 
-.mh-input__wrapper .mh-input::-webkit-outer-spin-button,
-.mh-input__wrapper .mh-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-/* - [css居中布局方法](https://www.w3cschool.cn/css/css-center.html) */
-.mh-input__wrapper .mh-input-clear {
-  width: 30px;
-  height: 30px;
+
+
+/* 🔥 - [使用CSS3 实现input框旁边的清空input内容按钮的显隐](https://www.cnblogs.com/benbendu/p/7055645.html) */
+/* 🔥 - [css居中布局方法](https://www.w3cschool.cn/css/css-center.html) */
+.mh-input__wrapper .weui-icon-clear {
   display: none;
   position: relative;
 }
-
-.mh-input__wrapper .mh-input-clear .mh-input-clear__clear {
-  width: 20px;
-  height: 20px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  position: absolute;
-}
-
-/* - [使用CSS3 实现input框旁边的清空input内容按钮的显隐](https://www.cnblogs.com/benbendu/p/7055645.html) */
-.mh-input__wrapper .mh-input:valid + .mh-input-clear {
+.mh-input__wrapper .weui-input:valid + .weui-icon-clear {
   display: block;
 }
 /* --------👆 input End 👆--------*/

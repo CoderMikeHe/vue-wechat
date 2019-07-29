@@ -1,4 +1,4 @@
-/* 这个公用css样式，服务login这个模块 换血lg*/
+/* 这个公用css样式，服务login这个模块 简写lg*/
 /* ------------------------------ */
 /* 获取验证码 */
 .lg-captcha-btn {
@@ -14,4 +14,122 @@
 .lg-captcha-btn--disabled {
   border: 1px solid #999;
   color: #999;
+}
+
+/* 修改weui-cell */
+.weui-cell.lg-cell{
+  padding: 10px 20px;
+  line-height: 1.41176471;
+}
+.weui-cell.lg-cell::before{
+  display: none;
+}
+.weui-cell.lg-cell::after{
+  content: " ";
+  position: absolute;
+  left: 20px;
+  bottom: 0;
+  right: 20px;
+  height: 1px;
+  border-bottom: 1px solid #d8d8d8;
+  color: #d8d8d8;
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  z-index: 2;
+}
+
+/* +86 样式 */
+.weui-cell__hd.lg-cell__hd{
+  width: 80px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.weui-cell__hd.lg-cell__hd::after {
+  content: " ";
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  right: 0;
+  width: 1px;
+  color: #d8d8d8;
+  background-color: #d8d8d8;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleX(0.5);
+  transform: scaleX(0.5);
+  z-index: 2;
+}
+
+.lg-zone {
+  width: initial;
+  display: block;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding-right: 5px;
+}
+
+/* 右箭头 > */
+.lg-right-arrow {
+  display: inline-block;
+  width: 8px;
+  height: 13px;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+/* 切换方式按钮 */
+.lg-change-button {
+  margin: 34px 20px 64px;
+  font-size: 16px;
+  color: #5b6a91;
+}
+
+/* 登陆、注册、下一步按钮 normal和disabled 样式  */
+.weui-btn.lg-login-btn{
+  margin: 63px 20px 0;
+  padding: 11px 24px;
+}
+.lg-btn--disabled{
+  opacity: 0.5;
+}
+
+/* 底部更多面板 */
+.lg-more__wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  color: #5b6a91;
+  text-align: center;
+  font-size: 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.lg-more__item {
+  position: relative;
+  padding: 0 16px;
+}
+.lg-more__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #888;
+  -webkit-transform: scaleY(0.5);
+  -ms-transform: scaleY(0.5);
+  transform: scaleY(0.5);
 }
