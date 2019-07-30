@@ -10,21 +10,21 @@
     ></NavigationBar>
 
     <!-- 中间内容 -->
-    <div class="mh-current-login__container">
+    <div class="lg-login__wrapper">
       <!-- 手机号登录 -->
-      <h1>手机号登录</h1>
-      <div class="mh-current-login__cell">
-        <div class="mh-current-login__cell-hd">
-          <label class="mh-current-login__label">手机号</label>
+      <h1 class="lg-login__title">手机号登录</h1>
+      <div class="weui-cell lg-cell">
+        <div class="weui-cell__hd">
+          <label class="weui-label">手机号</label>
         </div>
-        <div class="mh-current-login__cell-bd">
+        <div class="weui-cell__hd">
           {{ phoneFormat }}
         </div>
       </div>
       <!-- 过渡动画 -->
-      <transition name="left">
+      <transition name="lg-left">
         <div
-          class="mh-current-login__cell mh-current-login__password"
+          class="weui-cell lg-cell mh-current-login__password"
           key="password"
           v-if="showPasswordWay"
         >

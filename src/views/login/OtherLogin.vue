@@ -6,15 +6,11 @@
       <span class="iconfont icon-navbar-close" @click="$router.back()"></span>
     </p>
     <!-- 中间内容 -->
-    <div class="mh-current-login__container">
-      <transition name="left">
+    <div class="lg-login__wrapper">
+      <transition name="lg-left">
         <!-- 手机号登录 -->
-        <div
-          class="mh-current-login__panel mh-current-login__password"
-          key="password"
-          v-if="showPasswordWay"
-        >
-          <h1>手机号登录</h1>
+        <div class="lg-login__panel" key="password" v-if="showPasswordWay">
+          <h1 class="lg-login__title">手机号登录</h1>
           <div class="weui-cell lg-cell">
             <div class="weui-cell__hd">
               <label class="weui-label">国家/地区</label>
@@ -32,36 +28,53 @@
           <div class="weui-cell lg-cell">
             <div class="weui-cell__hd lg-cell__hd">
               <label class="lg-zone">+</label>
-              <input class="weui-input" type="number" v-model="zoneCode" />
-            </div>
-            <div class="weui-cell__bd">
               <input
                 class="weui-input"
-                type="tel"
-                placeholder="请填写手机号码"
-                v-model="phone"
+                type="number"
+                maxlength="4"
+                v-model="zoneCode"
               />
+            </div>
+            <div class="weui-cell__bd">
+              <div class="mh-input__wrapper">
+                <input
+                  required
+                  class="weui-input"
+                  type="tel"
+                  placeholder="请填写手机号码"
+                  v-model="phone"
+                />
+                <a
+                  @click.prevent="phone = ''"
+                  href="javascript:"
+                  class="weui-icon-clear"
+                ></a>
+              </div>
             </div>
           </div>
         </div>
         <!-- 微信号/QQ号/邮箱登录 -->
-        <div
-          class="mh-current-login__panel mh-current-login__captcha"
-          key="captcha"
-          v-else
-        >
-          <h1>微信号/QQ号/邮箱登录</h1>
+        <div class="lg-login__panel" key="captcha" v-else>
+          <h1 class="lg-login__title">微信号/QQ号/邮箱登录</h1>
           <div class="weui-cell lg-cell">
             <div class="weui-cell__hd">
               <label class="weui-label">账号</label>
             </div>
             <div class="weui-cell__bd">
-              <input
-                class="weui-input"
-                type="text"
-                placeholder="微信号/QQ号/邮箱"
-                v-model="account"
-              />
+              <div class="mh-input__wrapper">
+                <input
+                  required
+                  class="weui-input"
+                  type="text"
+                  placeholder="微信号/QQ号/邮箱"
+                  v-model="account"
+                />
+                <a
+                  @click.prevent="account = ''"
+                  href="javascript:"
+                  class="weui-icon-clear"
+                ></a>
+              </div>
             </div>
           </div>
           <div class="weui-cell lg-cell">
@@ -78,7 +91,11 @@
                   maxlength="16"
                   v-model="password"
                 />
-                <a href="javascript:" class="weui-icon-clear"></a>
+                <a
+                  @click.prevent="password = ''"
+                  href="javascript:"
+                  class="weui-icon-clear"
+                ></a>
               </div>
             </div>
           </div>
@@ -247,19 +264,6 @@ export default {
 <style src="./css/login.css" scoped></style>
 
 <style scoped>
-.left-enter {
-  -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0);
-}
-.left-leave-to {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-}
-.left-enter-active,
-.left-leave-active {
-  transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
-}
-
 /* 关闭按钮 */
 .mh-nav-close-btn {
   height: 44px;
@@ -272,38 +276,5 @@ export default {
 }
 .mh-nav-close-btn span:active {
   color: rgba(0, 0, 0, 0.5);
-}
-
-.mh-current-login__container {
-  font-size: 17px;
-  overflow: hidden;
-  position: relative;
-  margin-top: 90px;
-  height: 170px;
-}
-
-.mh-current-login__panel {
-  height: 170px;
-}
-.mh-current-login__panel h1 {
-  font-size: 24px;
-  font-weight: 500;
-  padding: 0 20px;
-  padding-bottom: 42px;
-}
-
-.mh-current-login__password {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-}
-.mh-current-login__captcha {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
 }
 </style>

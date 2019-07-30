@@ -1,5 +1,49 @@
 /* 这个公用css样式，服务login这个模块 简写lg*/
 /* ------------------------------ */
+
+/* 过渡动画 */
+.lg-left-enter {
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+.lg-left-leave-to {
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+.lg-left-enter-active,
+.lg-left-leave-active {
+  transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
+}
+
+/* 其他账号登陆容器 + 面板容器*/
+.lg-login__wrapper{
+  font-size: 17px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 90px;
+  height: 170px;
+}
+
+.lg-login__panel {
+  height: 170px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.lg-login__title {
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0 20px;
+  padding-bottom: 42px;
+}
+
+
+
+
+
 /* 获取验证码 */
 .lg-captcha-btn {
   border: 1px solid #353535;
