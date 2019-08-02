@@ -28,65 +28,53 @@
           key="password"
           v-if="showPasswordWay"
         >
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">密码</label>
+          <div class="weui-cell__hd">
+            <label class="weui-label">密码</label>
           </div>
-          <div class="mh-current-login__cell-bd">
+          <div class="weui-cell__bd">
             <div class="mh-input__wrapper">
               <input
                 required="required"
-                class="mh-input"
+                class="weui-input"
                 type="password"
                 maxlength="16"
                 placeholder="请填写密码"
                 v-model="password"
               />
               <a
-                href="javascript:;"
-                class="mh-input-clear"
-                @click="clearAllPassword"
-              >
-                <img
-                  src="@/assets/images/input/input_clear.png"
-                  class="mh-input-clear__clear"
-                  alt=""
-                />
-              </a>
+                @click.prevent="password = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
             </div>
           </div>
         </div>
         <div
-          class="mh-current-login__cell mh-current-login__captcha"
+          class="weui-cell lg-cell mh-current-login__captcha"
           key="captcha"
           v-else
         >
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">验证码</label>
+          <div class="weui-cell__hd">
+            <label class="weui-label">验证码</label>
           </div>
-          <div class="mh-current-login__cell-bd">
+          <div class="weui-cell__bd">
             <div class="mh-input__wrapper input-captcha">
               <input
                 required="required"
-                class="mh-input"
+                class="weui-input"
                 type="tel"
                 maxlength="6"
                 placeholder="请输入验证码"
                 v-model="captcha"
               />
               <a
-                href="javascript:;"
-                class="mh-input-clear"
-                @click="clearAllCaptcha"
-              >
-                <img
-                  src="@/assets/images/input/input_clear.png"
-                  class="mh-input-clear__clear"
-                  alt=""
-                />
-              </a>
+                @click.prevent="captcha = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
             </div>
           </div>
-          <div class="mh-current-login__cell-ft">
+          <div class="weui-cell__ft">
             <div
               @click="captchaAction"
               class="lg-captcha-btn"
@@ -99,19 +87,19 @@
       </transition>
     </div>
     <!-- 切换按钮 -->
-    <div class="mh-current-login__change-btn">
+    <div class="lg-change-button">
       <span @click="changeBtnDidClick">{{ changeLogin }}</span>
     </div>
 
     <!-- 登陆按钮 -->
-    <div class="mh-current-login__login">
-      <a
-        class="mh-btn mh-btn_primary"
-        :class="{ 'mh-btn_disabled': loginBtnDisabled }"
-        @click="login"
-        >登陆</a
-      >
-    </div>
+    <a
+      href="javascript:;"
+      @click="login"
+      class="weui-btn weui-btn_block weui-btn_primary lg-login-btn"
+      :class="{ 'lg-btn--disabled': loginBtnDisabled }"
+      >登陆</a
+    >
+
     <!-- ActionSheet -->
     <ActionSheet
       v-model="showActionSheet"
@@ -329,50 +317,8 @@ export default {
 
 <style src="../css/login.css" scoped></style>
 <style scoped>
-.left-enter {
-  -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0);
-}
-.left-leave-to {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-}
-.left-enter-active,
-.left-leave-active {
-  transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
-}
-
-/* 关闭按钮 */
-.mh-nav-close-btn {
-  height: 44px;
-  line-height: 44px;
-}
-.mh-nav-close-btn span {
-  margin-left: 10px;
-  font-size: 24px;
-  color: #000;
-}
-.mh-nav-close-btn span:active {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.mh-current-login__container {
-  font-size: 17px;
-  overflow: hidden;
-  position: relative;
-  /* 90+44 */
-  margin-top: 134px;
-  height: 168px;
-}
-
 .mh-current-login__panel {
   height: 168px;
-}
-.mh-current-login__container h1 {
-  font-size: 24px;
-  font-weight: 500;
-  padding: 0 20px;
-  padding-bottom: 42px;
 }
 
 .mh-current-login__cell {

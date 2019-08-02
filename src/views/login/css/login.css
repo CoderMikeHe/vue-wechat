@@ -132,7 +132,7 @@
 
 /* 切换方式按钮 */
 .lg-change-button {
-  margin: 34px 20px 64px;
+  margin: 34px 20px 0;
   font-size: 16px;
   color: #5b6a91;
 }
