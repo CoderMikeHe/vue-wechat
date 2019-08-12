@@ -133,33 +133,22 @@ export default new Router({
         keepAlive: false
       }
     },
-    {
-      path: '/current-login',
-      name: 'CurrentLogin',
-      component: CurrentLogin => require(['./views/login/CurrentLogin.vue'], CurrentLogin),
-      meta: {
-        keepAlive: true
-      }
-    },
+    // -----------------------------🔥登陆/注册🔥-----------------------------
     {
       path: '/login',
       name: 'login',
-      component: Login
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: Test
-    },
-    {
-      path: '/language-picker',
-      name: 'LanguagePicker',
-      component: LanguagePicker
+      component: Login,
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register => require(['./views/login/Register.vue'], Register)
+      component: Register => require(['./views/login/Register.vue'], Register),
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/other-login',
@@ -172,18 +161,32 @@ export default new Router({
     {
       path: '/phone-login',
       name: 'PhoneLogin',
-      component: PhoneLogin => require(['./views/login/phoneLogin/PhoneLogin.vue'], PhoneLogin)
+      component: PhoneLogin => require(['./views/login/phoneLogin/PhoneLogin.vue'], PhoneLogin),
+      meta: {
+        keepAlive: false
+      }
     },
-    // {
-    //   path: '/mainframe',
-    //   name: 'mainframe',
-    //   component: MainFrame
-    // },
-    // {
-    //   path: '/contacts',
-    //   name: 'contacts',
-    //   component: Contacts
-    // },
+    {
+      path: '/current-login',
+      name: 'CurrentLogin',
+      component: CurrentLogin => require(['./views/login/CurrentLogin.vue'], CurrentLogin),
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
+    },
+    {
+      path: '/language-picker',
+      name: 'LanguagePicker',
+      component: LanguagePicker,
+      meta: {
+        keepAlive: false
+      }
+    },
     {
       path: '/contacts/add-friends',
       name: 'add-friends',
@@ -199,11 +202,6 @@ export default new Router({
       name: 'data-setting',
       component: DataSetting
     },
-    // {
-    //   path: '/discover',
-    //   name: 'discover',
-    //   component: Discover
-    // },
     {
       path: '/discover/moments',
       name: 'moments', // 朋友圈
@@ -222,11 +220,6 @@ export default new Router({
       name: 'moments-full-text', // 朋友圈全文
       component: MomentsFullText
     },
-    // {
-    //   path: '/profile',
-    //   name: 'profile',
-    //   component: Profile
-    // },
     {
       path: '/profile/userinfo',
       name: 'userinfo',

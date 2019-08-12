@@ -9,7 +9,11 @@
     <div class="lg-login__wrapper">
       <transition name="lg-left">
         <!-- 手机号登录 -->
-        <div class="lg-login__panel" key="password" v-if="showPasswordWay">
+        <div
+          class="lg-login__panel lg-transition"
+          key="password"
+          v-if="showPasswordWay"
+        >
           <h1 class="lg-login__title">手机号登录</h1>
           <div class="weui-cell lg-cell">
             <div class="weui-cell__hd">
@@ -30,7 +34,7 @@
               <label class="lg-zone">+</label>
               <input
                 class="weui-input"
-                type="number"
+                type="tel"
                 maxlength="4"
                 v-model="zoneCode"
               />
@@ -41,8 +45,10 @@
                   required
                   class="weui-input"
                   type="tel"
+                  maxlength="13"
                   placeholder="请填写手机号码"
                   v-model="phone"
+                  @input="inputValueChanged"
                 />
                 <a
                   @click.prevent="phone = ''"
@@ -54,7 +60,7 @@
           </div>
         </div>
         <!-- 微信号/QQ号/邮箱登录 -->
-        <div class="lg-login__panel" key="captcha" v-else>
+        <div class="lg-login__panel lg-transition" key="captcha" v-else>
           <h1 class="lg-login__title">微信号/QQ号/邮箱登录</h1>
           <div class="weui-cell lg-cell">
             <div class="weui-cell__hd">
@@ -139,7 +145,10 @@ import Utils from "assets/utils/utils";
 // UserModel
 import UserModel from "./js/user";
 export default {
-  name: "OtherLogin",
+  name: "other-login",
+  components: {
+    ActionSheet
+  },
   data() {
     return {
       // 显示ActionSheet
@@ -163,9 +172,24 @@ export default {
   mounted() {},
   methods: {
     // 初始化数据
-    // 初始化
-    initialize() {},
-
+    initialize() {
+      this.account = "";
+      this.showPasswordWay = true;
+      this.password = "";
+      this.zoneCode = "86";
+      this.phone = "";
+    },
+    // inputValueChanged
+    inputValueChanged(event) {
+      if (event.data) {
+        // 先去掉空格
+        let phone = this.phone.replace(/\s/g, "");
+        // 后格式话代码
+        this.phone = Utils.formatMobile344(phone);
+      } else {
+        this.phone = this.phone.trim();
+      }
+    },
     // 切换方式的按钮点击事件
     changeBtnDidClick() {
       this.showPasswordWay = !this.showPasswordWay;
@@ -201,7 +225,7 @@ export default {
         this.$router.push({
           name: "PhoneLogin",
           params: {
-            phone: this.phone,
+            phone: Utils.removesWhitespace(this.phone),
             zoneCode: this.zoneCode
           }
         });
@@ -255,8 +279,16 @@ export default {
         : this.account.length <= 0 || this.password.length <= 0;
     }
   },
-  components: {
-    ActionSheet
+  watch: {
+    $route(to, from) {
+      if (
+        to.name === "other-login" &&
+        (from.name === "login" || from.name === "CurrentLogin")
+      ) {
+        // 初始化
+        this.initialize();
+      }
+    }
   }
 };
 </script>

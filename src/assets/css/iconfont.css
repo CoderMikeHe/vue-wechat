@@ -1,13 +1,12 @@
 /* 🔥[iconfont字体使用](https://www.cnblogs.com/fashandian/p/6880892.html) */
 @font-face {
-  font-family: 'iconfont';
-  /* project id 1077850 */
-  src: url('//at.alicdn.com/t/font_1077850_owze7bp5kr.eot');
-  src: url('//at.alicdn.com/t/font_1077850_owze7bp5kr.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1077850_owze7bp5kr.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1077850_owze7bp5kr.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1077850_owze7bp5kr.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1077850_owze7bp5kr.svg#iconfont') format('svg');
+  font-family: 'iconfont';  /* project id 1077850 */
+  src: url('//at.alicdn.com/t/font_1077850_n2fnb1ajxs.eot');
+  src: url('//at.alicdn.com/t/font_1077850_n2fnb1ajxs.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1077850_n2fnb1ajxs.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1077850_n2fnb1ajxs.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1077850_n2fnb1ajxs.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1077850_n2fnb1ajxs.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -55,4 +54,13 @@
 /* 导航栏相关 */
 .icon-navbar-close::before {
   content: "\e602";
+}
+
+/* 选中和非选中 */
+.icon-checked-plain::before {
+  content: "\e656";
+  color: #07C160;
+}
+.icon-check-plain::before {
+  content: "\e75c";
 }

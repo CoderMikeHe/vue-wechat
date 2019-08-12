@@ -7,85 +7,118 @@
       <h1 class="content__title">用手机号注册</h1>
       <div class="content__avatar" @click="showActionSheet = true"></div>
       <div class="content__container">
-        <div class="mh-current-login__cell">
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">昵称</label>
+        <div class="weui-cell lg-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">昵称</label>
           </div>
-          <div class="mh-current-login__cell-bd">
-            <input
-              class="mh-current-login__input"
-              type="search"
-              placeholder="陈晨"
-              v-model="nickname"
-            />
+          <div class="weui-cell__bd">
+            <div class="mh-input__wrapper">
+              <input
+                required
+                class="weui-input"
+                type="text"
+                placeholder="陈晨"
+                v-model="nickname"
+              />
+              <a
+                @click.prevent="nickname = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
+            </div>
           </div>
         </div>
-        <div class="mh-current-login__cell">
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">国家/地区</label>
+        <div class="weui-cell lg-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">国家/地区</label>
           </div>
-          <div class="mh-current-login__cell-bd">
+          <div class="weui-cell__bd">
             <p class="mh-zone-title" @click="skip2ZoneList">中国大陆</p>
           </div>
-          <div class="mh-current-login__cell-ft">
+          <div class="weui-cell__ft">
             <img
-              class="mh-right-arrow"
+              class="lg-right-arrow"
               src="@/assets/images/common/tableview_arrow_8x13.png"
             />
           </div>
         </div>
-        <div class="mh-current-login__cell">
-          <div class="mh-current-login__cell-hd">
-            <div class="mh-zone-code-container">
-              <label class="zone">+</label>
-              <input
-                class="mh-current-login__input mh-zone"
-                type="text"
-                v-model="zoneCode"
-              />
-            </div>
-          </div>
-          <div class="mh-current-login__cell-bd">
+        <div class="weui-cell lg-cell">
+          <div class="weui-cell__hd lg-cell__hd">
+            <label class="lg-zone">+</label>
             <input
-              class="mh-current-login__input"
-              type="text"
-              placeholder="请填写手机号码"
-              v-model="phone"
+              class="weui-input"
+              type="tel"
+              maxlength="4"
+              v-model="zoneCode"
             />
+          </div>
+          <div class="weui-cell__bd">
+            <div class="mh-input__wrapper">
+              <input
+                required
+                class="weui-input"
+                type="tel"
+                maxlength="13"
+                placeholder="请填写手机号码"
+                v-model="phone"
+                @input="inputValueChanged"
+              />
+              <a
+                @click.prevent="phone = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
+            </div>
           </div>
         </div>
 
-        <div class="mh-current-login__cell">
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">密码</label>
+        <div class="weui-cell lg-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">密码</label>
           </div>
-          <div class="mh-current-login__cell-bd">
-            <input
-              class="mh-current-login__input"
-              type="password"
-              placeholder="请设置密码"
-              v-model="password"
-            />
+          <div class="weui-cell__bd">
+            <div class="mh-input__wrapper">
+              <input
+                required="required"
+                class="weui-input"
+                type="password"
+                placeholder="请设置密码"
+                maxlength="16"
+                v-model="password"
+              />
+              <a
+                @click.prevent="password = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- 协议 -->
+    <div
+      class="agreement__wrapper"
+      :class="{ animated: shaked, shake: shaked }"
+    >
+      <i
+        class="iconfont"
+        :class="[checked ? 'icon-checked-plain' : 'icon-check-plain']"
+        @click="checked = !checked"
+      ></i>
+      <span>我已阅读并同意</span>
+      <a href="javascript:home();" class="link">《微信软件许可及服务协议》</a>
+    </div>
+
     <!-- 注册 -->
     <a
       href="javascript:;"
-      @click="registerAction"
-      class="weui-btn weui-btn_block weui-btn_primary register-btn"
+      @click.prevent="registerAction"
+      class="weui-btn weui-btn_block weui-btn_primary lg-login-btn"
+      :class="{ 'lg-btn--disabled': registerBtnDisabled }"
       >注册</a
     >
-    <!-- 协议 -->
-    <div class="weui-footer weui-footer_fixed-bottom">
-      <p class="weui-footer__text">轻触上面的“注册”按钮，即表示你同意</p>
-      <p class="weui-footer__links">
-        <a href="javascript:home();" class="weui-footer__link"
-          >微信软件许可及服务协议</a
-        >
-      </p>
-    </div>
 
     <!-- ActionSheet -->
     <ActionSheet
@@ -101,6 +134,13 @@
 import ActionSheet, {
   ActionSheetItem
 } from "components/actionSheet/ActionSheet";
+// 工具类
+import Utils from "assets/utils/utils";
+// UserModel
+import UserModel from "./js/user";
+// 账号存储
+import AccountHelper from "@/assets/js/account/account";
+import { setTimeout } from "timers";
 export default {
   name: "register",
   components: {
@@ -113,14 +153,77 @@ export default {
       phone: "",
       password: "",
       showActionSheet: false, // 显示ActionSheet
-      items: []
+      items: [],
+      // 是否选中了协议
+      checked: false,
+      // 是否需要shake动画
+      shaked: false
     };
   },
   created() {
     this.configItems();
   },
   methods: {
-    registerAction() {},
+    // inputValueChanged
+    inputValueChanged(event) {
+      if (event.data) {
+        // 先去掉空格
+        let phone = this.phone.replace(/\s/g, "");
+        // 后格式话代码
+        this.phone = Utils.formatMobile344(phone);
+      } else {
+        this.phone = this.phone.trim();
+      }
+    },
+    // 注册事件
+    registerAction() {
+      // 0、没有选中服务条框，则抖动提示
+      if (!this.checked) {
+        this.shaked = true;
+        setTimeout(() => {
+          this.shaked = false;
+        }, 1000);
+        return;
+      }
+
+      // 1、验证手机号是否正确
+      let phone = Utils.removesWhitespace(this.phone);
+      if (!Utils.validMobile(phone)) {
+        let content = "你输入的是一个无效的手机号码";
+        let title = "手机号码错误";
+        this.$weui.alert(content, { title: title });
+        return;
+      }
+      // 2、验证密码正确
+      if (
+        this.password.length < 8 ||
+        this.password.length > 16 ||
+        Utils.includeChinese(this.password) ||
+        Utils.pureDigitCharacters(this.password)
+      ) {
+        this.$weui.alert("", {
+          title: "密码必须是8-16位英文字母、数字、字符组合（不能是纯数字）"
+        });
+        return;
+      }
+
+      // 3、跳转登陆
+      // 显示loading
+      let loading = this.$weui.loading("请稍后...");
+      setTimeout(() => {
+        // 隐藏loading
+        loading.hide();
+        // 假设获取到了数据
+        let user = Object.assign({}, UserModel);
+        user.qq = "491273090";
+        user.emial = "491273090" + "@qq.com"; // PS：机智，拼接成QQ邮箱
+        user.phone = Utils.removesWhitespace(this.phone); // PS：瞎写的
+        user.channel = "Mobile Phone";
+        user.screen_name = this.nickname;
+        // 登陆
+        AccountHelper.login(user, this.phone);
+      }, 1000);
+    },
     // 配置actionsheet items
     configItems() {
       const camera = new ActionSheetItem({
@@ -137,13 +240,43 @@ export default {
       this.$router.replace("/current-login");
     },
     skip2ZoneList() {}
+  },
+  computed: {
+    // 登录按钮是否无效
+    registerBtnDisabled() {
+      return (
+        this.nickname.length <= 0 ||
+        this.phone.length <= 0 ||
+        this.password.length <= 0
+      );
+    }
   }
 };
 </script>
 
+<style src="./css/login.css" scoped></style>
 <style scoped>
+.weui-cell.lg-cell {
+  padding: 10px 0;
+}
+.weui-cell.lg-cell::after {
+  left: 0;
+  right: 0;
+}
+.lg-right-arrow {
+  margin-right: 25px;
+}
+.weui-btn.lg-login-btn {
+  margin-top: 10px;
+}
+.mh-input__wrapper {
+  padding-right: 20px;
+}
+
+/* -------------------------------------------- */
 .register__wrapper {
   background-color: #fff;
+  font-size: 17px;
 }
 .cancel__wrapper {
   height: 36px;
@@ -154,7 +287,7 @@ export default {
 }
 .content__wrapper {
   padding-top: 28px;
-  padding-left: 30px;
+  padding-left: 20px;
 }
 .content__title {
   font-size: 21px;
@@ -175,137 +308,23 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .content__container {
   margin-top: 30px;
 }
-.mh-current-login__cell {
-  padding: 0 0;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  font-size: 17px;
-  height: 45px;
-  line-height: 45px;
-}
-.mh-current-login__cell:after {
-  content: " ";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 1px;
-  border-bottom: 1px solid #c9c9c9;
-  color: #c9c9c9;
-  -webkit-transform-origin: 0 100%;
-  transform-origin: 0 100%;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
-  z-index: 2;
-}
 
-.mh-current-login__cell-bd {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-}
-
-.mh-current-login__label {
-  display: block;
-  width: 100px;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.mh-zone-code-container {
-  width: 80px;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  margin-right: 10px;
-}
-
-.mh-zone-code-container::after {
-  content: " ";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  color: #c9c9c9;
-  background-color: #c9c9c9;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
-  z-index: 2;
-}
-
-.zone {
-  width: initial;
-  display: block;
-  word-wrap: break-word;
-  word-break: break-all;
-  padding-right: 5px;
-}
-.mh-zone.mh-current-login__input {
-  flex: 1;
-}
-
-.mh-current-login__input {
-  width: 100%;
-  border: 0;
-  outline: 0;
-  -webkit-appearance: none;
-  background-color: transparent;
-  font-size: inherit;
-  color: inherit;
-  height: 45px;
-  line-height: 45px;
-  -webkit-appearance: searchfield;
-  box-sizing: border-box;
-}
-
-.mh-current-login__cell-ft {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
-.mh-right-arrow {
-  display: inline-block;
-  width: 8px;
-  height: 13px;
-  margin-left: 10px;
-  margin-right: 25px;
-}
-
-.register-btn {
-  margin: 30px 30px 0;
-  line-height: 32px;
-}
-
-.weui-footer_fixed-bottom {
-  bottom: 20px;
-}
-.weui-footer__text {
+.agreement__wrapper {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 13px;
   color: #525458;
 }
-.weui-footer__links {
-  font-size: 12px;
-  padding: 3px;
+.agreement__wrapper >>> .iconfont {
+  color: #525458;
+  font-size: 13px;
+  margin-right: 3px;
 }
-.weui-footer__link {
-  font-size: 12px;
+.agreement__wrapper a {
+  color: #576b95;
 }
 </style>

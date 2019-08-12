@@ -9,14 +9,17 @@
     <!-- 登陆或注册 -->
     <div class="login-register">
       <!-- 登陆按钮 -->
-      <a href="javascript:;" class="mh-btn mh-btn_primary login" @click="login"
-        >登录</a
+      <a
+        href="javascript:;"
+        class="weui-btn weui-btn_block weui-btn_default"
+        @click.prevent="login"
+        >登陆</a
       >
       <!-- 注册按钮 -->
       <a
         href="javascript:;"
-        class="mh-btn mh-btn_primary register"
-        @click="register"
+        class="weui-btn weui-btn_block weui-btn_primary"
+        @click.prevent="register"
         >注册</a
       >
     </div>
@@ -91,22 +94,32 @@ export default {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  align-items: center;
+  -webkit-align-items: center;
 }
 
-.login,
-.register {
+.login-register a {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
-  height: 44px;
-}
-.login {
-  margin-right: 10px;
-  background-color: #fff;
-  color: #57be6a;
+  padding: 10px 24px;
 }
 
-.register {
+.login-register a:first-child {
+  margin-right: 10px;
+  background-color: #fff;
+}
+
+.login-register a:last-child {
   margin-left: 10px;
+}
+
+.weui-btn_default:not(.weui-btn_disabled):active {
+  color: #06ae56;
+  background-color: #d9d9d9;
+}
+
+.weui-btn + .weui-btn {
+  margin-top: 0;
 }
 </style>

@@ -2,77 +2,61 @@
 <template>
   <vue-route-layout>
     <!-- AvatarView -->
-    <div class="mh-current-login__avatar">
+    <div class="login__avatar">
       <img :src="user.profile_image_url" alt />
       <p>{{ account }}</p>
     </div>
     <!-- PasswordView -->
-    <div class="mh-current-login__container">
-      <transition name="left">
+    <div class="login__container">
+      <transition name="lg-left">
         <div
-          class="mh-current-login__cell mh-current-login__password"
+          class="weui-cell lg-cell lg-transition"
           key="password"
           v-if="showPasswordWay"
         >
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">密码</label>
+          <div class="weui-cell__hd">
+            <label class="weui-label">密码</label>
           </div>
-          <div class="mh-current-login__cell-bd">
+          <div class="weui-cell__bd">
             <div class="mh-input__wrapper">
               <input
                 required="required"
-                class="mh-input"
+                class="weui-input"
                 maxlength="16"
                 type="password"
                 placeholder="请填写QQ密码"
                 v-model="password"
               />
               <a
-                href="javascript:;"
-                class="mh-input-clear"
-                @click="clearAllPassword"
-              >
-                <img
-                  src="@/assets/images/input/input_clear.png"
-                  class="mh-input-clear__clear"
-                  alt=""
-                />
-              </a>
+                @click.prevent="password = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
             </div>
           </div>
         </div>
-        <div
-          class="mh-current-login__cell mh-current-login__captcha"
-          key="captcha"
-          v-else
-        >
-          <div class="mh-current-login__cell-hd">
-            <label class="mh-current-login__label">验证码</label>
+        <div class="weui-cell lg-cell lg-transition" key="captcha" v-else>
+          <div class="weui-cell__hd">
+            <label class="weui-label">验证码</label>
           </div>
-          <div class="mh-current-login__cell-bd">
-            <div class="mh-input__wrapper input-captcha">
+          <div class="weui-cell__bd">
+            <div class="mh-input__wrapper lg-input-captcha">
               <input
                 required="required"
-                class="mh-input"
+                class="weui-input"
                 type="tel"
                 maxlength="6"
                 placeholder="请输入验证码"
                 v-model="captcha"
               />
               <a
-                href="javascript:;"
-                class="mh-input-clear"
-                @click="clearAllCaptcha"
-              >
-                <img
-                  src="@/assets/images/input/input_clear.png"
-                  class="mh-input-clear__clear"
-                  alt=""
-                />
-              </a>
+                @click.prevent="captcha = ''"
+                href="javascript:"
+                class="weui-icon-clear"
+              ></a>
             </div>
           </div>
-          <div class="mh-current-login__cell-ft">
+          <div class="weui-cell__ft">
             <div
               @click="captchaAction"
               class="lg-captcha-btn"
@@ -85,29 +69,22 @@
       </transition>
     </div>
     <!-- 切换登陆方式按钮 -->
-    <div class="mh-current-login__change-btn">
+    <div class="lg-change-button">
       <span @click="changeBtnDidClick">{{ changeLogin }}</span>
     </div>
     <!-- 登录按钮 -->
-    <div class="mh-current-login__login">
-      <a
-        class="mh-btn mh-btn_primary"
-        :class="{ 'mh-btn_disabled': loginBtnDisabled }"
-        @click="login"
-        >登录
-      </a>
-    </div>
+    <a
+      href="javascript:;"
+      @click="login"
+      class="weui-btn weui-btn_block weui-btn_primary lg-login-btn"
+      :class="{ 'lg-btn--disabled': loginBtnDisabled }"
+      >登陆</a
+    >
     <!-- 底部更多面板 -->
-    <div class="mh-current-login__more">
-      <span class="mh-current-login__more-item" @click="itemDidClick(0)"
-        >找回密码</span
-      >
-      <span class="mh-current-login__more-item" @click="itemDidClick(1)"
-        >紧急冻结</span
-      >
-      <span class="mh-current-login__more-item" @click="itemDidClick(2)"
-        >更多选项</span
-      >
+    <div class="lg-more__wrapper">
+      <span class="lg-more__item" @click="itemDidClick(0)">找回密码</span>
+      <span class="lg-more__item" @click="itemDidClick(1)">紧急冻结</span>
+      <span class="lg-more__item" @click="itemDidClick(2)">更多选项</span>
     </div>
     <!-- ActionSheet -->
     <ActionSheet
@@ -206,12 +183,8 @@ export default {
     didClickItem(idx) {
       if (idx === 0) return;
       if (idx === 1) {
-        console.log("登陆其他账号");
         this.$router.push("/other-login");
-      } else if (idx === 2) {
-        console.log("前往微信安全中心");
-      } else {
-        console.log("注册");
+      } else if (idx === 3) {
         this.$router.push("/register");
       }
     },
@@ -386,31 +359,16 @@ export default {
 
 <style src="./css/login.css" scoped></style>
 <style scoped>
-.left-enter {
-  -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0);
-}
-.left-leave-to {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-}
-.left-enter-active,
-.left-leave-active {
-  transition: transform 0.25s ease-in-out, -webkit-transform 0.25s ease-in-out;
-}
-
-.mh-current-login__avatar {
+.login__avatar {
   margin-top: 149px;
 }
-
-.mh-current-login__avatar img {
+.login__avatar img {
   display: block;
   height: 66px;
   width: 66px;
   margin: 0 auto; /*水平居中*/
 }
-
-.mh-current-login__avatar p {
+.login__avatar p {
   text-align: center;
   font-size: 18px;
   font-weight: 500;
@@ -418,114 +376,15 @@ export default {
   padding: 5px 0;
 }
 
-.mh-current-login__container {
+.login__container {
   margin-top: 44px;
   font-size: 17px;
   overflow: hidden;
   position: relative;
-  height: 40px;
+  height: 44px;
 }
 
-.mh-current-login__cell {
-  padding: 0 20px;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-}
-.mh-current-login__cell:after {
-  content: " ";
-  position: absolute;
-  left: 20px;
-  bottom: 0;
-  right: 20px;
-  height: 1px;
-  border-bottom: 1px solid #d8d8d8;
-  color: #d8d8d8;
-  -webkit-transform-origin: 0 100%;
-  transform-origin: 0 100%;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
-  z-index: 2;
-}
-
-.mh-current-login__password {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-}
-.mh-current-login__captcha {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-.mh-current-login__cell-bd {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-}
-
-.mh-current-login__label {
-  display: block;
-  width: 90px;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.input-captcha {
-  padding-right: 40px;
-}
-
-.mh-current-login__change-btn {
+.lg-change-button {
   margin: 16px 20px 0;
-  color: #5b6a91;
-  font-size: 15px;
-}
-
-.mh-current-login__login {
-  margin-top: 63px;
-  padding: 0 20px;
-}
-
-/* 底部更多列表 */
-.mh-current-login__more {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 23px;
-  color: #5b6a91;
-  text-align: center;
-  font-size: 15px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  justify-content: center;
-}
-
-.mh-current-login__more-item {
-  position: relative;
-  padding: 0 16px;
-}
-
-.mh-current-login__more-item:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #888;
-  -webkit-transform: scaleY(0.5);
-  -ms-transform: scaleY(0.5);
-  transform: scaleY(0.5);
 }
 </style>

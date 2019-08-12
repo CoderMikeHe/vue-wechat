@@ -26,6 +26,9 @@
 
 .lg-login__panel {
   height: 170px;
+}
+
+.lg-transition{
   position: absolute;
   left: 0;
   top: 0;
@@ -39,10 +42,6 @@
   padding: 0 20px;
   padding-bottom: 42px;
 }
-
-
-
-
 
 /* 获取验证码 */
 .lg-captcha-btn {
@@ -58,6 +57,9 @@
 .lg-captcha-btn--disabled {
   border: 1px solid #999;
   color: #999;
+}
+.lg-input-captcha {
+  padding-right: 40px;
 }
 
 /* 修改weui-cell */

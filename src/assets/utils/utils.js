@@ -65,6 +65,10 @@ const utils = {
     return (mobile + '').replace(/(^\d{3}|\d{4}\B)/g, '$1 ')
   },
 
+  // 去掉字符串中所有的空格
+  removesWhitespace(str) {
+    return (str || '').replace(/\s/g, "")
+  },
   // 🔥是否包含中文字符
   includeChinese(str) {
     var patrn = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi
