@@ -79,6 +79,9 @@ AccountHelper.resetRootRouterView()
 // }
 
 /// --------🔥 Web知识最强参照 🔥-------------
+// 👉 Git相关
+// - [git 拉取远程指定分支 pull本地不存在的分支](https://www.cnblogs.com/hamsterPP/p/6810831.html)
+
 // 👉vue-cli3.0配置详解
 // - [vue-cli3.0配置详解](http://www.php.cn/js-tutorial-394518.html)
 // - [vue-cli3.0之vue.config.js的配置项（注解）](https://blog.csdn.net/Allen_Fei_/article/details/82691420)

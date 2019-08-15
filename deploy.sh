@@ -23,3 +23,5 @@ git commit -m 'deploy'
  git push -f git@github.com:CoderMikeHe/vue-wechat.git master:gh-pages
 
 cd -
+
+# 自动发布 运行命令 bash deploy.sh
