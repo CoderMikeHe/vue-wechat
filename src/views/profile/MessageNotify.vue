@@ -46,7 +46,7 @@ export default {
       });
       // 语音和视频通话提醒
       const callReminder = new MHCommonItemSwitch({
-        title: "语音和视频通话提醒 ",
+        title: "语音和视频通话提醒",
         key: MHPreferenceSettingHelper.MHCallReminderKey
       });
       // 通知显示消息详情
