@@ -34,6 +34,12 @@
 
 ---
 
-### 预览
+### 商业互吹
+- [iOS开发技术要点汇总](https://github.com/CoderMikeHe/MHDevelopExample_Objective_C)
+- [Flutter版WeChat](https://github.com/CoderMikeHe/flutter_wechat)
+- [iOS版WeChat](https://github.com/CoderMikeHe/WeChat)
+- [WeChat资源汇总](https://github.com/CoderMikeHe/WeChat_Resource)
+
+
 
 

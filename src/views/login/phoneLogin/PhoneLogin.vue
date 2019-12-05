@@ -216,7 +216,7 @@ export default {
         // 假设获取到了数据
         let user = Object.assign({}, UserModel);
         user.qq = "491273090";
-        user.emial = "491273090" + "@qq.com"; // PS：机智，拼接成QQ邮箱
+        user.email = "491273090" + "@qq.com"; // PS：机智，拼接成QQ邮箱
         user.phone = this.phone; // PS：瞎写的
         user.channel = "Mobile Phone";
         // 登陆
