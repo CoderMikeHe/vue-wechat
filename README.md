@@ -1,5 +1,7 @@
 # vue-wechat
 
+<img src="https://github.com/CoderMikeHe/WeChat_Resource/blob/master/snapshots/logo.png" width="256px" height="256px" />
+
 ### 概述
 - 利用`vue/cli 3.x + vue 2.x + vue-route 3.x + vuex 3.x` 来构建和模仿`微信7.0.x app`，同时利用`weui.css 2.0.x`提供样式和`weui.js 1.2.x`提供基础js封装，从而达到与原生app相近的视觉效果。
 
