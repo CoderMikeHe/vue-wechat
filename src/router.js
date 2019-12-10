@@ -64,7 +64,7 @@ export default new Router({
     {
       path: '/',
       name: 'Root',
-      redirect: '/login'
+      redirect: '/loadmore-test'
     },
     {
       path: '/homepage',
@@ -153,7 +153,8 @@ export default new Router({
     {
       path: '/other-login',
       name: 'other-login',
-      component: OtherLogin => require(['./views/login/OtherLogin.vue'], OtherLogin),
+      component: OtherLogin =>
+        require(['./views/login/OtherLogin.vue'], OtherLogin),
       meta: {
         keepAlive: true
       }
@@ -161,7 +162,8 @@ export default new Router({
     {
       path: '/phone-login',
       name: 'PhoneLogin',
-      component: PhoneLogin => require(['./views/login/phoneLogin/PhoneLogin.vue'], PhoneLogin),
+      component: PhoneLogin =>
+        require(['./views/login/phoneLogin/PhoneLogin.vue'], PhoneLogin),
       meta: {
         keepAlive: false
       }
@@ -169,7 +171,17 @@ export default new Router({
     {
       path: '/current-login',
       name: 'CurrentLogin',
-      component: CurrentLogin => require(['./views/login/CurrentLogin.vue'], CurrentLogin),
+      component: CurrentLogin =>
+        require(['./views/login/CurrentLogin.vue'], CurrentLogin),
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/loadmore-test',
+      name: 'LoadmoreTest',
+      component: LoadmoreTest =>
+        require(['./components/loadmore/LoadmoreTest.vue'], LoadmoreTest),
       meta: {
         keepAlive: true
       }

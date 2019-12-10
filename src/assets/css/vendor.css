@@ -16,3 +16,14 @@
   padding: 0 24px 20px;
   min-height: 20px;
 }
+
+/* 这个文件主要是修改AUI提供的默认样式，FBI Warning ！！！ 只准修改全局AUI的样式，不然就滚😡 */
+
+/* 让下拉刷新的三个小点居中 */
+.mint-loadmore-top .ptr-instructions .inside {
+  margin-top: 12px;
+}
+/* 让下拉刷新的时间不要显示 */
+.mint-loadmore-top .ptr-instructions .time {
+  display: none;
+}

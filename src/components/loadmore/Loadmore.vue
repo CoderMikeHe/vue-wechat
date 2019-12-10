@@ -1,25 +1,29 @@
 <template>
-  <div class="mt-loadmore">
+  <div class="mt-loadmore" ref="scroller">
     <div
-      class="mint-loadmore-content"
+      class="wc-loadmore-content"
       :class="{ 'is-dropped': topDropped || bottomDropped }"
       :style="{ transform: transform }"
     >
-      <slot name="top">
+      <slot name="header">
         <div class="mint-loadmore-top" v-if="topMethod">
-          <!-- <span class="weui-loading" v-if="topStatus === 'loading'" ></span>
-          <span class="mint-loadmore-text">{{ topText }}</span> -->
           <Header :icon-run="iconRun"></Header>
         </div>
       </slot>
       <slot></slot>
-      <slot name="bottom">
-        <div class="mint-loadmore-bottom" v-if="bottomMethod">
-          <span class="weui-loading" v-if="bottomStatus === 'loading'"></span>
-          <span class="mint-loadmore-text">{{ bottomText }}</span>
-        </div>
-      </slot>
     </div>
+    <!-- footer -->
+    <slot name="footer">
+      <div
+        class="mint-loadmore-bottom"
+        v-if="bottomMethod"
+        :style="footerStyle"
+      >
+        <i class="weui-loading" v-if="bottomStatus === 'loading'"></i>
+        <i class="wc-loadmore-arrow" :style="arrowStyle" v-else></i>
+        <span class="mint-loadmore-text">{{ bottomText }}</span>
+      </div>
+    </slot>
   </div>
 </template>
 
@@ -113,6 +117,23 @@ export default {
       return this.translate === 0
         ? null
         : "translate3d(0, " + this.translate + "px, 0)";
+    },
+
+    // 箭头旋转
+    arrowStyle() {
+      if (this.bottomStatus === "drop") {
+        let transform = "rotate(180deg)";
+        return {
+          transform
+        };
+      }
+      return null;
+    },
+    // footerStyle
+    footerStyle() {
+      return {
+        bottom: this.translate === 0 ? "-50px" : -1 * this.translate + "px"
+      };
     }
   },
 
@@ -174,22 +195,23 @@ export default {
     },
 
     getScrollEventTarget(element) {
-      let currentNode = element;
-      while (
-        currentNode &&
-        currentNode.tagName !== "HTML" &&
-        currentNode.tagName !== "BODY" &&
-        currentNode.nodeType === 1
-      ) {
-        let overflowY = document.defaultView.getComputedStyle(currentNode)
-          .overflowY;
-        if (overflowY === "scroll" || overflowY === "auto") {
-          console.log("currentNode is", currentNode);
-          return currentNode;
-        }
-        currentNode = currentNode.parentNode;
-      }
-      return window;
+      return this.$refs.scroller;
+      // let currentNode = element;
+      // while (
+      //   currentNode &&
+      //   currentNode.tagName !== "HTML" &&
+      //   currentNode.tagName !== "BODY" &&
+      //   currentNode.nodeType === 1
+      // ) {
+      //   let overflowY = document.defaultView.getComputedStyle(currentNode)
+      //     .overflowY;
+      //   if (overflowY === "scroll" || overflowY === "auto") {
+      //     console.log("currentNode is", currentNode);
+      //     return currentNode;
+      //   }
+      //   currentNode = currentNode.parentNode;
+      // }
+      // return window;
     },
 
     getScrollTop(element) {
@@ -254,11 +276,23 @@ export default {
             document.body.scrollHeight
         );
       } else {
-        return (
+        let a =
           parseInt(this.$el.getBoundingClientRect().bottom, 10) <=
           parseInt(this.scrollEventTarget.getBoundingClientRect().bottom, 10) +
-            1
+            1;
+        console.log("object");
+        console.log(parseInt(this.$el.getBoundingClientRect().bottom, 10));
+        console.log(
+          parseInt(this.scrollEventTarget.getBoundingClientRect().bottom, 10)
         );
+        let scrollEventTarget = this.scrollEventTarget;
+        let c = scrollEventTarget.scrollTop + scrollEventTarget.clientHeight;
+        let b = scrollEventTarget.scrollHeight;
+        console.log("----");
+        console.log(c);
+        console.log(b);
+        console.log("checkBottomReached is", a);
+        return c >= b;
       }
     },
 
@@ -286,6 +320,8 @@ export default {
       this.currentY = event.touches[0].clientY;
       let distance = (this.currentY - this.startY) / this.distanceIndex;
       this.direction = distance > 0 ? "down" : "up";
+      console.log(this.startScrollTop);
+      console.log(distance);
       if (
         typeof this.topMethod === "function" &&
         this.direction === "down" &&
@@ -339,6 +375,7 @@ export default {
         this.bottomStatus =
           -this.translate >= this.bottomDistance ? "drop" : "pull";
       }
+      console.log(this.translate);
       this.$emit("translate-change", this.translate);
     },
 
@@ -383,19 +420,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* 这个文件主要是修改AUI提供的默认样式，FBI Warning ！！！ 只准修改全局AUI的样式，不然就滚😡 */
-
-/* 让下拉刷新的三个小点居中 */
-.mint-loadmore-top .ptr-instructions .inside {
-  margin-top: 12px;
-}
-/* 让下拉刷新的时间不要显示 */
-.mint-loadmore-top .ptr-instructions .time {
-  display: none;
-}
 .mt-loadmore {
-  overflow: hidden;
-  .mint-loadmore-content {
+  overflow: scroll;
+  position: relative;
+  height: 100%;
+  .wc-loadmore-content {
+    position: static !important;
     .is-dropped {
       transition: 0.2s;
     }
@@ -406,14 +436,35 @@ export default {
     text-align: center;
     height: 50px;
     line-height: 50px;
+    color: #999;
   }
 
   .mint-loadmore-top {
     margin-top: -50px;
   }
 
+  // .mint-loadmore-bottom {
+  //   margin-bottom: -50px;
+  // }
   .mint-loadmore-bottom {
-    margin-bottom: -50px;
+    position: absolute;
+    width: 100%;
+    bottom: -50px;
+  }
+
+  .weui-loading,
+  .wc-loadmore-arrow {
+    margin-right: 10px;
+  }
+
+  .wc-loadmore-arrow {
+    background-image: url("./loadmore_up_arrow.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 </style>

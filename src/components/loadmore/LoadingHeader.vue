@@ -1,11 +1,10 @@
-
 <template>
- <div class="ptr-instructions outside">
+  <div class="ptr-instructions outside">
     <div v-show="showIcon">
       <div class="inside">
-        <div class="block_1" :class="{'animate1':iconRun}"></div>
-        <div class="block_2" :class="{'animate2':iconRun}"></div>
-        <div class="block_3" :class="{'animate3':iconRun}"></div>
+        <div class="block_1" :class="{ animate1: iconRun }"></div>
+        <div class="block_2" :class="{ animate2: iconRun }"></div>
+        <div class="block_3" :class="{ animate3: iconRun }"></div>
       </div>
       <div v-show="showTime" class="time">更新时间：{{ timeContent }}</div>
     </div>
@@ -33,9 +32,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {};
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .ptr-instructions {
@@ -249,4 +248,3 @@ export default {
   }
 }
 </style>
-

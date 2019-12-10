@@ -1,9 +1,13 @@
 <template>
   <div class="loadmore__wrapper">
-    <Loadmore ref="loadmore" :top-method="refreshBoqList" 
-    @translate-change="translateChange"
-    :bottom-method="loadMoreData"
-      :bottom-all-loaded="allLoaded">
+    <Loadmore
+      ref="loadmore"
+      :top-method="refreshBoqList"
+      @translate-change="translateChange"
+      :bottom-method="loadMoreData"
+      :bottom-all-loaded="allLoaded"
+    >
+      <h1>000</h1>
       <h1>123</h1>
       <h1>123</h1>
       <h1>123</h1>
@@ -19,26 +23,13 @@
       <h1>123</h1>
       <h1>123</h1>
       <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
+      <h1>456</h1>
     </Loadmore>
   </div>
 </template>
 
 <script>
-import Loadmore from '../../../common/components/loadmore/Loadmore';
+import Loadmore from "./Loadmore";
 export default {
   components: {
     Loadmore
@@ -46,33 +37,35 @@ export default {
   data() {
     return {
       allLoaded: false
-    }
+    };
   },
   methods: {
-    refreshBoqList(){
+    refreshBoqList() {
       setTimeout(() => {
-        this.$refs.loadmore.onTopLoaded()
-      }, 2000);
+        this.$refs.loadmore.onTopLoaded();
+      }, 20000);
     },
-    translateChange(val){
-      console.log('偏移...',val);
-    },
-
-    loadMoreData(){
-      
+    translateChange(val) {
+      // console.log("偏移...", val);
     },
 
-  },
-}
+    loadMoreData() {
+      setTimeout(() => {
+        this.$refs.loadmore.onBottomLoaded();
+      }, 20000);
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-.loadmore__wrapper{
+.loadmore__wrapper {
   height: 100%;
   overflow: scroll;
 }
-  h1 {
-    height: 44px;
-    line-height: 44px;
-  }
+h1 {
+  height: 44px;
+  line-height: 44px;
+  background-color: white;
+}
 </style>
