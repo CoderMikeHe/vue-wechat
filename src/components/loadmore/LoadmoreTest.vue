@@ -1,30 +1,44 @@
 <template>
   <div class="loadmore__wrapper">
-    <Loadmore
-      ref="loadmore"
-      :top-method="refreshBoqList"
-      @translate-change="translateChange"
-      :bottom-method="loadMoreData"
-      :bottom-all-loaded="allLoaded"
-    >
-      <h1>000</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>123</h1>
-      <h1>456</h1>
-    </Loadmore>
+    <div class="xxoo">toubu</div>
+    <div class="ooxx">
+      <Loadmore
+        ref="loadmore"
+        :top-method="refreshBoqList"
+        @translate-change="translateChange"
+        :bottom-method="loadMoreData"
+        :bottom-all-loaded="allLoaded"
+      >
+        <h1>00000000000</h1>
+        <h1>123</h1>
+        <!-- <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1> 
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>-->
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>123</h1>
+        <h1>8888888888</h1>
+      </Loadmore>
+    </div>
+    <div class="oooo"></div>
   </div>
 </template>
 
@@ -43,7 +57,7 @@ export default {
     refreshBoqList() {
       setTimeout(() => {
         this.$refs.loadmore.onTopLoaded();
-      }, 20000);
+      }, 20000000);
     },
     translateChange(val) {
       // console.log("偏移...", val);
@@ -52,7 +66,7 @@ export default {
     loadMoreData() {
       setTimeout(() => {
         this.$refs.loadmore.onBottomLoaded();
-      }, 20000);
+      }, 2000000);
     }
   }
 };
@@ -63,6 +77,21 @@ export default {
   height: 100%;
   overflow: scroll;
 }
+
+.xxoo {
+  height: 44px;
+  background-color: red;
+}
+
+.ooxx {
+  height: calc(100% - 88px);
+}
+
+.oooo {
+  height: 44px;
+  background-color: orange;
+}
+
 h1 {
   height: 44px;
   line-height: 44px;

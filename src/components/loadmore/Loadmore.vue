@@ -1,16 +1,18 @@
 <template>
-  <div class="mt-loadmore" ref="scroller">
-    <div
-      class="wc-loadmore-content"
-      :class="{ 'is-dropped': topDropped || bottomDropped }"
-      :style="{ transform: transform }"
-    >
-      <slot name="header">
-        <div class="mint-loadmore-top" v-if="topMethod">
-          <Header :icon-run="iconRun"></Header>
-        </div>
-      </slot>
-      <slot></slot>
+  <div class="wc-loadmore__wrapper">
+    <div class="mt-loadmore" ref="scroller">
+      <div
+        class="wc-loadmore-content"
+        :class="{ 'is-dropped': topDropped || bottomDropped }"
+        :style="{ transform: transform }"
+      >
+        <slot name="header">
+          <div class="mint-loadmore-top" v-if="topMethod" ref="header">
+            <Header :icon-run="iconRun"></Header>
+          </div>
+        </slot>
+        <slot></slot>
+      </div>
     </div>
     <!-- footer -->
     <slot name="footer">
@@ -18,6 +20,7 @@
         class="mint-loadmore-bottom"
         v-if="bottomMethod"
         :style="footerStyle"
+        :class="{ 'is-dropped': topDropped || bottomDropped }"
       >
         <i class="weui-loading" v-if="bottomStatus === 'loading'"></i>
         <i class="wc-loadmore-arrow" :style="arrowStyle" v-else></i>
@@ -108,7 +111,9 @@ export default {
       currentY: 0,
       topStatus: "",
       bottomStatus: "",
-      iconRun: false
+      iconRun: false,
+      loadingHeader: null,
+      loadingFooter: null
     };
   },
 
@@ -131,9 +136,16 @@ export default {
     },
     // footerStyle
     footerStyle() {
-      return {
-        bottom: this.translate === 0 ? "-50px" : -1 * this.translate + "px"
-      };
+      if (this.translate >= 0) {
+        // 下拉
+        if (this.bottomStatus === "loading") {
+          return { bottom: "50px" };
+        }
+        return null;
+      } else {
+        // 上拉
+        return { bottom: -1 * this.translate + "px" };
+      }
     }
   },
 
@@ -170,11 +182,23 @@ export default {
   },
 
   methods: {
+    // 手动结束下拉刷新
     onTopLoaded() {
+      // 设置回弹动画，可能用户正在拖拽...
+      this.topDropped = true;
+      // 设置偏移量为 0
       this.translate = 0;
+
       this.iconRun = false;
+
+      // fixed bug: 如果当前正在刷新，用户正在处于下拉过程，如果继续下拉一丢丢，会导致突然掉下来 影响用户体验
+      // 解决：让触摸点 startY == currentY 然后算的偏差为 0
+      this.startY = this.currentY;
+
       setTimeout(() => {
         this.topStatus = "pull";
+        // 去掉回弹动画
+        this.topDropped = false;
       }, 200);
     },
 
@@ -236,6 +260,9 @@ export default {
       this.bottomStatus = "pull";
       this.topText = this.topPullText;
       this.scrollEventTarget = this.getScrollEventTarget(this.$el);
+
+      this.loadingHeader = this.$slots.header || this.$refs.header;
+      console.log("xxxx", this.loadingHeader);
       if (typeof this.bottomMethod === "function") {
         this.fillContainer();
         this.bindTouchEvents();
@@ -276,34 +303,24 @@ export default {
             document.body.scrollHeight
         );
       } else {
-        let a =
-          parseInt(this.$el.getBoundingClientRect().bottom, 10) <=
-          parseInt(this.scrollEventTarget.getBoundingClientRect().bottom, 10) +
-            1;
-        console.log("object");
-        console.log(parseInt(this.$el.getBoundingClientRect().bottom, 10));
-        console.log(
-          parseInt(this.scrollEventTarget.getBoundingClientRect().bottom, 10)
-        );
         let scrollEventTarget = this.scrollEventTarget;
-        let c = scrollEventTarget.scrollTop + scrollEventTarget.clientHeight;
+        let a = scrollEventTarget.scrollTop + scrollEventTarget.clientHeight;
         let b = scrollEventTarget.scrollHeight;
-        console.log("----");
-        console.log(c);
-        console.log(b);
-        console.log("checkBottomReached is", a);
-        return c >= b;
+        console.log("🔥 checkBottomReached is 👉", a >= b);
+        return a >= b;
       }
     },
 
     handleTouchStart(event) {
+      console.log(event);
       this.startY = event.touches[0].clientY;
       this.startScrollTop = this.getScrollTop(this.scrollEventTarget);
       this.bottomReached = false;
       if (this.topStatus !== "loading") {
         this.topStatus = "pull";
-        this.topDropped = false;
       }
+      this.topDropped = false;
+
       if (this.bottomStatus !== "loading") {
         this.bottomStatus = "pull";
         this.bottomDropped = false;
@@ -317,41 +334,65 @@ export default {
       ) {
         return;
       }
+      // 当前触摸点currentY
       this.currentY = event.touches[0].clientY;
       let distance = (this.currentY - this.startY) / this.distanceIndex;
       this.direction = distance > 0 ? "down" : "up";
       console.log(this.startScrollTop);
       console.log(distance);
+      // &&
+      //   this.topStatus !== "loading"
       if (
         typeof this.topMethod === "function" &&
         this.direction === "down" &&
-        this.getScrollTop(this.scrollEventTarget) === 0 &&
-        this.topStatus !== "loading"
+        this.getScrollTop(this.scrollEventTarget) === 0
       ) {
         event.preventDefault();
         event.stopPropagation();
+        // 偏移量
+        let offset = 0;
         if (this.maxDistance > 0) {
-          this.translate =
+          offset =
             distance <= this.maxDistance
               ? distance - this.startScrollTop
               : this.translate;
         } else {
-          this.translate = distance - this.startScrollTop;
+          offset = distance - this.startScrollTop;
         }
-        if (this.translate < 0) {
-          this.translate = 0;
+        console.log("before down 👉", offset);
+        if (offset < 0) {
+          offset = 0;
         }
-        this.topStatus = this.translate >= this.topDistance ? "drop" : "pull";
+
+        if (this.topStatus !== "loading") {
+          this.translate = offset;
+          this.topStatus = this.translate >= this.topDistance ? "drop" : "pull";
+        } else {
+          // loading 状态下 是从loading位置 继续增加offset
+          // loading => pull 延迟200ms 可能是执行了 onTopLoaded 设置了 this.translate = 0
+          if (this.translate === 0) {
+            this.translate = offset;
+          } else {
+            this.translate = 50 + offset;
+          }
+        }
       }
 
       if (this.direction === "up") {
         this.bottomReached = this.bottomReached || this.checkBottomReached();
       }
+
+      console.log(
+        "header.top 00 ",
+        this.loadingHeader.getBoundingClientRect().bottom
+      );
+      console.log("header.top || ", this.$el.getBoundingClientRect().bottom);
+      console.log("object", this.getScrollTop(this.scrollEventTarget));
       if (
         typeof this.bottomMethod === "function" &&
         this.direction === "up" &&
         this.bottomReached &&
-        this.bottomStatus !== "loading" &&
+        // this.bottomStatus !== 'loading' &&
         !this.bottomAllLoaded
       ) {
         event.preventDefault();
@@ -369,21 +410,36 @@ export default {
             this.startScrollTop +
             distance;
         }
+        console.log("before up 👉", this.translate);
         if (this.translate > 0) {
           this.translate = 0;
         }
         this.bottomStatus =
           -this.translate >= this.bottomDistance ? "drop" : "pull";
       }
-      console.log(this.translate);
+      console.log("after 👉", this.translate);
       this.$emit("translate-change", this.translate);
     },
-
+    // 拖拽结束
     handleTouchEnd() {
+      // 下拉刷新中...
+      // 如果正在下拉刷新 松手后回到之前的下拉的逻辑
       if (
         this.direction === "down" &&
         this.getScrollTop(this.scrollEventTarget) === 0 &&
-        this.translate > 0
+        this.translate > 0 &&
+        this.topStatus === "loading"
+      ) {
+        this.topDropped = true;
+        // 回滚到50
+        this.translate = 50;
+      }
+      // 非下拉刷新中...
+      if (
+        this.direction === "down" &&
+        this.getScrollTop(this.scrollEventTarget) === 0 &&
+        this.translate > 0 &&
+        this.topStatus !== "loading"
       ) {
         this.topDropped = true;
         if (this.topStatus === "drop") {
@@ -396,7 +452,14 @@ export default {
           this.topStatus = "pull";
         }
       }
-      if (this.direction === "up" && this.bottomReached && this.translate < 0) {
+
+      // 如果是 loading 状态 也不要回滚 必须让其 保持
+      if (
+        this.direction === "up" &&
+        this.bottomReached &&
+        this.translate < 0 &&
+        this.bottomStatus !== "loading"
+      ) {
         this.bottomDropped = true;
         this.bottomReached = false;
         if (this.bottomStatus === "drop") {
@@ -420,19 +483,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wc-loadmore__wrapper {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.is-dropped {
+  transition: 0.2s;
+}
+
+.mint-loadmore-bottom {
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+  color: #999;
+}
+
+// .mint-loadmore-bottom {
+//   margin-bottom: -50px;
+// }
+.mint-loadmore-bottom {
+  position: absolute;
+  width: 100%;
+  bottom: -50px;
+}
+
+.weui-loading,
+.wc-loadmore-arrow {
+  margin-right: 10px;
+}
+
+.wc-loadmore-arrow {
+  background-image: url("./loadmore_up_arrow.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
 .mt-loadmore {
   overflow: scroll;
   position: relative;
   height: 100%;
   .wc-loadmore-content {
     position: static !important;
-    .is-dropped {
-      transition: 0.2s;
-    }
   }
 
-  .mint-loadmore-top,
-  .mint-loadmore-bottom {
+  .mint-loadmore-top {
     text-align: center;
     height: 50px;
     line-height: 50px;
@@ -441,30 +540,6 @@ export default {
 
   .mint-loadmore-top {
     margin-top: -50px;
-  }
-
-  // .mint-loadmore-bottom {
-  //   margin-bottom: -50px;
-  // }
-  .mint-loadmore-bottom {
-    position: absolute;
-    width: 100%;
-    bottom: -50px;
-  }
-
-  .weui-loading,
-  .wc-loadmore-arrow {
-    margin-right: 10px;
-  }
-
-  .wc-loadmore-arrow {
-    background-image: url("./loadmore_up_arrow.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    vertical-align: middle;
   }
 }
 </style>
