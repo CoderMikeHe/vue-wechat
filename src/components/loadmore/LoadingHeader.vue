@@ -2,17 +2,20 @@
   <div class="ptr-instructions outside">
     <div v-show="showIcon">
       <div class="inside">
-        <div class="block_1" :class="{ animate1: iconRun }"></div>
-        <div class="block_2" :class="{ animate2: iconRun }"></div>
-        <div class="block_3" :class="{ animate3: iconRun }"></div>
+        <div class="block_1"
+             :class="{ animate1: iconRun }"></div>
+        <div class="block_2"
+             :class="{ animate2: iconRun }"></div>
+        <div class="block_3"
+             :class="{ animate3: iconRun }"></div>
       </div>
-      <div v-show="showTime" class="time">更新时间：{{ timeContent }}</div>
+      <!-- <div v-show="showTime" class="time">更新时间：{{ timeContent }}</div> -->
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "LoadingIcon",
+  name: 'LoadingIcon',
   props: {
     showTime: {
       type: Boolean,
@@ -28,19 +31,15 @@ export default {
     },
     timeContent: {
       type: String,
-      default: "时间"
+      default: '时间'
     }
   },
   data() {
-    return {};
+    return {}
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-.ptr-instructions {
-  padding: 10px 0;
-  height: 60px;
-}
 .ptr-instructions-text {
   position: fixed;
   bottom: -1000px;
