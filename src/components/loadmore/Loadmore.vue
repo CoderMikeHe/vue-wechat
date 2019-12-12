@@ -139,12 +139,16 @@ export default {
       if (this.translate >= 0) {
         // 下拉
         if (this.bottomStatus === "loading") {
-          return { bottom: "50px" };
+          // 正在下拉刷新
+          if (this.topStatus === "loading") {
+            return { bottom: -1 * this.translate + "px" };
+          }
+          return { bottom: "0" };
         }
         return null;
       } else {
         // 上拉
-        return { bottom: -1 * this.translate + "px" };
+        return { bottom: -50 - 1 * this.translate + "px" };
       }
     }
   },
@@ -153,30 +157,30 @@ export default {
     topStatus(val) {
       this.$emit("top-status-change", val);
       switch (val) {
-      case "pull":
-        this.topText = this.topPullText;
-        break;
-      case "drop":
-        this.topText = this.topDropText;
-        break;
-      case "loading":
-        this.topText = this.topLoadingText;
-        break;
+        case "pull":
+          this.topText = this.topPullText;
+          break;
+        case "drop":
+          this.topText = this.topDropText;
+          break;
+        case "loading":
+          this.topText = this.topLoadingText;
+          break;
       }
     },
 
     bottomStatus(val) {
       this.$emit("bottom-status-change", val);
       switch (val) {
-      case "pull":
-        this.bottomText = this.bottomPullText;
-        break;
-      case "drop":
-        this.bottomText = this.bottomDropText;
-        break;
-      case "loading":
-        this.bottomText = this.bottomLoadingText;
-        break;
+        case "pull":
+          this.bottomText = this.bottomPullText;
+          break;
+        case "drop":
+          this.bottomText = this.bottomDropText;
+          break;
+        case "loading":
+          this.bottomText = this.bottomLoadingText;
+          break;
       }
     }
   },
@@ -212,10 +216,15 @@ export default {
           this.scrollEventTarget.scrollTop += 50;
         }
         this.translate = 0;
+        this.bottomDropped = true;
+        this.startY = this.currentY;
+        setTimeout(() => {
+          this.bottomDropped = false;
+        }, 200);
       });
-      if (!this.bottomAllLoaded && !this.containerFilled) {
-        this.fillContainer();
-      }
+      // if (!this.bottomAllLoaded && !this.containerFilled) {
+      //   this.fillContainer();
+      // }
     },
 
     getScrollEventTarget(element) {
@@ -262,7 +271,6 @@ export default {
       this.scrollEventTarget = this.getScrollEventTarget(this.$el);
 
       this.loadingHeader = this.$slots.header || this.$refs.header;
-      console.log("xxxx", this.loadingHeader);
       if (typeof this.bottomMethod === "function") {
         this.fillContainer();
         this.bindTouchEvents();
@@ -311,8 +319,16 @@ export default {
       }
     },
 
+    // 检查header是否可见
+    checkHeaderVisible() {
+      return (
+        this.loadingHeader.getBoundingClientRect().bottom -
+          this.$el.getBoundingClientRect().top >
+        0
+      );
+    },
+
     handleTouchStart(event) {
-      console.log(event);
       this.startY = event.touches[0].clientY;
       this.startScrollTop = this.getScrollTop(this.scrollEventTarget);
       this.bottomReached = false;
@@ -323,8 +339,8 @@ export default {
 
       if (this.bottomStatus !== "loading") {
         this.bottomStatus = "pull";
-        this.bottomDropped = false;
       }
+      this.bottomDropped = false;
     },
 
     handleTouchMove(event) {
@@ -338,8 +354,6 @@ export default {
       this.currentY = event.touches[0].clientY;
       let distance = (this.currentY - this.startY) / this.distanceIndex;
       this.direction = distance > 0 ? "down" : "up";
-      console.log(this.startScrollTop);
-      console.log(distance);
       // &&
       //   this.topStatus !== "loading"
       if (
@@ -363,17 +377,22 @@ export default {
         if (offset < 0) {
           offset = 0;
         }
-
         if (this.topStatus !== "loading") {
           this.translate = offset;
           this.topStatus = this.translate >= this.topDistance ? "drop" : "pull";
         } else {
-          // loading 状态下 是从loading位置 继续增加offset
-          // loading => pull 延迟200ms 可能是执行了 onTopLoaded 设置了 this.translate = 0
-          if (this.translate === 0) {
+          // 下拉刷新中...和 上拉加载中...
+          if (this.bottomStatus === "loading") {
+            // 联动起来
             this.translate = offset;
           } else {
-            this.translate = 50 + offset;
+            // loading 状态下 是从loading位置 继续增加offset
+            // loading => pull 延迟200ms 可能是执行了 onTopLoaded 设置了 this.translate = 0
+            if (this.translate === 0) {
+              this.translate = offset;
+            } else {
+              this.translate = 50 + offset;
+            }
           }
         }
       }
@@ -386,38 +405,66 @@ export default {
         "header.top 00 ",
         this.loadingHeader.getBoundingClientRect().bottom
       );
-      console.log("header.top || ", this.$el.getBoundingClientRect().bottom);
-      console.log("object", this.getScrollTop(this.scrollEventTarget));
+      console.log("header.top || ", this.$el.getBoundingClientRect().top);
+      console.log("🔥 是否可见 👉", this.checkHeaderVisible());
       if (
         typeof this.bottomMethod === "function" &&
         this.direction === "up" &&
         this.bottomReached &&
-        // this.bottomStatus !== 'loading' &&
         !this.bottomAllLoaded
       ) {
         event.preventDefault();
         event.stopPropagation();
+        let offset = 0;
         if (this.maxDistance > 0) {
-          this.translate =
+          offset =
             Math.abs(distance) <= this.maxDistance
               ? this.getScrollTop(this.scrollEventTarget) -
                 this.startScrollTop +
                 distance
               : this.translate;
         } else {
-          this.translate =
+          offset =
             this.getScrollTop(this.scrollEventTarget) -
             this.startScrollTop +
             distance;
         }
-        console.log("before up 👉", this.translate);
-        if (this.translate > 0) {
-          this.translate = 0;
+        console.log("before up 👉", offset);
+        if (offset > 0) {
+          offset = 0;
         }
-        this.bottomStatus =
-          -this.translate >= this.bottomDistance ? "drop" : "pull";
+        if (this.bottomStatus !== "loading") {
+          // 非上拉加载中... && 下拉刷新中...
+          if (this.topStatus === "loading") {
+            this.translate = 50 + offset;
+          } else {
+            this.translate = offset;
+          }
+          // 去判断
+          this.bottomStatus =
+            -this.translate >= this.bottomDistance ? "drop" : "pull";
+        } else {
+          if (this.topStatus === "loading") {
+            // 联动起来
+            this.translate = 50 + offset;
+          } else {
+            // loading 状态下 是从loading位置 继续增加offset
+            // loading => pull 延迟200ms 可能是执行了 onTopLoaded 设置了 this.translate = 0
+            if (this.translate === 0) {
+              this.translate = offset;
+            } else {
+              this.translate = -50 + offset;
+            }
+          }
+        }
       }
-      console.log("after 👉", this.translate);
+      console.log(
+        "after 👉",
+        this.translate,
+        this.direction,
+        distance,
+        this.scrollEventTarget.scrollTop
+      );
       this.$emit("translate-change", this.translate);
     },
     // 拖拽结束
@@ -458,6 +505,18 @@ export default {
         this.direction === "up" &&
         this.bottomReached &&
         this.translate < 0 &&
+        this.bottomStatus === "loading"
+      ) {
+        this.bottomDropped = true;
+        this.bottomReached = false;
+        // 回滚到-50
+        this.translate = -50;
+      }
+      // 如果是 loading 状态 也不要回滚 必须让其 保持
+      if (
+        this.direction === "up" &&
+        this.bottomReached &&
+        this.translate < 0 &&
         this.bottomStatus !== "loading"
       ) {
         this.bottomDropped = true;
@@ -467,12 +526,27 @@ export default {
           this.bottomStatus = "loading";
           this.bottomMethod();
         } else {
-          this.translate = "0";
+          // 如果正在下拉刷新 回到之前下拉刷新的状态
+          if (this.topStatus === "loading") {
+            console.log("xxx00", this.scrollEventTarget.scrollTop);
+            this.translate = 50;
+            this.scrollEventTarget.scrollTop += 150;
+            console.log("xxx00 after", this.scrollEventTarget.scrollTop);
+          } else {
+            this.translate = "0";
+          }
           this.bottomStatus = "pull";
         }
       }
       this.$emit("translate-change", this.translate);
       this.direction = "";
+
+      console.log(
+        "松手header.top 00 ",
+        this.loadingHeader.getBoundingClientRect().bottom
+      );
+      console.log("松手header.top || ", this.$el.getBoundingClientRect().top);
+      console.log("松手object", this.getScrollTop(this.scrollEventTarget));
     }
   },
 
@@ -500,9 +574,6 @@ export default {
   color: #999;
 }
 
-// .mint-loadmore-bottom {
-//   margin-bottom: -50px;
-// }
 .mint-loadmore-bottom {
   position: absolute;
   width: 100%;
