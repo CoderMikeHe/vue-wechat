@@ -64,7 +64,7 @@ export default new Router({
     {
       path: '/',
       name: 'Root',
-      redirect: '/loadmore-test'
+      redirect: '/homepage'
     },
     {
       path: '/homepage',

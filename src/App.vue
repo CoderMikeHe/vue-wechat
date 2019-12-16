@@ -22,9 +22,9 @@
   </div> -->
   <!-- 启动页 -->
   <div id="app">
-    <!-- <Launch></Launch> -->
-    <router-view></router-view>
-    <!-- <vue-route-transition :keepAlive="true"></vue-route-transition> -->
+    <Launch></Launch>
+    <!-- <router-view></router-view> -->
+    <vue-route-transition :keepAlive="true"></vue-route-transition>
   </div>
 </template>
 

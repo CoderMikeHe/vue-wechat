@@ -57,7 +57,7 @@ new Vue({
 }).$mount('#app')
 
 // 重置根路由
-// AccountHelper.resetRootRouterView()
+AccountHelper.resetRootRouterView()
 
 // {
 //   "workbench.iconTheme": "vscode-icons",
