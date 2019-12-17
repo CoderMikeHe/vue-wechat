@@ -2,38 +2,16 @@
   <div class="loadmore__wrapper">
     <div class="xxoo">toubu</div>
     <div class="ooxx">
-      <Loadmore ref="loadmore"
-                :top-method="refreshBoqList"
-                @translate-change="translateChange"
-                :bottom-method="loadMoreData"
-                :bottom-all-loaded="allLoaded">
-        <h1>00000000000</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <!-- <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1> -->
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>123</h1>
-        <h1>8888888888</h1>
+      <Loadmore
+        ref="loadmore"
+        :top-method="refreshBoqList"
+        @translate-change="translateChange"
+        :bottom-method="loadMoreData"
+        :bottom-all-loaded="allLoaded"
+      >
+        <h1 v-for="(item, index) in items" :key="index">
+          {{ "这是第" + index + "行" }}
+        </h1>
       </Loadmore>
     </div>
     <div class="oooo"></div>
@@ -41,33 +19,47 @@
 </template>
 
 <script>
-import Loadmore from './Loadmore'
+import Loadmore from "./Loadmore";
 export default {
   components: {
     Loadmore
   },
   data() {
     return {
-      allLoaded: false
-    }
+      allLoaded: false,
+      items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      page: 0
+    };
   },
   methods: {
     refreshBoqList() {
       setTimeout(() => {
-        this.$refs.loadmore.onTopLoaded()
-      }, 20000000)
+        this.page = 1;
+        let items = [];
+        for (let index = 0; index < 10; index++) {
+          let o = this.page * 10 + index;
+          items.push(o);
+        }
+        this.items = items;
+        this.$refs.loadmore.onTopLoaded();
+      }, 2000);
     },
     translateChange(val) {
       // console.log("偏移...", val);
     },
 
     loadMoreData() {
+      let page = this.page + 1;
       setTimeout(() => {
-        this.$refs.loadmore.onBottomLoaded()
-      }, 2000000)
+        for (let index = 0; index < 10; index++) {
+          let o = page * 10 + index;
+          this.items.push(o);
+        }
+        this.$refs.loadmore.onBottomLoaded();
+      }, 4000);
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
