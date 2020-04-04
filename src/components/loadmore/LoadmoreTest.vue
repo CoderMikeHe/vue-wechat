@@ -1,6 +1,7 @@
 <template>
   <div class="loadmore__wrapper">
-    <div class="xxoo">toubu</div>
+    <div class="xxoo"
+         @click="xxooxx">toubu</div>
     <div class="ooxx">
       <Loadmore ref="loadmore"
                 :top-method="refreshBoqList"
@@ -14,23 +15,32 @@
       </Loadmore>
     </div>
     <div class="oooo"></div>
+
+    <SpeechInput v-model="showPage"
+                 :transition="true"></SpeechInput>
   </div>
 </template>
 
 <script>
 import Loadmore from './Loadmore'
+import SpeechInput from '../speech-input/SpeechInput'
 export default {
   components: {
-    Loadmore
+    Loadmore,
+    SpeechInput
   },
   data() {
     return {
       allLoaded: false,
       items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      page: 0
+      page: 0,
+      showPage: false
     }
   },
   methods: {
+    xxooxx() {
+      this.showPage = !this.showPage
+    },
     refreshBoqList() {
       setTimeout(() => {
         this.page = 1
